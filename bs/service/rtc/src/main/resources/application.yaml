@@ -1,0 +1,7 @@
+server:
+  port: 23000
+
+spring:
+  application:
+    # 服务名称
+    name: rtc

@@ -1,0 +1,17 @@
+server:
+  port: 23333
+  ssl:
+    # 生成密钥
+    # keytool -genkeypair -alias tomcat_https -keypass 123456 -keyalg RSA -keysize 1024 -validity 365 -keystore ./tomcat_https.keystore -storepass 123456
+    enabled: true
+    key-store: tomcat_https.keystore
+    key-store-password: 123456
+    key-password: 123456
+    key-store-type: JKS
+
+spring:
+  application:
+    name: gateway
+  web:
+    resources:
+      static-locations: file:./vue-demo/dist/
