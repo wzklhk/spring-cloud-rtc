@@ -14,4 +14,4 @@ spring:
     name: gateway
   web:
     resources:
-      static-locations: file:./vue-demo/dist/
+      static-locations: file:./dist/
