@@ -1,4 +1,4 @@
-package com.example.rtc.config;
+package com.example.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +8,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-
 @Configuration
 @EnableSwagger2
 public class Swagger2Config {
@@ -16,6 +15,7 @@ public class Swagger2Config {
     @Bean
     public Docket docket() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("api-docs")
                 .apiInfo(apiInfo())
                 .select()
                 .build();
@@ -23,9 +23,10 @@ public class Swagger2Config {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("rtc demo")
-                .description("RTC demo for spring boot project")
+                .title("bs service")
+                .description("a spring cloud rtc project")
                 .termsOfServiceUrl("")
+                .contact("wzklhk")
                 .version("0.0.1")
                 .build();
     }
