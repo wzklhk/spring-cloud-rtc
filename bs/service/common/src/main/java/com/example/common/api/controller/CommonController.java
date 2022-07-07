@@ -18,8 +18,8 @@ public class CommonController<V, E, ID> {
     @Autowired
     private CommonService<V, E, ID> commonService;
 
-    @GetMapping("/{id}")
-    public ResultInfo getById(@PathVariable("id") ID id) {
+    @GetMapping("/get")
+    public ResultInfo getById(ID id) {
         return ResultInfo.ok(commonService.getById(id));
     }
 
@@ -28,23 +28,23 @@ public class CommonController<V, E, ID> {
         return ResultInfo.ok(commonService.list(entityVo));
     }
 
-    @GetMapping("/listByPage")
+    @GetMapping("/page")
     public ResultInfo listByPage(PageQuery query) {
         return ResultInfo.ok(commonService.listByPage(query));
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public ResultInfo save(@RequestBody V entityVo) {
         return ResultInfo.ok(commonService.saveOrUpdate(entityVo));
     }
 
-    @PutMapping
+    @PutMapping("/update")
     public ResultInfo update(@RequestBody V entityVo) {
         return ResultInfo.ok(commonService.saveOrUpdate(entityVo));
     }
 
-    @DeleteMapping("/{id}")
-    public ResultInfo delete(@PathVariable("id") ID id) {
+    @DeleteMapping("/delete")
+    public ResultInfo delete(ID id) {
         return ResultInfo.status(commonService.deleteById(id), null);
     }
 

@@ -52,7 +52,9 @@ public class WebsocketService {
         }
         String username = requestParameterMap.get("username").get(0);
 
-        this.currentUser = new UserDO(null, username);
+        UserDO userDO = new UserDO();
+        userDO.setUsername(username);
+        this.currentUser = userDO;
         this.currentSession = session;
         webSocketSet.add(this);
         onlineCount.getAndIncrement();
