@@ -26,7 +26,7 @@ public class WebsocketController {
 
     @GetMapping("/getUrl")
     public ResultInfo getUrl() {
-        String url = "ws://" + ip + ":" + port;
+        String url = "ws://" + ip + ":" + port + "/ws";
         return ResultInfo.ok(url);
     }
 
