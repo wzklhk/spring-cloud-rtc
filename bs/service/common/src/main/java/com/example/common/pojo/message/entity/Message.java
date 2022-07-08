@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -14,26 +15,29 @@ import java.util.List;
 public class Message<T> {
 
     @ApiModelProperty(value = "发送方")
-    private UserDO sendUser;
+    private UserDO sender;
 
     @ApiModelProperty(value = "接收方列表")
-    private UserDO receiveUser;
-
-    @ApiModelProperty(value = "接收方列表")
-    private List<UserDO> receiveUsers;
+    private List<UserDO> receivers;
 
     @ApiModelProperty(value = "要发送的数据")
     private T data;
 
-    public static <T> Message<T> unicast(UserDO sendUser, UserDO receiveUser, T data) {
-        return new Message<>(sendUser, receiveUser, null, data);
+    public static <T> Message<T> unicast(UserDO sender, UserDO receiver, T data) {
+        List<UserDO> receivers = new ArrayList<>();
+        receivers.add(receiver);
+        return new Message<>(sender, receivers, data);
     }
 
-    public static <T> Message<T> multicast(UserDO sendUser, List<UserDO> receiveUsers, T data) {
-        return new Message<>(sendUser, null, receiveUsers, data);
+    public static <T> Message<T> multicast(UserDO sender, List<UserDO> receivers, T data) {
+        return new Message<>(sender, receivers, data);
     }
 
-    public static <T> Message<T> broadcast(UserDO sendUser, T data) {
-        return new Message<>(sendUser, null, null, data);
+    public static <T> Message<T> broadcast(UserDO sender, T data) {
+        return new Message<>(sender, null, data);
+    }
+
+    public static <T> Message<T> notification(T data) {
+        return new Message<>(null, null, data);
     }
 }

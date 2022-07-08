@@ -17,8 +17,12 @@ public class WebsocketController {
     @Value("${server.port}")
     private Integer port;
 
+    private final WebsocketService websocketService;
+
     @Autowired
-    private WebsocketService websocketService;
+    public WebsocketController(WebsocketService websocketService) {
+        this.websocketService = websocketService;
+    }
 
     @GetMapping("/getUrl")
     public ResultInfo getUrl() {
@@ -27,17 +31,22 @@ public class WebsocketController {
     }
 
     @PostMapping("/unicast")
-    public void unicast(@RequestBody Message message) {
-        websocketService.unicastMessage(message.getReceiveUser(), message.getData());
+    public <T> void unicast(@RequestBody Message<T> message) {
+        websocketService.unicastMessage(message.getReceivers().get(0), message.getData());
     }
 
     @PostMapping("/multicast")
-    public void multicast(@RequestBody Message message) {
-        websocketService.multicastMessage(message.getReceiveUsers(), message.getData());
+    public <T> void multicast(@RequestBody Message<T> message) {
+        websocketService.multicastMessage(message.getReceivers(), message.getData());
     }
 
     @PostMapping("/broadcast")
     public void broadcast(@RequestBody Message message) {
+        websocketService.broadcastMessage(message.getData());
+    }
+
+    @PostMapping("/notify")
+    public void notify(@RequestBody Message message) {
         websocketService.broadcastMessage(message.getData());
     }
 }
