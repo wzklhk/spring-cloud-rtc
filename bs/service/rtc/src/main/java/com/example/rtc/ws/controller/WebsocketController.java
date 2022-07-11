@@ -2,11 +2,14 @@ package com.example.rtc.ws.controller;
 
 import com.example.common.api.ResultInfo;
 import com.example.common.pojo.message.entity.Message;
+import com.example.common.pojo.user.entity.UserDO;
 import com.example.rtc.ws.service.WebsocketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -32,10 +35,14 @@ public class WebsocketController {
         return ResultInfo.ok(url);
     }
 
-    @GetMapping("/getConnectList")
-    public ResultInfo getConnectList() {
+    @GetMapping("/getConnectedUserList")
+    public ResultInfo getConnectedUserList() {
         Set<WebsocketService> wsSet = WebsocketService.getWebSocketSet();
-        return ResultInfo.ok(wsSet);
+        List<UserDO> users = new ArrayList<>();
+        for (WebsocketService ws : wsSet) {
+            users.add(ws.getCurrentUser());
+        }
+        return ResultInfo.ok(users);
     }
 
     @PostMapping("/unicast")

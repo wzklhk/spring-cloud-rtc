@@ -5,6 +5,7 @@ import com.example.common.api.ResultInfo;
 import com.example.common.pojo.message.entity.Message;
 import com.example.common.pojo.user.entity.UserDO;
 import com.example.rtc.room.service.RoomService;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 @ServerEndpoint(value = "/ws")
 @Service
+@Data
 public class WebsocketService {
 
 
