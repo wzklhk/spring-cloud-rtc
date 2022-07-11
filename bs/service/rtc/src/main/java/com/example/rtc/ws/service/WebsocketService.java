@@ -48,6 +48,10 @@ public class WebsocketService {
      */
     private static Set<WebsocketService> webSocketSet = new CopyOnWriteArraySet<>();
 
+    public static Set<WebsocketService> getWebSocketSet() {
+        return webSocketSet;
+    }
+
     /**
      * 当前连接会话
      */

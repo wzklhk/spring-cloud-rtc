@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 @RestController
 @RequestMapping("/ws")
 public class WebsocketController {
@@ -30,23 +32,27 @@ public class WebsocketController {
         return ResultInfo.ok(url);
     }
 
+    @GetMapping("/getConnectList")
+    public ResultInfo getConnectList() {
+        Set<WebsocketService> wsSet = WebsocketService.getWebSocketSet();
+        return ResultInfo.ok(wsSet);
+    }
+
     @PostMapping("/unicast")
-    public <T> void unicast(@RequestBody Message<T> message) {
+    public <T> ResultInfo unicast(@RequestBody Message<T> message) {
         websocketService.unicastMessage(message.getReceivers().get(0), message.getData());
+        return ResultInfo.ok();
     }
 
     @PostMapping("/multicast")
-    public <T> void multicast(@RequestBody Message<T> message) {
+    public <T> ResultInfo multicast(@RequestBody Message<T> message) {
         websocketService.multicastMessage(message.getReceivers(), message.getData());
+        return ResultInfo.ok();
     }
 
     @PostMapping("/broadcast")
-    public void broadcast(@RequestBody Message message) {
+    public <T> ResultInfo broadcast(@RequestBody Message<T> message) {
         websocketService.broadcastMessage(message.getData());
-    }
-
-    @PostMapping("/notify")
-    public void notify(@RequestBody Message message) {
-        websocketService.broadcastMessage(message.getData());
+        return ResultInfo.ok();
     }
 }

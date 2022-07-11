@@ -11,8 +11,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResultInfo handlerException(Exception e) {
-        log.error("未知异常");
-        return ResultInfo.error();
+        log.error("未知异常: {}", e.getMessage());
+        return ResultInfo.error(e.getMessage());
     }
 
 }
