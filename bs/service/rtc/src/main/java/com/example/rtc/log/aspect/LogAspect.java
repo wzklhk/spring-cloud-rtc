@@ -1,9 +1,7 @@
 package com.example.rtc.log.aspect;
 
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,6 +15,16 @@ public class LogAspect {
 
     @Before(value = "wsControllerPointcut()")
     public void beforeWsPointcut() {
-        log.info("test aspect");
+        log.info("test Before aspect");
+    }
+
+    @After(value = "wsControllerPointcut()")
+    public void afterWsPointcut() {
+        log.info("test After aspect");
+    }
+
+    @AfterReturning(value = "wsControllerPointcut()")
+    public void afterReturningWsPointcut() {
+        log.info("test AfterReturning aspect");
     }
 }
