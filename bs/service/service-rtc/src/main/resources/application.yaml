@@ -4,7 +4,7 @@ server:
 spring:
   # application.name 在 bootstrap 中定义
   #application:
-  # 服务名称
+  #  # 服务名称
   #  name: service-rtc
 
   # 从配置中心获取

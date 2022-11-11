@@ -12,6 +12,7 @@ server:
 spring:
   # application.name 在 bootstrap 中定义
   #application:
+  #  # 服务名称
   #  name: gateway
   web:
     resources:
