@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>com.example</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>service-common</artifactId>
             <version>${revision}</version>
         </dependency>
 

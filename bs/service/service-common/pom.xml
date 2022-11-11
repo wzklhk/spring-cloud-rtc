@@ -10,6 +10,6 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>common</artifactId>
+    <artifactId>service-common</artifactId>
 
 </project>

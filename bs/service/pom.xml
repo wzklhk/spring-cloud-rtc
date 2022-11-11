@@ -14,7 +14,7 @@
     <artifactId>service</artifactId>
 
     <modules>
-        <module>common</module>
+        <module>service-common</module>
         <module>service-rtc</module>
     </modules>
 
