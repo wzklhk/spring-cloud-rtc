@@ -10,8 +10,9 @@ server:
     key-store-type: JKS
 
 spring:
-  application:
-    name: gateway
+  # application.name 在 bootstrap 中定义
+  #application:
+  #  name: gateway
   web:
     resources:
       static-locations: file:../vue-rtc/dist/
