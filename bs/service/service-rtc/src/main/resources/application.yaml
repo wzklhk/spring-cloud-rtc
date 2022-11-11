@@ -1,0 +1,25 @@
+server:
+  port: 23000
+
+spring:
+  # application.name 在 bootstrap 中定义
+  #application:
+  # 服务名称
+  #  name: service-rtc
+
+  # 从配置中心获取
+  #datasource:
+  #  driver-class-name: com.mysql.cj.jdbc.Driver
+  #  url: jdbc:mysql://localhost:3306/db
+  #  username: username
+  #  password: password
+
+  jpa:
+    show-sql: true
+    #generate-ddl: false
+    #hibernate:
+    #  ddl-auto: update
+    database: mysql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect

@@ -15,7 +15,7 @@
 
     <modules>
         <module>common</module>
-        <module>rtc</module>
+        <module>service-rtc</module>
     </modules>
 
     <properties>
