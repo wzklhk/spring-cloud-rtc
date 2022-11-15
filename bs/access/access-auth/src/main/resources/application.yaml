@@ -1,8 +1,5 @@
 server:
   port: 8500
-  servlet:
-    # 分开存放cookie路径
-    context-path: /sso
 
 spring:
 # 从配置中心获取

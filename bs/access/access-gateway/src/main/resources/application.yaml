@@ -13,7 +13,33 @@ spring:
   # application.name 在 bootstrap 中定义
   #application:
   #  # 服务名称
-  #  name: gateway
+  #  name: access-gateway
   web:
     resources:
       static-locations: file:../vue-rtc/dist/
+
+  gateway:
+    discovery:
+      locator:
+        enabled: true  # 开启从注册中心动态创建路由的功能
+        lower-case-service-id: true  # 使用小写服务名，默认是大写
+    #routes:
+    #  - id: demo1
+    #    uri: lb://demo1
+    #    predicates:
+    #      - Path=/demo1/**
+
+    # 跨域访问
+    globalcors:
+      add-to-simple-url-handler-mapping: true
+      cors-configurations:
+        '[/**]':
+          allowedHeaders: "*"
+          allowedOrigins: "*"
+          allowedMethods: "*"
+          max-age: 36000
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: reactive
+
+

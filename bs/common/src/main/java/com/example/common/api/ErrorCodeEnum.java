@@ -1,4 +1,4 @@
-package com.example.service.common.api;
+package com.example.common.api;
 
 public enum ErrorCodeEnum {
     SUCCESS(0, "操作成功"),

@@ -6,7 +6,7 @@ spring:
   # application.name 在 bootstrap 中定义
   application:
     # 服务名称
-    name: access-gateway
+    name: access-auth
   profiles:
     # 环境也是和配置文件保持一致
     active: prod

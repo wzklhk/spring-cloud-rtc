@@ -1,6 +1,6 @@
-package com.example.service.common.exception;
+package com.example.common.api.exception;
 
-import com.example.service.common.api.ResultInfo;
+import com.example.common.api.ResultInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

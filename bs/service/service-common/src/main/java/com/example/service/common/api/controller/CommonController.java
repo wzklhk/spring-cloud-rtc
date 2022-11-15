@@ -1,7 +1,5 @@
 package com.example.service.common.api.controller;
 
-import com.example.service.common.api.PageQuery;
-import com.example.service.common.api.ResultInfo;
 import com.example.service.common.api.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

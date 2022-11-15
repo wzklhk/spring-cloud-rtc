@@ -12,12 +12,27 @@
     <artifactId>access-gateway</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+    </properties>
+
     <dependencies>
-        <!--spring cloud-->
-        <!--gateway-->
+        <!--spring cloud gateway-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
+
+        <!--loadbalancer Spring Cloud 2020 移除了 Ribbon 不添加loadbalancer路由时会503错误-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+
+        <!--OAuth2.0依赖，不再内置，需要指定版本 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+            <version>${oauth2.version}</version>
         </dependency>
     </dependencies>
 
