@@ -1,4 +1,4 @@
-package com.example.common.api;
+package com.example.service.common.api;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

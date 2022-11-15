@@ -1,5 +1,6 @@
 package com.example.service.rtc.ws.controller;
 
+import com.example.common.api.ResultInfo;
 import com.example.service.common.pojo.message.entity.Message;
 import com.example.service.common.pojo.user.entity.UserDO;
 import com.example.service.rtc.ws.service.WebsocketService;
