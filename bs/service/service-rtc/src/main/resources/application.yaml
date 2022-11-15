@@ -2,22 +2,23 @@ server:
   port: 23000
 
 spring:
-  # application.name 在 bootstrap 中定义
+  # spring.application.name在bootstrap中定义
   #application:
-  #  # 服务名称
-  #  name: service-rtc
+  #  name: service-rtc  # 服务名称
 
-  # 从配置中心获取
-  #datasource:
-  #  driver-class-name: com.mysql.cj.jdbc.Driver
-  #  url: jdbc:mysql://127.0.0.1:3306/db
-  #  username: username
-  #  password: password
+  # 数据库配置从配置中心获取
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/service-rtc
+    username: username
+    password: password
 
-  # 从配置中心获取
-  #redis:
-  #  host: 127.0.0.1
-  #  port: 6379
+  # redis配置从配置中心获取
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    password: password
 
   jpa:
     show-sql: true

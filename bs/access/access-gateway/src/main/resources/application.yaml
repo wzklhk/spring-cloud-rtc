@@ -10,10 +10,10 @@ server:
     key-store-type: JKS
 
 spring:
-  # application.name 在 bootstrap 中定义
+  # spring.application.name在bootstrap中定义
   #application:
-  #  # 服务名称
-  #  name: access-gateway
+  #  name: access-gateway  # 服务名称
+
   web:
     resources:
       static-locations: file:../vue-rtc/dist/

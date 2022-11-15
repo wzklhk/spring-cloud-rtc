@@ -1,21 +1,18 @@
-# 自定义nacos地址
+# 自定义nacos配置
 nacos:
   server-addr: 127.0.0.1:8848
 
 spring:
-  # application.name 在 bootstrap 中定义
+  # spring.application.name在bootstrap中定义
   application:
-    # 服务名称
-    name: access-gateway
+    name: access-gateway  # 服务名称
   profiles:
-    # 环境也是和配置文件保持一致
-    active: prod
+    active: prod  # 环境profile后缀
+
   cloud:
     nacos:
       discovery:
         server-addr: ${nacos.server-addr}
       config:
-        # 配置文件后缀名
-        file-extension: yaml
-        # 配置中心服务器地址，也就是Nacos地址
-        server-addr: ${nacos.server-addr}
+        file-extension: yaml  # 配置文件后缀名
+        server-addr: ${nacos.server-addr}  # 配置中心服务器地址，也就是Nacos地址
