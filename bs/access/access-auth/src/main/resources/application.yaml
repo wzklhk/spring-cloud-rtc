@@ -1,0 +1,13 @@
+server:
+  port: 8500
+  servlet:
+    # 分开存放cookie路径
+    context-path: /sso
+
+spring:
+# 从配置中心获取
+#redis:
+#  database: 0
+#  host: 127.0.0.1
+#  port: 6379
+#  password: password

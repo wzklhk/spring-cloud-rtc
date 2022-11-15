@@ -2,22 +2,34 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
     <parent>
-        <groupId>com.example</groupId>
         <artifactId>bs</artifactId>
+        <groupId>com.example</groupId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>gateway</artifactId>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>access</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>access-auth</module>
+    </modules>
+
+    <properties>
+        <oauth2.version>2.2.5.RELEASE</oauth2.version>
+    </properties>
 
     <dependencies>
-        <!--spring cloud-->
-        <!--gateway-->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
         <!--loadbalancer Spring Cloud 2020 移除了 Ribbon 不添加loadbalancer路由时会503错误-->
@@ -44,6 +56,18 @@
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
 
+        <!--OAuth2.0依赖，不再内置，需要指定版本 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+            <version>${oauth2.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -62,29 +86,4 @@
         </dependency>
     </dependencies>
 
-    <!--项目插件-->
-    <build>
-        <plugins>
-            <!--spring boot maven 打包插件-->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>

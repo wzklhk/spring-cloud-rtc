@@ -10,9 +10,14 @@ spring:
   # 从配置中心获取
   #datasource:
   #  driver-class-name: com.mysql.cj.jdbc.Driver
-  #  url: jdbc:mysql://localhost:3306/db
+  #  url: jdbc:mysql://127.0.0.1:3306/db
   #  username: username
   #  password: password
+
+  # 从配置中心获取
+  #redis:
+  #  host: 127.0.0.1
+  #  port: 6379
 
   jpa:
     show-sql: true
