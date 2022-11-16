@@ -2,6 +2,7 @@ package com.example.access.auth.config;
 
 import com.example.access.auth.constants.CommonConstant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,10 +17,13 @@ import org.springframework.security.oauth2.provider.token.AuthorizationServerTok
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 @EnableAuthorizationServer   //开启验证服务器
 @Configuration
 public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
+
+    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Autowired
     private AuthenticationManager manager;
@@ -33,7 +37,17 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private TokenStore store;
 
-    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        converter.setSigningKey("wzklhk");
+        return converter;
+    }
+
+    @Bean
+    public TokenStore tokenStore(JwtAccessTokenConverter converter) {  //Token存储方式现在改为JWT存储
+        return new JwtTokenStore(converter);  //传入刚刚定义好的转换器
+    }
 
     /**
      * 这个方法是对客户端进行配置，一个验证服务器可以预设很多个客户端，
@@ -64,9 +78,11 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints
-                .tokenServices(serverTokenServices())   //设定为刚刚配置好的AuthorizationServerTokenServices
+                .authenticationManager(manager)
                 .userDetailsService(service)
-                .authenticationManager(manager);
+                .tokenServices(serverTokenServices());  //设定为刚刚配置好的AuthorizationServerTokenServices
+
+
     }
 
     private AuthorizationServerTokenServices serverTokenServices() {  //这里对AuthorizationServerTokenServices进行一下配置

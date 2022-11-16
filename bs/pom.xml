@@ -54,6 +54,12 @@
     </dependencyManagement>
 
     <dependencies>
+        <!--fastjson-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
         <!--swagger-->
         <dependency>
             <groupId>io.springfox</groupId>

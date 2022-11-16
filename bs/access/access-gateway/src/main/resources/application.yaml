@@ -14,32 +14,46 @@ spring:
   #application:
   #  name: access-gateway  # 服务名称
 
+  #main:
+  #  allow-bean-definition-overriding: true
+  #  web-application-type: reactive
+
   web:
     resources:
       static-locations: file:../vue-rtc/dist/
 
-  gateway:
-    discovery:
-      locator:
-        enabled: true  # 开启从注册中心动态创建路由的功能
-        lower-case-service-id: true  # 使用小写服务名，默认是大写
-    #routes:
-    #  - id: demo1
-    #    uri: lb://demo1
-    #    predicates:
-    #      - Path=/demo1/**
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true  # 开启从注册中心动态创建路由的功能
+          lower-case-service-id: true  # 使用小写服务名，默认是大写
+      #routes:
+      #  - id: demo1
+      #    uri: lb://demo1
+      #    predicates:
+      #      - Path=/demo1/**
 
-    # 跨域访问
-    globalcors:
-      add-to-simple-url-handler-mapping: true
-      cors-configurations:
-        '[/**]':
-          allowedHeaders: "*"
-          allowedOrigins: "*"
-          allowedMethods: "*"
-          max-age: 36000
-  main:
-    allow-bean-definition-overriding: true
-    web-application-type: reactive
+      # 跨域访问
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedHeaders: "*"
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            max-age: 36000
+
+security:
+  # 自定义auth配置
+  auth:
+    server-addr: 127.0.0.1:8848
+
+  oauth2:
+    client:
+      client-id: client_id
+      client-secret: client_secret
+    resource:
+      token-info-uri: http://${security.auth.server-addr}/oauth/check_token  # 资源服务器验证Token是否有访问此资源的权限以及用户信息，只需要一个验证地址
 
 
