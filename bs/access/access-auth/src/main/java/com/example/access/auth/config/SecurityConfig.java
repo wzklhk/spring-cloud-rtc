@@ -13,13 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    @Bean   // 将AuthenticationManager注册为Bean，在OAuth配置中使用
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -36,5 +31,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("admin").password(encoder.encode("123456")).roles("ADMIN")
                 .and()
                 .withUser("user").password(encoder.encode("123456")).roles("USER");
+    }
+
+    @Bean   // 将AuthenticationManager注册为Bean，在OAuth配置中使用
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 }

@@ -22,10 +22,10 @@ public class ResultInfo<T> {
         this.data = data;
     }
 
-    public ResultInfo(Integer code, String msg) {
+    public ResultInfo(Integer code, String msg, T data) {
         this.code = code;
         this.msg = msg;
-        this.data = null;
+        this.data = data;
     }
 
     public static <T> ResultInfo<T> status(ErrorCodeEnum code, T data) {

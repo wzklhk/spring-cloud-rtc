@@ -24,7 +24,6 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!--OAuth2.0依赖，不再内置，需要指定版本 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-oauth2</artifactId>
