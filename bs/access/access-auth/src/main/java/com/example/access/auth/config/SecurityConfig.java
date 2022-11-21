@@ -19,6 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers("/rsa/publicKey").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll();  // 使用表单登录
