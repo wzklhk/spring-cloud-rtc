@@ -1,7 +1,7 @@
 package com.example.gatewaty.config;
 
 import com.example.gatewaty.component.RestfulAccessDeniedHandler;
-import com.example.gatewaty.component.RestfulAuthenticafultionEntryPoint;
+import com.example.gatewaty.component.RestfulAuthenticationEntryPoint;
 import com.example.gatewaty.constant.AuthConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +26,7 @@ public class ResourceServerConfig {
     private RestfulAccessDeniedHandler restfulAccessDeniedHandler;
 
     @Autowired
-    private RestfulAuthenticafultionEntryPoint restfulAuthenticafultionEntryPoint;
+    private RestfulAuthenticationEntryPoint restfulAuthenticationEntryPoint;
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChan(ServerHttpSecurity http) {
@@ -34,14 +34,14 @@ public class ResourceServerConfig {
         http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter());
 
         // 自定义处理JWT请求头过期或签名错误的结果
-        http.oauth2ResourceServer().authenticationEntryPoint(restfulAuthenticafultionEntryPoint);
+        http.oauth2ResourceServer().authenticationEntryPoint(restfulAuthenticationEntryPoint);
 
         //
         http.authorizeExchange()
                 .anyExchange().authenticated()
                 .and().exceptionHandling()
                 .accessDeniedHandler(restfulAccessDeniedHandler)//处理未授权
-                .authenticationEntryPoint(restfulAuthenticafultionEntryPoint)//处理未认证
+                .authenticationEntryPoint(restfulAuthenticationEntryPoint)//处理未认证
                 .and().csrf().disable()
         ;
         return http.build();

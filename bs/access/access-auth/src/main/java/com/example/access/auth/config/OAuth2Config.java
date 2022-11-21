@@ -1,8 +1,8 @@
 package com.example.access.auth.config;
 
-import com.example.access.auth.constant.CommonConstant;
 import com.example.access.auth.user.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.PathResource;
@@ -31,6 +31,32 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private UserServiceImpl userService;
 
+    @Value("${auth.oauth2.client-id}")
+    private String clientId;
+    @Value("${auth.oauth2.client-secret}")
+    private String clientSecret;
+
+    @Value("${auth.oauth2.scope}")
+    private String[] scope;
+
+    @Value("${auth.oauth2.authorized-grant-types}")
+    private String[] authorizedGrantTypes;
+
+    @Value("${auth.oauth2.access-token-validity-seconds}")
+    private int accessTokenValiditySeconds;
+    @Value("${auth.oauth2.refresh-token-validity-seconds}")
+    private int refreshTokenValiditySeconds;
+
+    @Value("${auth.jwt.key-path}")
+    private String keyPath;
+
+    @Value("${auth.jwt.key-alias}")
+    private String keyAlias;
+
+    @Value("${auth.jwt.key-password}")
+    private String keyPassword;
+
+
     /**
      * 这个方法是对客户端进行配置，一个验证服务器可以预设多个客户端，
      * 之后这些指定的客户端就可以按照下面指定的方式进行验证
@@ -40,13 +66,13 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient(CommonConstant.CLIENT_ID)
-                .secret(encoder.encode(CommonConstant.CLIENT_SECRET))
-                .scopes(CommonConstant.SCOPE)
-                .authorizedGrantTypes(CommonConstant.AUTHORIZED_GRANT_TYPES)
-                .accessTokenValiditySeconds(3600)
-                .refreshTokenValiditySeconds(86400)
-                .autoApprove(false)  // 关闭自动审批
+                .withClient(clientId)
+                .secret(encoder.encode(clientSecret))
+                .scopes(scope)
+                .authorizedGrantTypes(authorizedGrantTypes)
+                .accessTokenValiditySeconds(accessTokenValiditySeconds)
+                .refreshTokenValiditySeconds(refreshTokenValiditySeconds)
+//                .autoApprove(false)  // 关闭自动审批
         ;
     }
 
@@ -56,7 +82,8 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
                 .passwordEncoder(encoder)  // 编码器设定为BCryptPasswordEncoder
                 .allowFormAuthenticationForClients()  // 允许客户端使用表单验证
                 .checkTokenAccess("permitAll()")  // 允许所有的Token查询请求
-                .tokenKeyAccess("permitAll()");
+                .tokenKeyAccess("permitAll()")
+        ;
     }
 
     @Override
@@ -94,7 +121,7 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     public KeyPair keyPair() {
         // 从证书中获取秘钥对
         // keytool -genkey -alias key -keyalg RSA -keystore key.jks
-        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new PathResource("key.jks"), "123456".toCharArray());
-        return keyStoreKeyFactory.getKeyPair("key", "123456".toCharArray());
+        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new PathResource(keyPath), keyPassword.toCharArray());
+        return keyStoreKeyFactory.getKeyPair(keyAlias, keyPassword.toCharArray());
     }
 }

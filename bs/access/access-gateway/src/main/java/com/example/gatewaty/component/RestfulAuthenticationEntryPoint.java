@@ -19,7 +19,7 @@ import java.nio.charset.Charset;
  * 自定义返回结果：没有登录或token过期时
  */
 @Component
-public class RestfulAuthenticafultionEntryPoint implements ServerAuthenticationEntryPoint {
+public class RestfulAuthenticationEntryPoint implements ServerAuthenticationEntryPoint {
     @Override
     public Mono<Void> commence(ServerWebExchange exchange, AuthenticationException e) {
         ServerHttpResponse response = exchange.getResponse();
