@@ -36,8 +36,8 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     @Value("${auth.oauth2.client-secret}")
     private String clientSecret;
 
-    @Value("${auth.oauth2.scope}")
-    private String[] scope;
+    @Value("${auth.oauth2.scopes}")
+    private String[] scopes;
 
     @Value("${auth.oauth2.authorized-grant-types}")
     private String[] authorizedGrantTypes;
@@ -65,10 +65,11 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory()
+        clients
+                .inMemory()
                 .withClient(clientId)
                 .secret(encoder.encode(clientSecret))
-                .scopes(scope)
+                .scopes(scopes)
                 .authorizedGrantTypes(authorizedGrantTypes)
                 .accessTokenValiditySeconds(accessTokenValiditySeconds)
                 .refreshTokenValiditySeconds(refreshTokenValiditySeconds)

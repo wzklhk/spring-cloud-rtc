@@ -17,7 +17,7 @@ auth:
   oauth2:
     client-id: client-id
     client-secret: client-secret
-    scope: all
+    scopes: all
     authorized-grant-types: client_credentials, password, implicit, authorization_code, refresh_token
     access-token-validity-seconds: 3600
     refresh-token-validity-seconds: 86400
