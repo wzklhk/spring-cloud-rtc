@@ -22,7 +22,7 @@ public class CommonController<V, E, ID> {
     @Autowired
     private CommonService<V, E, ID> commonService;
 
-    @GetMapping("/get")
+    @GetMapping
     public ResultInfo getById(ID id) {
         return ResultInfo.ok(commonService.getById(id));
     }
@@ -37,17 +37,17 @@ public class CommonController<V, E, ID> {
         return ResultInfo.ok(commonService.listByPage(query));
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public ResultInfo save(@RequestBody V entityVo) {
         return ResultInfo.ok(commonService.saveOrUpdate(entityVo));
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public ResultInfo update(@RequestBody V entityVo) {
         return ResultInfo.ok(commonService.saveOrUpdate(entityVo));
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping
     public ResultInfo delete(ID id) {
         return ResultInfo.status(commonService.deleteById(id), null);
     }

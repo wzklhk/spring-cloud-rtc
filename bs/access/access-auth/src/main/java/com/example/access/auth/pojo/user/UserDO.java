@@ -1,22 +1,17 @@
 package com.example.access.auth.pojo.user;
 
 import com.example.common.pojo.CommonDO;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Collection;
 
 @Entity
 @Table(name = "access_user")
-@Data
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class UserDO extends CommonDO implements UserDetails {
+@Data
+public class UserDO extends CommonDO {
 
     /**
      * 用户名
@@ -28,39 +23,13 @@ public class UserDO extends CommonDO implements UserDetails {
      */
     private String password;
 
+    /**
+     * 是否可用
+     */
+    private boolean enabled;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
-    }
-
-    @Override
-    public String getUsername() {
-        return null;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
+    /**
+     * 是否锁定
+     */
+    private boolean locked;
 }
