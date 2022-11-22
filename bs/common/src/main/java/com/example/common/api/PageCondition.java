@@ -1,4 +1,4 @@
-package com.example.service.common.api;
+package com.example.common.api;
 
 import lombok.Data;
 

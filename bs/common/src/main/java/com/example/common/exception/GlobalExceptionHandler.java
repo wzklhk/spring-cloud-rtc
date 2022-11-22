@@ -1,4 +1,4 @@
-package com.example.service.common.exception;
+package com.example.common.exception;
 
 import com.example.common.api.ResultInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public ResultInfo handlerException(Exception e) {
+    public ResultInfo<String> handlerException(Exception e) {
         log.error("未知异常: {}", e.getMessage());
         return ResultInfo.error(e.getMessage());
     }

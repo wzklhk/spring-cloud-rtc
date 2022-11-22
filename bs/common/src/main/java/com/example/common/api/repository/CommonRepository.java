@@ -1,4 +1,4 @@
-package com.example.service.common.api.repository;
+package com.example.common.api.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

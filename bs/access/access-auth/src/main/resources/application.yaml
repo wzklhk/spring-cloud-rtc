@@ -6,6 +6,13 @@ spring:
   #application:
   #  name: access-auth  # 服务名称
 
+  # 数据库配置从配置中心获取
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/access-auth
+    username: username
+    password: password
+
   # redis配置从配置中心获取
   redis:
     host: 127.0.0.1

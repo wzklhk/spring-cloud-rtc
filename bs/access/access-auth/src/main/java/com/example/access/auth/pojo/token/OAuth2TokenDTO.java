@@ -1,4 +1,4 @@
-package com.example.access.auth.pojo;
+package com.example.access.auth.pojo.token;
 
 import lombok.Builder;
 import lombok.Data;
@@ -6,12 +6,11 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Oauth2获取Token返回信息封装
- * Created by macro on 2020/7/17.
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Builder
-public class Oauth2TokenDto {
+public class OAuth2TokenDTO {
     /**
      * 访问令牌
      */

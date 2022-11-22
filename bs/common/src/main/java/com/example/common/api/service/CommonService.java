@@ -1,8 +1,8 @@
-package com.example.service.common.api.service;
+package com.example.common.api.service;
 
 import com.example.common.api.ErrorCodeEnum;
-import com.example.service.common.api.PageCommon;
-import com.example.service.common.api.PageQuery;
+import com.example.common.api.PageCommon;
+import com.example.common.api.PageQuery;
 
 import java.util.List;
 

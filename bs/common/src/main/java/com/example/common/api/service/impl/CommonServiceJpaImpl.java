@@ -1,11 +1,11 @@
-package com.example.service.common.api.service.impl;
+package com.example.common.api.service.impl;
 
 import com.example.common.api.ErrorCodeEnum;
+import com.example.common.api.PageCommon;
+import com.example.common.api.PageQuery;
+import com.example.common.api.repository.CommonRepository;
+import com.example.common.api.service.CommonService;
 import com.example.common.utils.CopyUtil;
-import com.example.service.common.api.PageCommon;
-import com.example.service.common.api.PageQuery;
-import com.example.service.common.api.repository.CommonRepository;
-import com.example.service.common.api.service.CommonService;
 import org.hibernate.annotations.NotFound;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

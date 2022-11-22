@@ -1,4 +1,4 @@
-package com.example.service.common.api;
+package com.example.common.api;
 
 import com.example.common.utils.CopyUtil;
 import lombok.AllArgsConstructor;
