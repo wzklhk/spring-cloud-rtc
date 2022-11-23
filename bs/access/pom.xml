@@ -16,6 +16,7 @@
     <modules>
         <module>access-gateway</module>
         <module>access-auth</module>
+        <module>access-admin</module>
     </modules>
 
     <dependencies>
