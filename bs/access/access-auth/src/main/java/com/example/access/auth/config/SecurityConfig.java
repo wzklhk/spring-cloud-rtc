@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("user").password(passwordEncoder.encode("123456")).roles("USER");
     }*/
 
-    @Bean   // 将AuthenticationManager注册为Bean，在OAuth配置中使用
+    @Bean  // 将AuthenticationManager注册为Bean，在OAuth配置中使用
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();

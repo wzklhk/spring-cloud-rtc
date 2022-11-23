@@ -28,11 +28,13 @@ spring:
         locator:
           enabled: true  # 开启从注册中心动态创建路由的功能
           lower-case-service-id: true  # 使用小写服务名，默认是大写
-      #routes:
-      #  - id: demo1
-      #    uri: lb://demo1
-      #    predicates:
-      #      - Path=/demo1/**
+      routes:
+        - id: access-auth
+          uri: lb://access-auth
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
 
       # 跨域访问
       globalcors:
@@ -49,3 +51,18 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: http://localhost:8500/rsa/publicKey #配置RSA的公钥访问地址
+
+auth:
+  ignore:
+    urls: #配置白名单路径
+      - "/doc.html"
+      - "/swagger-resources/**"
+      - "/swagger/**"
+      - "/*/v2/api-docs"
+      - "/*/*.js"
+      - "/*/*.css"
+      - "/*/*.png"
+      - "/*/*.ico"
+      - "/webjars/**"
+      - "/actuator/**"
+      - "/auth/oauth/token"

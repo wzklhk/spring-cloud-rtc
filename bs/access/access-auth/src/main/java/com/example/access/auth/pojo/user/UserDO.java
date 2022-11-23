@@ -12,7 +12,6 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = false)
 @Data
 public class UserDO extends CommonDO {
-
     /**
      * 用户名
      */

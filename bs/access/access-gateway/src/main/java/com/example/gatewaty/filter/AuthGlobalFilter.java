@@ -15,7 +15,7 @@ import java.text.ParseException;
 
 @Slf4j
 @Component
-public class AuthFilter implements GlobalFilter, Ordered {
+public class AuthGlobalFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String token = exchange.getRequest().getHeaders().getFirst("Authorization");
