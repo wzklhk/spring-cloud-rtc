@@ -55,14 +55,14 @@ spring:
 auth:
   ignore:
     urls: #配置白名单路径
-      - "/doc.html"
-      - "/swagger-resources/**"
-      - "/swagger/**"
-      - "/*/v2/api-docs"
-      - "/*/*.js"
-      - "/*/*.css"
-      - "/*/*.png"
-      - "/*/*.ico"
-      - "/webjars/**"
-      - "/actuator/**"
-      - "/auth/oauth/token"
+      - /
+      - /doc.html
+      - /swagger-resources/**
+      - /swagger/**
+      - /*/*.js
+      - /*/*.css
+      - /*/*.png
+      - /*/*.ico
+      - /webjars/**
+      - /actuator/**
+      - /auth/oauth/token

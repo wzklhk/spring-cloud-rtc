@@ -13,18 +13,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-/*    @Autowired
-    private PasswordEncoder passwordEncoder;*/
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/rsa/publicKey").permitAll()
-                .antMatchers("/doc.html/**").permitAll()
-                .antMatchers("/user/**").permitAll()
+//                .antMatchers("/doc.html").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().permitAll();  // 使用表单登录
+                .formLogin().permitAll()  // 使用表单登录
+        ;
     }
 
     /*@Override
