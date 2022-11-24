@@ -17,7 +17,7 @@ public abstract class CommonDO {
      * 数据库主键
      */
     @Id
-    private long id;
+    private Long id;
 
     /**
      * 创建时间
@@ -36,5 +36,5 @@ public abstract class CommonDO {
     /**
      * 逻辑删除
      */
-    private boolean deleted;
+    private Boolean deleted;
 }

@@ -25,10 +25,10 @@ public class UserDO extends CommonDO {
     /**
      * 是否可用
      */
-    private boolean enabled;
+    private Boolean enabled;
 
     /**
      * 是否锁定
      */
-    private boolean locked;
+    private Boolean locked;
 }

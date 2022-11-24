@@ -25,72 +25,72 @@ import java.util.Optional;
 
 
 /**
- * 通用 Service JPA impl
+ * 通用 Service JPA implement
  *
- * @param <V>  实体类Vo
- * @param <E>  实体类
+ * @param <VO> 实体类VO
+ * @param <DO> 实体类DO，DO中不要使用基本数据类型，否则会导致Example中传入默认值
  * @param <ID> id主键类型
  */
-public class CommonServiceJpaImpl<V, E, ID> implements CommonService<V, E, ID> {
+public class CommonServiceJpaImpl<VO, DO, ID> implements CommonService<VO, DO, ID> {
 
     /**
-     * 实体类Vo
+     * 实体类VO
      */
-    private Class<V> entityVoClass;
+    private Class<VO> entityVOClazz;
     /**
-     * 实体类
+     * 实体类DO
      */
-    private Class<E> entityClass;
+    private Class<DO> entityDOClazz;
 
     @Autowired
-    private CommonRepository<E, ID> commonRepository;
+    private CommonRepository<DO, ID> commonRepository;
 
     public CommonServiceJpaImpl() {
         Type[] types = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments();
-        this.entityVoClass = (Class<V>) types[0];
-        this.entityClass = (Class<E>) types[1];
+        this.entityVOClazz = (Class<VO>) types[0];
+        this.entityDOClazz = (Class<DO>) types[1];
     }
 
     @Override
-    public V getById(ID id) {
-        Optional<E> optionalE = commonRepository.findById(id);
+    public VO getById(ID id) {
+        Optional<DO> optionalE = commonRepository.findById(id);
         if (!optionalE.isPresent()) {
             return null;
         }
-        E e = optionalE.get();
-        return CopyUtil.copy(e, entityVoClass);
+        DO DO = optionalE.get();
+        return CopyUtil.copy(DO, entityVOClazz);
     }
 
     @Override
-    public List<V> list(V entityVo) {
-        List<E> entityList = commonRepository.findAll(Example.of(CopyUtil.copy(entityVo, entityClass)));
-        return CopyUtil.copyList(entityList, entityVoClass);
+    public List<VO> getAll(VO entityVO) {
+        List<DO> entityList = commonRepository.findAll(Example.of(CopyUtil.copy(entityVO, entityDOClazz)));
+        return CopyUtil.copyList(entityList, entityVOClazz);
     }
 
     @Override
-    public PageCommon<V> listByPage(PageQuery query) {
-        if (StringUtils.isEmpty(query.getSortBy())) {
+    public PageCommon<VO> getByPage(VO entityVO, PageQuery query) {
+        if (!StringUtils.hasText(query.getSortBy())) {
             query.setSortBy("id");
         }
-        if (StringUtils.isEmpty(query.getSortOrder())) {
+        if (!StringUtils.hasText(query.getSortOrder())) {
             query.setSortOrder("asc");
         }
-        V entityVo = CopyUtil.copy(query, entityVoClass);
-        Page<E> all = commonRepository.findAll(
-                Example.of(CopyUtil.copy(entityVo, entityClass)),
+        VO entityVo = CopyUtil.copy(entityVO, entityVOClazz);
+        Page<DO> all = commonRepository.findAll(
+                Example.of(CopyUtil.copy(entityVo, entityDOClazz)),
                 PageRequest.of(
                         query.getPageNum() - 1,
                         query.getPageSize(),
                         Sort.by(query.getSortOrder().equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, query.getSortBy())
                 )
         );
-        return PageCommon.of(all, entityVoClass);
+        return PageCommon.of(all, entityVOClazz);
     }
 
     @Override
-    public V saveOrUpdate(V entityVo) {
-        E entity = CopyUtil.copy(entityVo, entityClass);
-        E entityFull = entity;
+    public VO saveOrUpdate(VO entityVo) {
+        DO entity = CopyUtil.copy(entityVo, entityDOClazz);
+        DO entityFull = entity;
         List<String> ignoreProperties = new ArrayList<>();
         try {
             for (Field field : entity.getClass().getDeclaredFields()) {
@@ -98,8 +98,8 @@ public class CommonServiceJpaImpl<V, E, ID> implements CommonService<V, E, ID> {
                 String fieldName = field.getName();
                 Object fieldValue = field.get(entity);
 
-                if (field.isAnnotationPresent(Id.class) && !StringUtils.isEmpty(fieldValue)) {
-                    Optional<E> one = commonRepository.findById((ID) fieldValue);
+                if (field.isAnnotationPresent(Id.class) && fieldValue != null) {
+                    Optional<DO> one = commonRepository.findById((ID) fieldValue);
                     if (one.isPresent()) {
                         entityFull = one.get();
                     }
@@ -114,8 +114,8 @@ public class CommonServiceJpaImpl<V, E, ID> implements CommonService<V, E, ID> {
             e.printStackTrace();
         }
 
-        E save = commonRepository.save(entityFull);
-        return CopyUtil.copy(save, entityVoClass);
+        DO save = commonRepository.save(entityFull);
+        return CopyUtil.copy(save, entityVOClazz);
     }
 
     @Override

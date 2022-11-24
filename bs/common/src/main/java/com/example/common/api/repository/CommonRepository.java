@@ -7,9 +7,9 @@ import org.springframework.data.repository.NoRepositoryBean;
 /**
  * 通用Repository
  *
- * @param <E>  实体类
+ * @param <DO> 实体类DO，DO中不要使用基本数据类型，否则会导致Example中传入默认值
  * @param <ID> id主键类型
  */
 @NoRepositoryBean
-public interface CommonRepository<E, ID> extends JpaRepository<E, ID>, JpaSpecificationExecutor<E> {
+public interface CommonRepository<DO, ID> extends JpaRepository<DO, ID>, JpaSpecificationExecutor<DO> {
 }

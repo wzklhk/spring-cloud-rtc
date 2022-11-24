@@ -9,19 +9,19 @@ import java.util.List;
 /**
  * 通用 Service
  *
- * @param <V>  实体类Vo
- * @param <E>  实体类
+ * @param <VO> 实体类VO
+ * @param <DO> 实体类DO，DO中不要使用基本数据类型，否则会导致Example中传入默认值
  * @param <ID> id主键类型
  */
-public interface CommonService<V, E, ID> {
+public interface CommonService<VO, DO, ID> {
 
-    V getById(ID id);
+    VO getById(ID id);
 
-    List<V> list(V entityVo);
+    List<VO> getAll(VO entityVo);
 
-    PageCommon<V> listByPage(PageQuery query);
+    PageCommon<VO> getByPage(VO entityVO, PageQuery query);
 
-    V saveOrUpdate(V entityVo);
+    VO saveOrUpdate(VO entityVo);
 
     ErrorCodeEnum deleteById(ID id);
 

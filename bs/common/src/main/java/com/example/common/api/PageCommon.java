@@ -59,11 +59,15 @@ public class PageCommon<T> {
     }
 
     public static <T> PageCommon<T> of(Page page, Class<T> entityModelClass) {
-        PageCommon<T> result = new PageCommon<T>();
+        PageCommon<T> result = new PageCommon<>();
+        // 设置页面基本信息
         result.setPageNum(page.getNumber() + 1);
         result.setPageSize(page.getSize());
         result.setTotalPage(page.getTotalPages());
         result.setTotal(page.getTotalElements());
+        result.setSortBy(page.getSort().toString().split(": ")[0]);
+        result.setSortOrder(page.getSort().toString().split(": ")[1]);
+        // 设置页面数据
         result.setList(CopyUtil.copyList(page.getContent(), entityModelClass));
         return result;
     }
