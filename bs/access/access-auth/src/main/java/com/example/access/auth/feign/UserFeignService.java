@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface UserFeignService {
 
     @GetMapping("/user")
-    Object getUserByUsername(@RequestParam String username);
+    Object getUserByUsername(@RequestParam("username") String username);
 
 }
