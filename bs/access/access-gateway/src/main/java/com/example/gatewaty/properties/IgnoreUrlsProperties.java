@@ -1,4 +1,4 @@
-package com.example.gatewaty.config;
+package com.example.gatewaty.properties;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,6 +14,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 @Component
 @ConfigurationProperties(prefix = "auth.ignore")
-public class IgnoreUrlsConfig {
+public class IgnoreUrlsProperties {
     private List<String> urls;
 }

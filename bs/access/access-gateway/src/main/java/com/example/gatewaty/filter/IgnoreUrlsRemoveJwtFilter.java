@@ -1,6 +1,6 @@
 package com.example.gatewaty.filter;
 
-import com.example.gatewaty.config.IgnoreUrlsConfig;
+import com.example.gatewaty.properties.IgnoreUrlsProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ import java.util.List;
 @Component
 public class IgnoreUrlsRemoveJwtFilter implements WebFilter {
     @Autowired
-    private IgnoreUrlsConfig ignoreUrlsConfig;
+    private IgnoreUrlsProperties ignoreUrlsProperties;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
@@ -28,7 +28,7 @@ public class IgnoreUrlsRemoveJwtFilter implements WebFilter {
         URI uri = request.getURI();
         PathMatcher pathMatcher = new AntPathMatcher();
         //白名单路径移除JWT请求头
-        List<String> ignoreUrls = ignoreUrlsConfig.getUrls();
+        List<String> ignoreUrls = ignoreUrlsProperties.getUrls();
         for (String ignoreUrl : ignoreUrls) {
             if (pathMatcher.match(ignoreUrl, uri.getPath())) {
                 request = exchange.getRequest().mutate().header("Authorization", "").build();

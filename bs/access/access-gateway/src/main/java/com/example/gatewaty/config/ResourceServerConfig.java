@@ -5,6 +5,7 @@ import com.example.gatewaty.component.RestfulAccessDeniedHandler;
 import com.example.gatewaty.component.RestfulAuthenticationEntryPoint;
 import com.example.gatewaty.constant.AuthConstant;
 import com.example.gatewaty.filter.IgnoreUrlsRemoveJwtFilter;
+import com.example.gatewaty.properties.IgnoreUrlsProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +33,7 @@ public class ResourceServerConfig {
     private RestfulAuthenticationEntryPoint restfulAuthenticationEntryPoint;
 
     @Autowired
-    private IgnoreUrlsConfig ignoreUrlsConfig;
+    private IgnoreUrlsProperties ignoreUrlsProperties;
     @Autowired
     private IgnoreUrlsRemoveJwtFilter ignoreUrlsRemoveJwtFilter;
 
@@ -46,7 +47,7 @@ public class ResourceServerConfig {
         http.addFilterBefore(ignoreUrlsRemoveJwtFilter, SecurityWebFiltersOrder.AUTHENTICATION);
         //
         http.authorizeExchange()
-                .pathMatchers(ArrayUtil.toArray(ignoreUrlsConfig.getUrls(), String.class)).permitAll()  // 白名单配置
+                .pathMatchers(ArrayUtil.toArray(ignoreUrlsProperties.getUrls(), String.class)).permitAll()  // 白名单配置
                 .anyExchange().authenticated()
                 .and().exceptionHandling()
                 .accessDeniedHandler(restfulAccessDeniedHandler)  //处理未授权
