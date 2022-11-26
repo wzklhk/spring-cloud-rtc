@@ -20,15 +20,28 @@ spring:
     database: 0
     password: password
 
+# 自定义auth配置
 auth:
   oauth2:
     client-id: client-id
     client-secret: client-secret
-    scopes: all
-    authorized-grant-types: client_credentials, password, implicit, authorization_code, refresh_token
+    scopes:
+      - all
+    authorized-grant-types:
+      - client_credentials
+      - password
+      - implicit
+      - authorization_code
+      - refresh_token
     access-token-validity-seconds: 3600
     refresh-token-validity-seconds: 86400
   jwt:
     key-path: key.jks
     key-alias: key
     key-password: 123456
+
+# 自定义feign配置
+feign:
+  name:
+    access-gateway-service: access-gateway
+    access-admin-service: access-admin

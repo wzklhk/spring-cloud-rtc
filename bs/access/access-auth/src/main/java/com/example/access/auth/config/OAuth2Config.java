@@ -1,8 +1,9 @@
 package com.example.access.auth.config;
 
+import com.example.access.auth.properties.JWTProperties;
+import com.example.access.auth.properties.OAuth2Properties;
 import com.example.access.auth.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.PathResource;
@@ -31,8 +32,10 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private UserServiceImpl userService;
 
+    /*
     @Value("${auth.oauth2.client-id}")
     private String clientId;
+
     @Value("${auth.oauth2.client-secret}")
     private String clientSecret;
 
@@ -44,6 +47,7 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
     @Value("${auth.oauth2.access-token-validity-seconds}")
     private int accessTokenValiditySeconds;
+
     @Value("${auth.oauth2.refresh-token-validity-seconds}")
     private int refreshTokenValiditySeconds;
 
@@ -55,6 +59,13 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
     @Value("${auth.jwt.key-password}")
     private String keyPassword;
+    */
+
+    @Autowired
+    private OAuth2Properties oAuth2Properties;
+
+    @Autowired
+    private JWTProperties jwtProperties;
 
 
     /**
@@ -67,12 +78,12 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients
                 .inMemory()
-                .withClient(clientId)
-                .secret(passwordEncoder.encode(clientSecret))
-                .scopes(scopes)
-                .authorizedGrantTypes(authorizedGrantTypes)
-                .accessTokenValiditySeconds(accessTokenValiditySeconds)
-                .refreshTokenValiditySeconds(refreshTokenValiditySeconds)
+                .withClient(oAuth2Properties.getClientId())
+                .secret(passwordEncoder.encode(oAuth2Properties.getClientSecret()))
+                .scopes(oAuth2Properties.getScopes())
+                .authorizedGrantTypes(oAuth2Properties.getAuthorizedGrantTypes())
+                .accessTokenValiditySeconds(oAuth2Properties.getAccessTokenValiditySeconds())
+                .refreshTokenValiditySeconds(oAuth2Properties.getRefreshTokenValiditySeconds())
 //                .autoApprove(false)  // 关闭自动审批
         ;
     }
@@ -122,7 +133,14 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     public KeyPair keyPair() {
         // 从证书中获取秘钥对
         // keytool -genkey -alias key -keyalg RSA -keystore key.jks
-        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new PathResource(keyPath), keyPassword.toCharArray());
-        return keyStoreKeyFactory.getKeyPair(keyAlias, keyPassword.toCharArray());
+        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(
+                new PathResource(jwtProperties.getKeyPath()),
+                jwtProperties.getKeyPassword().toCharArray()
+        );
+
+        return keyStoreKeyFactory.getKeyPair(
+                jwtProperties.getKeyAlias(),
+                jwtProperties.getKeyPassword().toCharArray()
+        );
     }
 }
