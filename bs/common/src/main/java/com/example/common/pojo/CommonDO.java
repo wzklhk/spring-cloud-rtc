@@ -1,5 +1,6 @@
 package com.example.common.pojo;
 
+import cn.hutool.core.annotation.PropIgnore;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
@@ -24,6 +25,7 @@ public abstract class CommonDO {
      */
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @PropIgnore
     private Date createTime;
 
     /**
@@ -33,8 +35,5 @@ public abstract class CommonDO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 
-    /**
-     * 逻辑删除
-     */
-    private Boolean deleted;
+
 }

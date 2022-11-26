@@ -21,7 +21,7 @@ public interface CommonService<VO, DO, ID> {
 
     PageCommon<VO> getByPage(VO entityVO, PageQuery query);
 
-    VO saveOrUpdate(VO entityVo);
+    VO saveOrUpdateById(VO entityVo);
 
     ErrorCodeEnum deleteById(ID id);
 

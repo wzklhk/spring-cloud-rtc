@@ -1,6 +1,6 @@
 package com.example.access.admin.pojo.user;
 
-import com.example.common.pojo.CommonDO;
+import com.example.common.pojo.CommonLogicDeleteDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,9 +9,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "access_user")
-@EqualsAndHashCode(callSuper = false)
 @Data
-public class UserDO extends CommonDO {
+@EqualsAndHashCode(callSuper = true)
+public class UserDO extends CommonLogicDeleteDO {
     /**
      * 用户名
      */

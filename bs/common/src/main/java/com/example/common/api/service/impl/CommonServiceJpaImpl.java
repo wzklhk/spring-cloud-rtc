@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,12 +89,19 @@ public class CommonServiceJpaImpl<VO, DO, ID> implements CommonService<VO, DO, I
     }
 
     @Override
-    public VO saveOrUpdate(VO entityVo) {
+    public VO saveOrUpdateById(VO entityVo) {
         DO entity = CopyUtil.copy(entityVo, entityDOClazz);
         DO entityFull = entity;
         List<String> ignoreProperties = new ArrayList<>();
         try {
-            for (Field field : entity.getClass().getDeclaredFields()) {
+            List<Field> fields = new ArrayList<>();
+            Class<?> clazz = entity.getClass();
+            while (!clazz.equals(Object.class)) {
+                fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+                clazz = clazz.getSuperclass();
+            }
+
+            for (Field field : fields) {
                 field.setAccessible(true);
                 String fieldName = field.getName();
                 Object fieldValue = field.get(entity);
