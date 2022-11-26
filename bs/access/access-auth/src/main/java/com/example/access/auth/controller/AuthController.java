@@ -35,10 +35,11 @@ public class AuthController {
     public ResultInfo<OAuth2TokenDTO> postAccessToken(Principal principal, @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
         OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
         OAuth2TokenDTO token = OAuth2TokenDTO.builder()
-                .token(oAuth2AccessToken.getValue())
+                .tokenType(oAuth2AccessToken.getTokenType())
+                .accessToken(oAuth2AccessToken.getValue())
                 .refreshToken(oAuth2AccessToken.getRefreshToken().getValue())
                 .expiresIn(oAuth2AccessToken.getExpiresIn())
-                .tokenHead("Bearer ")
+                .scope(oAuth2AccessToken.getScope().toArray(new String[0]))
                 .build();
         return ResultInfo.ok(token);
     }

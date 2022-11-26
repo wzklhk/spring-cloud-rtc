@@ -8,10 +8,15 @@ public class ResultInfo<T> {
 
     @ApiModelProperty(value = "结果状态码")
     private Integer code;
+    public static final String CODE = "code";
+
     @ApiModelProperty(value = "提示信息")
     private String msg;
+    public static final String MSG = "msg";
+
     @ApiModelProperty(value = "返回结果")
     private T data;
+    public static final String DATA = "data";
 
     public ResultInfo() {
     }
