@@ -1,6 +1,7 @@
 package com.example.access.admin.service.impl;
 
 import com.example.access.admin.pojo.user.UserDO;
+import com.example.access.admin.pojo.user.UserVO;
 import com.example.access.admin.service.UserService;
 import com.example.common.api.service.impl.CommonServiceJpaImpl;
 import org.springframework.stereotype.Service;
@@ -10,26 +11,23 @@ import org.springframework.util.StringUtils;
  * @author wzklhk
  */
 @Service
-public class UserServiceImpl extends CommonServiceJpaImpl<UserDO, UserDO, Long>
+public class UserServiceImpl extends CommonServiceJpaImpl<UserVO, UserDO, Long>
         implements UserService {
     @Override
-    public UserDO saveOrUpdateById(UserDO entityVo) {
+    public UserVO saveOrUpdateById(UserVO entityVO) {
         // 新增user时自动填充default数据
-        if (entityVo.getId() == null) {
-            if (entityVo.getIsDeleted() == null) {
-                entityVo.setIsDeleted(false);
+        if (entityVO.getId() == null) {
+            if (entityVO.getIsEnabled() == null) {
+                entityVO.setIsEnabled(true);
             }
-            if (entityVo.getIsEnabled() == null) {
-                entityVo.setIsEnabled(true);
+            if (entityVO.getIsLocked() == null) {
+                entityVO.setIsLocked(false);
             }
-            if (entityVo.getIsLocked() == null) {
-                entityVo.setIsLocked(false);
-            }
-            if (!StringUtils.hasText(entityVo.getPassword())) {
-                entityVo.setPassword("12345678");
+            if (!StringUtils.hasText(entityVO.getPassword())) {
+                entityVO.setPassword("12345678");
             }
         }
 
-        return super.saveOrUpdateById(entityVo);
+        return super.saveOrUpdateById(entityVO);
     }
 }

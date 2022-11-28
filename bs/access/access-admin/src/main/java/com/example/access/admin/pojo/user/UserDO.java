@@ -24,6 +24,7 @@ import javax.persistence.Table;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class UserDO extends AbstractCommonLogicDeleteDO {
+
     /**
      * 用户名
      */
@@ -35,7 +36,7 @@ public class UserDO extends AbstractCommonLogicDeleteDO {
      * 密码
      */
     @Column(nullable = false,
-            columnDefinition = "varchar(255) COMMENT '密码'")
+            columnDefinition = "varchar(255) DEFAULT 12345678 COMMENT '密码'")
     private String password;
 
     /**

@@ -25,7 +25,6 @@
         <spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
         <fastjson.version>1.2.76</fastjson.version>
         <oauth2.version>2.2.5.RELEASE</oauth2.version>
-        <nimbus-jose-jwt.version>9.23</nimbus-jose-jwt.version>
         <hutool.version>5.8.0</hutool.version>
         <knife4j.version>3.0.3</knife4j.version>
     </properties>

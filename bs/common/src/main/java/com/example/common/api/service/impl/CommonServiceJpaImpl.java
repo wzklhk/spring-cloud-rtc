@@ -93,8 +93,8 @@ public class CommonServiceJpaImpl<VO, DO extends AbstractCommonDO, ID extends Se
     }
 
     @Override
-    public VO saveOrUpdateById(VO entityVo) {
-        DO entity = CopyUtil.copy(entityVo, entityDOClazz);
+    public VO saveOrUpdateById(VO entityVO) {
+        DO entity = CopyUtil.copy(entityVO, entityDOClazz);
         DO entityFull = entity;
         List<String> ignoreProperties = new ArrayList<>();
         try {

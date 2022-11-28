@@ -35,6 +35,12 @@ spring:
             - Path=/auth/**
           filters:
             - StripPrefix=1
+        - id: access-admin
+          uri: lb://access-admin
+          predicates:
+            - Path=/admin/**
+          filters:
+            - StripPrefix=1
 
       # 跨域访问
       globalcors:
