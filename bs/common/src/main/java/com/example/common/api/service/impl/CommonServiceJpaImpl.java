@@ -5,6 +5,7 @@ import com.example.common.api.PageCommon;
 import com.example.common.api.PageQuery;
 import com.example.common.api.repository.CommonRepository;
 import com.example.common.api.service.CommonService;
+import com.example.common.pojo.AbstractCommonDO;
 import com.example.common.utils.CopyUtil;
 import org.hibernate.annotations.NotFound;
 import org.springframework.beans.BeanUtils;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -31,8 +33,10 @@ import java.util.Optional;
  * @param <VO> 实体类VO
  * @param <DO> 实体类DO，DO中不要使用基本数据类型，否则会导致Example中传入默认值
  * @param <ID> id主键类型
+ * @author wzklhk
  */
-public class CommonServiceJpaImpl<VO, DO, ID> implements CommonService<VO, DO, ID> {
+public class CommonServiceJpaImpl<VO, DO extends AbstractCommonDO, ID extends Serializable>
+        implements CommonService<VO, DO, ID> {
 
     /**
      * 实体类VO

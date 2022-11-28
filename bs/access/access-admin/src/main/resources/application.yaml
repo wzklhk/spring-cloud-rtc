@@ -6,6 +6,14 @@ spring:
   #application:
   #  name: access-auth  # 服务名称
 
+  jpa:
+    database: mysql
+    generate-ddl: false  # 开启
+    show-sql: false  # 开启sql日志显示
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+
   # 数据库配置从配置中心获取
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -13,9 +21,11 @@ spring:
     username: username
     password: password
 
+
   # redis配置从配置中心获取
   redis:
     host: 127.0.0.1
     port: 6379
     database: 0
     password: password
+

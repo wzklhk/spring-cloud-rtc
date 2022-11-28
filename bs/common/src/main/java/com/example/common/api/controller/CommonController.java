@@ -4,7 +4,6 @@ import com.example.common.api.PageCommon;
 import com.example.common.api.PageQuery;
 import com.example.common.api.ResultInfo;
 import com.example.common.api.service.CommonService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +15,7 @@ import java.util.List;
  * @param <VO> 实体类VO
  * @param <DO> 实体类DO，DO中不要使用基本数据类型，否则会导致Example中传入默认值
  * @param <ID> id主键类型
+ * @author wzklhk
  */
 public class CommonController<VO, DO, ID> {
 

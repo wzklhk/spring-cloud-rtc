@@ -1,5 +1,6 @@
 package com.example.service.common.pojo.user.entity;
 
+import com.example.common.pojo.AbstractCommonDO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -15,7 +16,7 @@ import java.util.Date;
 @Table(name = "user")
 @EntityListeners(value = AuditingEntityListener.class)
 @Data
-public class UserDO {
+public class UserDO extends AbstractCommonDO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
