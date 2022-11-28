@@ -18,6 +18,8 @@ import java.util.Map;
  * 自定义Oauth2获取令牌接口
  * <p>
  * Oauth2登录认证
+ *
+ * @author wzklhk
  */
 @RestController
 @RequestMapping("/oauth")

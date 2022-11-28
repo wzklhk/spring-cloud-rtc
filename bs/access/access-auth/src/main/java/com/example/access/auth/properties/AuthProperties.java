@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * 认证属性配置
+ *
+ * @author wzklhk
  */
 
 @Data

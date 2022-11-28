@@ -5,8 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * 注解@RestControllerAdvice // aop添加异常处理
+ *
+ * @author wzklhk
+ */
 @Slf4j
-@RestControllerAdvice  // aop添加异常处理
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)

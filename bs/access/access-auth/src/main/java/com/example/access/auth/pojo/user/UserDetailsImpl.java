@@ -6,6 +6,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+/**
+ * @author wzklhk
+ */
 @Data
 public class UserDetailsImpl implements UserDetails {
 

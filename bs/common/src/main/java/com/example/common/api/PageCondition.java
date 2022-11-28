@@ -2,6 +2,9 @@ package com.example.common.api;
 
 import lombok.Data;
 
+/**
+ * @author wzklhk
+ */
 @Data
 public class PageCondition {
 

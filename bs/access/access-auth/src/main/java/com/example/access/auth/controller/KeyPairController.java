@@ -10,6 +10,9 @@ import java.security.KeyPair;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Map;
 
+/**
+ * @author wzklhk
+ */
 @RestController
 public class KeyPairController {
     @Autowired

@@ -19,7 +19,12 @@ import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
 
 import java.security.KeyPair;
 
-@EnableAuthorizationServer   //开启验证服务器
+/**
+ * 注解@EnableAuthorizationServer   //开启验证服务器
+ *
+ * @author wzklhk
+ */
+@EnableAuthorizationServer
 @Configuration
 public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 

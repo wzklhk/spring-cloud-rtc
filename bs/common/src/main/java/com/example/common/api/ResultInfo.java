@@ -3,6 +3,9 @@ package com.example.common.api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+/**
+ * @author wzklhk
+ */
 @Data
 public class ResultInfo<T> {
 

@@ -18,6 +18,8 @@ import java.nio.charset.Charset;
 
 /**
  * 自定义返回结果：没有权限访问时
+ *
+ * @author wzklhk
  */
 @Component
 public class RestfulAccessDeniedHandler implements ServerAccessDeniedHandler {

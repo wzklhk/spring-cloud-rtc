@@ -25,6 +25,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 当新用户进入聊天时，系统又会创建一个新的 websocket 对象
  * 导致只要是用户连接创建的 websocket 对象，都不能再注入了
  * 解决方法：使用setter静态注入Service
+ *
+ * @author wzklhk
  */
 @Slf4j
 @ServerEndpoint(value = "/ws")
@@ -33,7 +35,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class WebsocketService {
 
 
-    private static RoomService roomService;  // 使用setter静态注入
+    /**
+     * RoomService使用setter静态注入
+     */
+    private static RoomService roomService;
 
     @Autowired
     public void setRoomService(RoomService roomService) {

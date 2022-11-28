@@ -6,6 +6,9 @@ import com.example.common.api.controller.CommonController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author wzklhk
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController extends CommonController<UserDO, UserDO, Long> {
