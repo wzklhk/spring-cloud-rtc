@@ -3,7 +3,7 @@ package com.example.access.admin.service.impl;
 import com.example.access.admin.pojo.user.UserDO;
 import com.example.access.admin.pojo.user.UserVO;
 import com.example.access.admin.service.UserService;
-import com.example.common.api.service.impl.CommonServiceJpaImpl;
+import com.example.common.api.service.impl.CommonLogicDeleteServiceJpaImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -11,7 +11,7 @@ import org.springframework.util.StringUtils;
  * @author wzklhk
  */
 @Service
-public class UserServiceImpl extends CommonServiceJpaImpl<UserVO, UserDO, Long>
+public class UserServiceImpl extends CommonLogicDeleteServiceJpaImpl<UserVO, UserDO, Long>
         implements UserService {
     @Override
     public UserVO saveOrUpdateById(UserVO entityVO) {

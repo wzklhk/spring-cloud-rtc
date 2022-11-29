@@ -94,6 +94,13 @@ public class CommonServiceJpaImpl<VO, DO extends AbstractCommonDO, ID extends Se
 
     @Override
     public VO saveOrUpdateById(VO entityVO) {
+        DO entityFull = getSaveOrUpdateDO(entityVO);
+
+        DO save = commonRepository.save(entityFull);
+        return CopyUtil.copy(save, entityVOClazz);
+    }
+
+    protected DO getSaveOrUpdateDO(VO entityVO) {
         DO entity = CopyUtil.copy(entityVO, entityDOClazz);
         DO entityFull = entity;
         List<String> ignoreProperties = new ArrayList<>();
@@ -125,9 +132,7 @@ public class CommonServiceJpaImpl<VO, DO extends AbstractCommonDO, ID extends Se
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-
-        DO save = commonRepository.save(entityFull);
-        return CopyUtil.copy(save, entityVOClazz);
+        return entityFull;
     }
 
     @Override
