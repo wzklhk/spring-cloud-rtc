@@ -8,14 +8,7 @@ import java.io.Serializable;
 /**
  * @author wzklhk
  */
-public class CommonLogicDeleteServiceJpaImpl<VO, DO extends AbstractCommonLogicDeleteDO, ID extends Serializable>
+public abstract class CommonLogicDeleteServiceJpaImpl<VO, DO extends AbstractCommonLogicDeleteDO, ID extends Serializable>
         extends CommonServiceJpaImpl<VO, DO, ID>
         implements CommonService<VO, DO, ID> {
-
-    @Override
-    protected DO getSaveOrUpdateDO(VO entityVO) {
-        DO result = super.getSaveOrUpdateDO(entityVO);
-        result.setIsDeleted(false);
-        return result;
-    }
 }

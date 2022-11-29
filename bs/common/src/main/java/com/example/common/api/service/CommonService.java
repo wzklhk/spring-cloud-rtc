@@ -16,14 +16,19 @@ import java.util.List;
  */
 public interface CommonService<VO, DO, ID> {
 
+    VO toVO(DO entity);
+
+    DO toDO(VO entity);
+
     VO getById(ID id);
 
     List<VO> getAll(VO entityVo);
 
     PageCommon<VO> getByPage(VO entityVO, PageQuery query);
 
-    VO saveOrUpdateById(VO entityVo);
+    VO saveOrUpdate(VO entityVo);
 
     ErrorCodeEnum deleteById(ID id);
+
 
 }

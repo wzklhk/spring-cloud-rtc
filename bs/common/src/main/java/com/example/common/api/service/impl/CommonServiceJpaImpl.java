@@ -6,7 +6,6 @@ import com.example.common.api.PageQuery;
 import com.example.common.api.repository.CommonRepository;
 import com.example.common.api.service.CommonService;
 import com.example.common.pojo.AbstractCommonDO;
-import com.example.common.utils.CopyUtil;
 import org.hibernate.annotations.NotFound;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +18,6 @@ import org.springframework.util.StringUtils;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,41 +32,36 @@ import java.util.Optional;
  * @param <ID> id主键类型
  * @author wzklhk
  */
-public class CommonServiceJpaImpl<VO, DO extends AbstractCommonDO, ID extends Serializable>
+public abstract class CommonServiceJpaImpl<VO, DO extends AbstractCommonDO, ID extends Serializable>
         implements CommonService<VO, DO, ID> {
-
-    /**
-     * 实体类VO
-     */
-    private Class<VO> entityVOClazz;
-    /**
-     * 实体类DO
-     */
-    private Class<DO> entityDOClazz;
 
     @Autowired
     private CommonRepository<DO, ID> commonRepository;
 
-    public CommonServiceJpaImpl() {
-        Type[] types = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments();
-        this.entityVOClazz = (Class<VO>) types[0];
-        this.entityDOClazz = (Class<DO>) types[1];
-    }
+    public abstract VO toVO(DO entity);
+
+    public abstract DO toDO(VO entity);
 
     @Override
     public VO getById(ID id) {
-        Optional<DO> optionalE = commonRepository.findById(id);
-        if (!optionalE.isPresent()) {
+        Optional<DO> optional = commonRepository.findById(id);
+        if (!optional.isPresent()) {
             return null;
         }
-        DO DO = optionalE.get();
-        return CopyUtil.copy(DO, entityVOClazz);
+        DO entity = optional.get();
+        return toVO(entity);
     }
 
     @Override
     public List<VO> getAll(VO entityVO) {
-        List<DO> entityList = commonRepository.findAll(Example.of(CopyUtil.copy(entityVO, entityDOClazz)));
-        return CopyUtil.copyList(entityList, entityVOClazz);
+        List<DO> entityDOList = commonRepository.findAll(Example.of(toDO(entityVO)));
+
+        List<VO> entityVOList = new ArrayList<VO>();
+        for (DO i : entityDOList) {
+            entityVOList.add(toVO(i));
+        }
+
+        return entityVOList;
     }
 
     @Override
@@ -80,28 +72,34 @@ public class CommonServiceJpaImpl<VO, DO extends AbstractCommonDO, ID extends Se
         if (!StringUtils.hasText(query.getSortOrder())) {
             query.setSortOrder("asc");
         }
-        VO entityVo = CopyUtil.copy(entityVO, entityVOClazz);
-        Page<DO> all = commonRepository.findAll(
-                Example.of(CopyUtil.copy(entityVo, entityDOClazz)),
+        Page<DO> page = commonRepository.findAll(
+                Example.of(toDO(entityVO)),
                 PageRequest.of(
                         query.getPageNum() - 1,
                         query.getPageSize(),
-                        Sort.by(query.getSortOrder().equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, query.getSortBy())
+                        Sort.by("asc".equals(query.getSortOrder()) ? Sort.Direction.ASC : Sort.Direction.DESC, query.getSortBy())
                 )
         );
-        return PageCommon.of(all, entityVOClazz);
+
+        PageCommon<VO> result = new PageCommon<>();
+        result.setPageNum(page.getNumber() + 1);
+        result.setPageSize(page.getSize());
+        result.setTotalPage(page.getTotalPages());
+        result.setTotal(page.getTotalElements());
+        result.setSortBy(page.getSort().stream().iterator().next().getProperty());
+        result.setSortOrder(page.getSort().stream().iterator().next().getDirection().toString());
+        List<VO> list = new ArrayList<>();
+        for (DO i : page.getContent()) {
+            list.add(toVO(i));
+        }
+        result.setList(list);
+
+        return result;
     }
 
     @Override
-    public VO saveOrUpdateById(VO entityVO) {
-        DO entityFull = getSaveOrUpdateDO(entityVO);
-
-        DO save = commonRepository.save(entityFull);
-        return CopyUtil.copy(save, entityVOClazz);
-    }
-
-    protected DO getSaveOrUpdateDO(VO entityVO) {
-        DO entity = CopyUtil.copy(entityVO, entityDOClazz);
+    public VO saveOrUpdate(VO entityVO) {
+        DO entity = toDO(entityVO);
         DO entityFull = entity;
         List<String> ignoreProperties = new ArrayList<>();
         try {
@@ -132,7 +130,9 @@ public class CommonServiceJpaImpl<VO, DO extends AbstractCommonDO, ID extends Se
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        return entityFull;
+
+        DO save = commonRepository.save(entityFull);
+        return toVO(save);
     }
 
     @Override

@@ -20,7 +20,7 @@ public class UserTest {
             user.setPassword("12345678");
             user.setIsEnabled(true);
             user.setIsLocked(false);
-            userService.saveOrUpdateById(user);
+            userService.saveOrUpdate(user);
         }
     }
 }

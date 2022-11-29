@@ -51,6 +51,8 @@ public class PageCommon<T> {
         result.setPageSize(page.getSize());
         result.setTotalPage(page.getTotalPages());
         result.setTotal(page.getTotalElements());
+        result.setSortBy(page.getSort().stream().iterator().next().getProperty());
+        result.setSortOrder(page.getSort().stream().iterator().next().getDirection().toString());
         result.setList(page.getContent());
         return result;
     }

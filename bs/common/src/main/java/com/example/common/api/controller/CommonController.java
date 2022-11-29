@@ -66,7 +66,7 @@ public class CommonController<VO, DO, ID> {
      */
     @PostMapping
     public ResultInfo<VO> save(@RequestBody VO entityVO) {
-        return ResultInfo.ok(commonService.saveOrUpdateById(entityVO));
+        return ResultInfo.ok(commonService.saveOrUpdate(entityVO));
     }
 
     /**
@@ -78,7 +78,7 @@ public class CommonController<VO, DO, ID> {
      */
     @PutMapping
     public ResultInfo<VO> update(@RequestBody VO entityVO) {
-        return ResultInfo.ok(commonService.saveOrUpdateById(entityVO));
+        return ResultInfo.ok(commonService.saveOrUpdate(entityVO));
     }
 
     /**
