@@ -14,10 +14,10 @@ import org.springframework.context.annotation.ComponentScan;
  *
  * @author wzklhk
  */
-@EnableFeignClients
 @ComponentScan(basePackages = "com.example")
 @EntityScan(basePackages = "com.example")
 @EnableDiscoveryClient
+@EnableFeignClients
 @SpringBootApplication
 public class AuthApplication {
     public static void main(String[] args) {

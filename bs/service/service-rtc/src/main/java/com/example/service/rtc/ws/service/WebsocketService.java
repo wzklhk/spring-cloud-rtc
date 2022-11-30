@@ -1,9 +1,11 @@
 package com.example.service.rtc.ws.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.common.api.ResultInfo;
 import com.example.service.common.pojo.message.Message;
 import com.example.service.common.pojo.user.UserDO;
+import com.example.service.rtc.feign.AuthFeignService;
 import com.example.service.rtc.room.service.RoomService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +47,13 @@ public class WebsocketService {
         WebsocketService.roomService = roomService;
     }
 
+    private static AuthFeignService authFeignService;
+
+    @Autowired
+    public void setAuthFeignService(AuthFeignService authFeignService) {
+        WebsocketService.authFeignService = authFeignService;
+    }
+
     /**
      * 总连接数
      */
@@ -75,10 +84,11 @@ public class WebsocketService {
     @OnOpen
     public void onOpen(Session session) {
         Map<String, List<String>> requestParameterMap = session.getRequestParameterMap();
-        if (!requestParameterMap.containsKey("username") || requestParameterMap.get("username").size() == 0) {
-            throw new RuntimeException("websocket error: no param username");
+        if (!requestParameterMap.containsKey("token") || requestParameterMap.get("token").size() == 0) {
+            throw new RuntimeException("websocket error: no param token");
         }
-        String username = requestParameterMap.get("username").get(0);
+        JSONObject token = authFeignService.checkToken(requestParameterMap.get("token").get(0));
+        String username = token.getString("user_name");
 
         UserDO userDO = new UserDO();
         userDO.setUsername(username);

@@ -45,4 +45,5 @@ auth:
 feign:
   name:
     access-gateway-service: access-gateway
+    access-auth-service: ${spring.application.name}
     access-admin-service: access-admin
