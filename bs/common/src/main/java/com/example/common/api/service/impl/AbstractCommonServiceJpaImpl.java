@@ -32,7 +32,7 @@ import java.util.Optional;
  * @param <ID> id主键类型
  * @author wzklhk
  */
-public abstract class CommonServiceJpaImpl<VO, DO extends AbstractCommonDO, ID extends Serializable>
+public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommonDO, ID extends Serializable>
         implements CommonService<VO, DO, ID> {
 
     @Autowired

@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * @author wzklhk
  */
-public abstract class CommonLogicDeleteServiceJpaImpl<VO, DO extends AbstractCommonLogicDeleteDO, ID extends Serializable>
-        extends CommonServiceJpaImpl<VO, DO, ID>
+public abstract class AbstractCommonLogicDeleteServiceJpaImpl<VO, DO extends AbstractCommonLogicDeleteDO, ID extends Serializable>
+        extends AbstractCommonServiceJpaImpl<VO, DO, ID>
         implements CommonService<VO, DO, ID> {
 }
