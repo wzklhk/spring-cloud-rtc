@@ -1,4 +1,4 @@
-package com.example.service.common.pojo.user.entity;
+package com.example.service.common.pojo.user;
 
 import com.example.common.pojo.AbstractCommonDO;
 import com.fasterxml.jackson.annotation.JsonFormat;

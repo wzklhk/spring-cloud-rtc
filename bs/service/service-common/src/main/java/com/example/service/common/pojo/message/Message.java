@@ -1,6 +1,6 @@
-package com.example.service.common.pojo.message.entity;
+package com.example.service.common.pojo.message;
 
-import com.example.service.common.pojo.user.entity.UserDO;
+import com.example.service.common.pojo.user.UserDO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;

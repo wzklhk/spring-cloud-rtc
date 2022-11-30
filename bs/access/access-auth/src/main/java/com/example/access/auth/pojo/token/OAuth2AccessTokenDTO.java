@@ -1,9 +1,12 @@
 package com.example.access.auth.pojo.token;
 
-import com.example.access.auth.pojo.user.UserDetailsImpl;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.Date;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Oauth2获取Token返回信息封装
@@ -13,7 +16,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Builder
-public class OAuth2TokenDTO {
+public class OAuth2AccessTokenDTO {
 
     /**
      * 访问令牌头前缀
@@ -30,18 +33,22 @@ public class OAuth2TokenDTO {
      */
     private String refreshToken;
 
+    private Boolean isExpired;
+
     /**
      * 有效时间（秒）
      */
     private Integer expiresIn;
 
+    private Date expiration;
+
     /**
      * scope
      */
-    private String[] scope;
+    private Set<String> scope;
 
     /**
      * 用户信息
      */
-    private UserDetailsImpl user;
+    private Map<String, Object> additionalInformation;
 }

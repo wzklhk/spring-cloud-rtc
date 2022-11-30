@@ -2,8 +2,8 @@ package com.example.service.rtc.ws.service;
 
 import com.alibaba.fastjson.JSON;
 import com.example.common.api.ResultInfo;
-import com.example.service.common.pojo.message.entity.Message;
-import com.example.service.common.pojo.user.entity.UserDO;
+import com.example.service.common.pojo.message.Message;
+import com.example.service.common.pojo.user.UserDO;
 import com.example.service.rtc.room.service.RoomService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

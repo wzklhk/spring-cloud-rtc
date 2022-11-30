@@ -12,7 +12,8 @@ server:
 spring:
   # spring.application.name在bootstrap中定义
   #application:
-  #  name: access-gateway  # 服务名称
+  #  # 服务名称
+  #  name: access-gateway
 
   #main:
   #  allow-bean-definition-overriding: true
@@ -26,8 +27,10 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true  # 开启从注册中心动态创建路由的功能
-          lower-case-service-id: true  # 使用小写服务名，默认是大写
+          # 开启从注册中心动态创建路由的功能
+          enabled: true
+          # 使用小写服务名，默认是大写
+          lower-case-service-id: true
       routes:
         - id: access-auth
           uri: lb://access-auth
@@ -56,19 +59,20 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:8500/rsa/publicKey #配置RSA的公钥访问地址
+          #配置RSA的公钥访问地址
+          jwk-set-uri: http://localhost:8500/rsa/publicKey
 
 auth:
   ignore:
-    urls: #配置白名单路径
+    # 配置白名单资源文件
+    res:
+      - js
+      - css
+      - png
+      - ico
+
+    # 配置白名单url路径
+    urls:
       - /
-      - /doc.html
-      - /swagger-resources/**
-      - /swagger/**
-      - /*/*.js
-      - /*/*.css
-      - /*/*.png
-      - /*/*.ico
-      - /webjars/**
-      - /actuator/**
       - /auth/oauth/token
+      - /auth/oauth/check_token

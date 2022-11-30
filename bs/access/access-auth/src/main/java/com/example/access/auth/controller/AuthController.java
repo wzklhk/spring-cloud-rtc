@@ -1,6 +1,6 @@
 package com.example.access.auth.controller;
 
-import com.example.access.auth.pojo.token.OAuth2TokenDTO;
+import com.example.access.auth.pojo.token.OAuth2AccessTokenDTO;
 import com.example.common.api.ResultInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -34,14 +34,17 @@ public class AuthController {
      */
 
     @PostMapping("/token")
-    public ResultInfo<OAuth2TokenDTO> postAccessToken(Principal principal, @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
+    public ResultInfo<OAuth2AccessTokenDTO> postAccessToken(Principal principal, @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
         OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
-        OAuth2TokenDTO token = OAuth2TokenDTO.builder()
+        OAuth2AccessTokenDTO token = OAuth2AccessTokenDTO.builder()
                 .tokenType(oAuth2AccessToken.getTokenType())
                 .accessToken(oAuth2AccessToken.getValue())
                 .refreshToken(oAuth2AccessToken.getRefreshToken().getValue())
+                .isExpired(oAuth2AccessToken.isExpired())
                 .expiresIn(oAuth2AccessToken.getExpiresIn())
-                .scope(oAuth2AccessToken.getScope().toArray(new String[0]))
+                .expiration(oAuth2AccessToken.getExpiration())
+                .scope(oAuth2AccessToken.getScope())
+                .additionalInformation(oAuth2AccessToken.getAdditionalInformation())
                 .build();
         return ResultInfo.ok(token);
     }

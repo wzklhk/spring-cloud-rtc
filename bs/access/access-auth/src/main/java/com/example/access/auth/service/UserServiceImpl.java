@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.access.auth.feign.UserFeignService;
 import com.example.access.auth.pojo.user.UserDetailsImpl;
+import com.example.common.api.ErrorCodeEnum;
 import com.example.common.api.PageCommon;
 import com.example.common.api.ResultInfo;
 import com.example.common.utils.CopyUtil;
@@ -31,7 +32,7 @@ public class UserServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         JSONObject response = userFeignService.getUserByUsername(username);
-        if (!(response.containsKey(ResultInfo.CODE) && response.getInteger(ResultInfo.CODE) == 0)) {
+        if (!(response.containsKey(ResultInfo.CODE) && response.getInteger(ResultInfo.CODE) == ErrorCodeEnum.SUCCESS.getErrorCode())) {
             if (response.containsKey(ResultInfo.MSG)) {
                 String info = response.getString(ResultInfo.MSG);
                 log.error(info);

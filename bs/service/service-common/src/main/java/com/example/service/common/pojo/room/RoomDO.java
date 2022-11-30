@@ -1,4 +1,4 @@
-package com.example.service.common.pojo.room.entity;
+package com.example.service.common.pojo.room;
 
 import lombok.Data;
 
