@@ -4,19 +4,21 @@ server:
 spring:
   # spring.application.name在bootstrap中定义
   #application:
-  #  name: access-auth  # 服务名称
+  #  # 服务名称
+  #  name: access-auth
 
   jpa:
     database: mysql
-    generate-ddl: false  # 开启
-    show-sql: false  # 开启sql日志显示
+    # 是否开启自动
+    generate-ddl: false
+    # 是否开启sql日志显示
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL57Dialect
 
   # 数据库配置从配置中心获取
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/access-auth
     username: username
     password: password

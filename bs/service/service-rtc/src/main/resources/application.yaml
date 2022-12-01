@@ -6,6 +6,16 @@ spring:
   #application:
   #  name: service-rtc  # 服务名称
 
+  jpa:
+    show-sql: true
+    #generate-ddl: false
+    #hibernate:
+    #  ddl-auto: update
+    database: mysql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+
   # 数据库配置从配置中心获取
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -19,16 +29,6 @@ spring:
     port: 6379
     database: 0
     password: password
-
-  jpa:
-    show-sql: true
-    #generate-ddl: false
-    #hibernate:
-    #  ddl-auto: update
-    database: mysql
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL57Dialect
 
 # 自定义feign配置
 feign:

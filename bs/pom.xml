@@ -23,9 +23,11 @@
         <spring-boot.version>2.5.9</spring-boot.version>
         <spring-cloud.version>2020.0.5</spring-cloud.version>
         <spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
-        <fastjson.version>1.2.76</fastjson.version>
         <oauth2.version>2.2.5.RELEASE</oauth2.version>
-        <hutool.version>5.8.0</hutool.version>
+        <mysql.version>5.7</mysql.version>
+        <postgres.version>42.2.24</postgres.version>
+        <fastjson.version>1.2.76</fastjson.version>
+        <hutool.version>5.8.10</hutool.version>
         <knife4j.version>3.0.3</knife4j.version>
     </properties>
 
@@ -56,6 +58,35 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!--fastjson-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+
+        <!--mysql-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <!--<version>${mysql.version}</version>-->
+            <scope>runtime</scope>
+        </dependency>
+
+        <!--postgresql-->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <!--<version>${postgresql.version}</version>-->
+            <scope>runtime</scope>
+        </dependency>
+
         <!--log依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -77,20 +108,7 @@
             </exclusions>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <!--fastjson-->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
-        </dependency>
-
-        <!--swagger-->
-        <!--Knife4j API文档生产工具-->
+        <!--swagger Knife4j API文档生产工具-->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-micro-spring-boot-starter</artifactId>
@@ -102,22 +120,21 @@
             <version>${knife4j.version}</version>
         </dependency>
 
-        <!--hutool-->
+        <!--工具包-->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>${hutool.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>

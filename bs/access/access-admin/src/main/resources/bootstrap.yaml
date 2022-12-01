@@ -5,14 +5,19 @@ nacos:
 spring:
   # spring.application.name在bootstrap中定义
   application:
-    name: access-admin  # 服务名称
+    # 服务名称
+    name: access-admin
+
   profiles:
-    active: prod  # 环境profile后缀
+    # 环境profile后缀
+    active: prod
 
   cloud:
     nacos:
       discovery:
         server-addr: ${nacos.server-addr}
       config:
-        file-extension: yaml  # 配置文件后缀名
-        server-addr: ${nacos.server-addr}  # 配置中心服务器地址，也就是Nacos地址
+        # 配置中心服务器地址，也就是Nacos地址
+        server-addr: ${nacos.server-addr}
+        # 配置文件后缀名
+        file-extension: yaml
