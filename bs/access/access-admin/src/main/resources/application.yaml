@@ -23,7 +23,6 @@ spring:
     username: username
     password: password
 
-
   # redis配置从配置中心获取
   redis:
     host: 127.0.0.1
