@@ -2,7 +2,7 @@ package com.example.service.rtc.ws.controller;
 
 import com.example.common.api.ResultInfo;
 import com.example.service.common.pojo.message.Message;
-import com.example.service.common.pojo.user.UserDO;
+import com.example.service.common.pojo.user.UserVO;
 import com.example.service.rtc.ws.service.WebsocketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,7 +41,7 @@ public class WebsocketController {
     @GetMapping("/getConnectedUserList")
     public ResultInfo getConnectedUserList() {
         Set<WebsocketService> wsSet = WebsocketService.getWebSocketSet();
-        List<UserDO> users = new ArrayList<>();
+        List<UserVO> users = new ArrayList<>();
         for (WebsocketService ws : wsSet) {
             users.add(ws.getCurrentUser());
         }

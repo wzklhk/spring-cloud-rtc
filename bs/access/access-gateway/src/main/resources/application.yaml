@@ -83,5 +83,7 @@ auth:
       - /
       - /doc.html
       - /webjars/**
+      - /swagger-resources
+      - /*/v2/api-docs
       - /auth/oauth/token
       - /auth/oauth/check_token

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.common.api.ResultInfo;
 import com.example.service.common.pojo.message.Message;
-import com.example.service.common.pojo.user.UserDO;
+import com.example.service.common.pojo.user.UserVO;
 import com.example.service.rtc.feign.AuthFeignService;
 import com.example.service.rtc.room.service.RoomService;
 import lombok.Data;
@@ -76,7 +76,7 @@ public class WebsocketService {
     /**
      * 当前用户
      */
-    private UserDO currentUser;
+    private UserVO currentUser;
 
     /**
      * 连接建立成功调用的方法
@@ -90,9 +90,9 @@ public class WebsocketService {
         JSONObject token = authFeignService.checkToken(requestParameterMap.get("token").get(0));
         String username = token.getString("user_name");
 
-        UserDO userDO = new UserDO();
-        userDO.setUsername(username);
-        this.currentUser = userDO;
+        UserVO user = new UserVO();
+        user.setUsername(username);
+        this.currentUser = user;
         this.currentSession = session;
         webSocketSet.add(this);
         onlineCount.getAndIncrement();
@@ -153,7 +153,7 @@ public class WebsocketService {
     /**
      * 服务端单播发送消息给所有客户端
      */
-    public <T> void unicastMessage(UserDO receiver, T data) {
+    public <T> void unicastMessage(UserVO receiver, T data) {
         log.info("单播消息：{}", data);
         // TODO 优化搜索算法
         for (WebsocketService item : webSocketSet) {
@@ -170,9 +170,9 @@ public class WebsocketService {
     /**
      * 服务端多播发送消息给所有客户端
      */
-    public <T> void multicastMessage(List<UserDO> receivers, T data) {
+    public <T> void multicastMessage(List<UserVO> receivers, T data) {
         log.info("多播消息：{}", data);
-        for (UserDO receiver : receivers) {
+        for (UserVO receiver : receivers) {
             unicastMessage(receiver, data);
         }
     }

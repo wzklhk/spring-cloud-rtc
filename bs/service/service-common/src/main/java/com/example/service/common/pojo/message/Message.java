@@ -1,6 +1,6 @@
 package com.example.service.common.pojo.message;
 
-import com.example.service.common.pojo.user.UserDO;
+import com.example.service.common.pojo.user.UserVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,25 +18,25 @@ import java.util.List;
 public class Message<T> {
 
     @ApiModelProperty(value = "发送方")
-    private UserDO sender;
+    private UserVO sender;
 
     @ApiModelProperty(value = "接收方列表")
-    private List<UserDO> receivers;
+    private List<UserVO> receivers;
 
     @ApiModelProperty(value = "要发送的数据")
     private T data;
 
-    public static <T> Message<T> unicast(UserDO sender, UserDO receiver, T data) {
-        List<UserDO> receivers = new ArrayList<>();
+    public static <T> Message<T> unicast(UserVO sender, UserVO receiver, T data) {
+        List<UserVO> receivers = new ArrayList<>();
         receivers.add(receiver);
         return new Message<>(sender, receivers, data);
     }
 
-    public static <T> Message<T> multicast(UserDO sender, List<UserDO> receivers, T data) {
+    public static <T> Message<T> multicast(UserVO sender, List<UserVO> receivers, T data) {
         return new Message<>(sender, receivers, data);
     }
 
-    public static <T> Message<T> broadcast(UserDO sender, T data) {
+    public static <T> Message<T> broadcast(UserVO sender, T data) {
         return new Message<>(sender, null, data);
     }
 
