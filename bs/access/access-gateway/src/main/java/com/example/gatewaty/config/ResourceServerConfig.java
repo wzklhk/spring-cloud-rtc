@@ -52,18 +52,15 @@ public class ResourceServerConfig {
         // 对白名单路径，直接移除JWT请求头
         http.addFilterBefore(ignoreUrlsRemoveJwtFilter, SecurityWebFiltersOrder.AUTHENTICATION);
 
-        for (String re : ignoreUrlsProperties.getRes()) {
-
-        }
-
         List<String> list = new ArrayList<>();
         for (String ignoreRe : ignoreUrlsProperties.getRes()) {
             list.add("/*/*." + ignoreRe);
         }
+        List<String> ignoreUrls = ignoreUrlsProperties.getUrls();
+        ignoreUrls.addAll(list);
 
         http.authorizeExchange()
-                .pathMatchers(ArrayUtil.toArray(ignoreUrlsProperties.getUrls(), String.class)).permitAll()  // 白名单配置
-                .pathMatchers(ArrayUtil.toArray(list, String.class)).permitAll()  // 白名单配置
+                .pathMatchers(ArrayUtil.toArray(ignoreUrls, String.class)).permitAll()  // 白名单配置
                 .anyExchange().authenticated()
                 .and().exceptionHandling()
                 .accessDeniedHandler(restfulAccessDeniedHandler)  //处理未授权

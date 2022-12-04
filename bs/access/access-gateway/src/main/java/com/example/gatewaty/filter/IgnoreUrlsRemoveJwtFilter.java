@@ -12,6 +12,7 @@ import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.List;
 
 /**
  * 白名单路径访问时需要移除JWT请求头
@@ -20,6 +21,7 @@ import java.net.URI;
  */
 @Component
 public class IgnoreUrlsRemoveJwtFilter implements WebFilter {
+
     @Autowired
     private IgnoreUrlsProperties ignoreUrlsProperties;
 
@@ -28,19 +30,21 @@ public class IgnoreUrlsRemoveJwtFilter implements WebFilter {
         ServerHttpRequest request = exchange.getRequest();
         URI uri = request.getURI();
         PathMatcher pathMatcher = new AntPathMatcher();
+
+        List<String> ignoreUrls = ignoreUrlsProperties.getUrls();
+        for (String ignoreRe : ignoreUrlsProperties.getRes()) {
+            ignoreUrls.add("/*/*." + ignoreRe);
+        }
+
         // 白名单路径移除JWT请求头
-        for (String ignoreUrl : ignoreUrlsProperties.getUrls()) {
+        for (String ignoreUrl : ignoreUrls) {
             if (pathMatcher.match(ignoreUrl, uri.getPath())) {
                 request = exchange.getRequest().mutate().header("Authorization", "").build();
                 exchange = exchange.mutate().request(request).build();
+                return chain.filter(exchange);
             }
         }
-        for (String ignoreRe : ignoreUrlsProperties.getRes()) {
-            if (pathMatcher.match("/*/*." + ignoreRe, uri.getPath())) {
-                request = exchange.getRequest().mutate().header("Authorization", "").build();
-                exchange = exchange.mutate().request(request).build();
-            }
-        }
+
         return chain.filter(exchange);
     }
 }

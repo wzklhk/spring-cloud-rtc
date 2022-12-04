@@ -27,6 +27,7 @@
         <mysql.version>5.7</mysql.version>
         <postgres.version>42.2.24</postgres.version>
         <fastjson.version>1.2.76</fastjson.version>
+        <nimbus-jose-jwt.version>9.23</nimbus-jose-jwt.version>
         <hutool.version>5.8.10</hutool.version>
         <knife4j.version>3.0.3</knife4j.version>
     </properties>
