@@ -4,7 +4,6 @@ import com.example.common.api.ResultInfo;
 import com.example.service.common.pojo.message.Message;
 import com.example.service.common.pojo.user.UserVO;
 import com.example.service.rtc.ws.service.WebsocketService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +26,6 @@ public class WebsocketController {
 
     private final WebsocketService websocketService;
 
-    @Autowired
     public WebsocketController(WebsocketService websocketService) {
         this.websocketService = websocketService;
     }

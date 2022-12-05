@@ -1,11 +1,10 @@
 package com.example.service.rtc.ws.service;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.example.common.api.ResultInfo;
 import com.example.service.common.pojo.message.Message;
 import com.example.service.common.pojo.user.UserVO;
-import com.example.service.rtc.feign.AuthFeignService;
+import com.example.service.rtc.access.AccessService;
 import com.example.service.rtc.room.service.RoomService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -47,11 +46,11 @@ public class WebsocketService {
         WebsocketService.roomService = roomService;
     }
 
-    private static AuthFeignService authFeignService;
+    private static AccessService accessService;
 
     @Autowired
-    public void setAuthFeignService(AuthFeignService authFeignService) {
-        WebsocketService.authFeignService = authFeignService;
+    public void setAccessService(AccessService accessService) {
+        WebsocketService.accessService = accessService;
     }
 
     /**
@@ -87,16 +86,11 @@ public class WebsocketService {
         if (!requestParameterMap.containsKey("token") || requestParameterMap.get("token").size() == 0) {
             throw new RuntimeException("websocket error: no param token");
         }
-        JSONObject token = authFeignService.checkToken(requestParameterMap.get("token").get(0));
-        String username = token.getString("user_name");
-
-        UserVO user = new UserVO();
-        user.setUsername(username);
-        this.currentUser = user;
+        this.currentUser = accessService.getUserByToken(requestParameterMap.get("token").get(0));
         this.currentSession = session;
         webSocketSet.add(this);
         onlineCount.getAndIncrement();
-        log.info("有一连接打开，用户username={}, 当前在线人数为：{}", username, webSocketSet.size());
+        log.info("有一连接打开，用户{}, 当前在线人数为：{}", this.currentUser, webSocketSet.size());
         broadcastMessage(this.currentUser + "已加入");
     }
 
@@ -107,7 +101,7 @@ public class WebsocketService {
     public void onClose(Session session) {
         webSocketSet.remove(this);
         onlineCount.getAndDecrement();
-        log.info("有一连接关闭，移除username={}的用户session, 当前在线人数为：{}", this.currentUser, webSocketSet.size());
+        log.info("有一连接关闭，移除{}的用户session, 当前在线人数为：{}", this.currentUser, webSocketSet.size());
         broadcastMessage(this.currentUser + "已断开");
     }
 

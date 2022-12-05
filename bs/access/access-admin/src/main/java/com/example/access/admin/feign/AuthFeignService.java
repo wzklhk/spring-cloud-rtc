@@ -1,4 +1,4 @@
-package com.example.service.rtc.feign;
+package com.example.access.admin.feign;
 
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.cloud.openfeign.FeignClient;

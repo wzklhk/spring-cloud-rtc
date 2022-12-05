@@ -8,4 +8,6 @@ import com.example.common.api.service.CommonService;
  * @author wzklhk
  */
 public interface UserService extends CommonService<UserVO, UserDO, Long> {
+
+    UserVO getByToken(String token);
 }
