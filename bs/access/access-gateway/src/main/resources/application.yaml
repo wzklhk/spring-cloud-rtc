@@ -64,23 +64,20 @@ spring:
 
 auth:
   ignore:
-    # 配置白名单资源文件
-    res:
-      - html
-      - css
-      - js
-      - ico
-      - png
-      - gif
-      - svg
-      - woff
-      - woff2
-      - ttf
-      - json
-
     # 配置白名单url路径
     urls:
       - /
+      - /*/*.html
+      - /*/*.css
+      - /*/*.js
+      - /*/*.ico
+      - /*/*.png
+      - /*/*.gif
+      - /*/*.svg
+      - /*/*.woff
+      - /*/*.woff2
+      - /*/*.ttf
+      - /*/*.json
       - /doc.html
       - /webjars/**
       - /swagger-resources

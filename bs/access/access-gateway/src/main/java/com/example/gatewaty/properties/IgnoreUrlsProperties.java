@@ -18,7 +18,5 @@ import java.util.List;
 @ConfigurationProperties(prefix = "auth.ignore")
 public class IgnoreUrlsProperties {
 
-    private List<String> res;
-
     private List<String> urls;
 }

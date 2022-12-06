@@ -2,7 +2,6 @@ package com.example.access.auth.controller;
 
 import com.example.access.auth.pojo.token.OAuth2AccessTokenDTO;
 import com.example.common.api.ResultInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -25,14 +24,15 @@ import java.util.Map;
 @RequestMapping("/oauth")
 public class AuthController {
 
-    @Autowired
-    private TokenEndpoint tokenEndpoint;
+    private final TokenEndpoint tokenEndpoint;
 
+    public AuthController(TokenEndpoint tokenEndpoint) {
+        this.tokenEndpoint = tokenEndpoint;
+    }
 
     /**
      * Oauth2登录认证
      */
-
     @PostMapping("/token")
     public ResultInfo<OAuth2AccessTokenDTO> postAccessToken(Principal principal, @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
         OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();

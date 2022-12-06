@@ -3,7 +3,6 @@ package com.example.access.auth.config;
 import com.example.access.auth.properties.JWTProperties;
 import com.example.access.auth.properties.OAuth2Properties;
 import com.example.access.auth.service.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.PathResource;
@@ -28,49 +27,23 @@ import java.security.KeyPair;
 @Configuration
 public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private UserServiceImpl userService;
+    private final UserServiceImpl userService;
 
-    /*
-    @Value("${auth.oauth2.client-id}")
-    private String clientId;
+    private final OAuth2Properties oAuth2Properties;
 
-    @Value("${auth.oauth2.client-secret}")
-    private String clientSecret;
+    private final JWTProperties jwtProperties;
 
-    @Value("${auth.oauth2.scopes}")
-    private String[] scopes;
-
-    @Value("${auth.oauth2.authorized-grant-types}")
-    private String[] authorizedGrantTypes;
-
-    @Value("${auth.oauth2.access-token-validity-seconds}")
-    private int accessTokenValiditySeconds;
-
-    @Value("${auth.oauth2.refresh-token-validity-seconds}")
-    private int refreshTokenValiditySeconds;
-
-    @Value("${auth.jwt.key-path}")
-    private String keyPath;
-
-    @Value("${auth.jwt.key-alias}")
-    private String keyAlias;
-
-    @Value("${auth.jwt.key-password}")
-    private String keyPassword;
-    */
-
-    @Autowired
-    private OAuth2Properties oAuth2Properties;
-
-    @Autowired
-    private JWTProperties jwtProperties;
+    public OAuth2Config(PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserServiceImpl userService, OAuth2Properties oAuth2Properties, JWTProperties jwtProperties) {
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.userService = userService;
+        this.oAuth2Properties = oAuth2Properties;
+        this.jwtProperties = jwtProperties;
+    }
 
 
     /**

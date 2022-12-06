@@ -3,7 +3,6 @@ package com.example.service.rtc.access;
 import com.example.common.api.ResultInfo;
 import com.example.service.common.pojo.user.UserVO;
 import com.example.service.rtc.access.feign.AdminFeignService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,8 +10,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AccessService {
-    @Autowired
-    private AdminFeignService adminFeignService;
+    private final AdminFeignService adminFeignService;
+
+    public AccessService(AdminFeignService adminFeignService) {
+        this.adminFeignService = adminFeignService;
+    }
 
     public UserVO getUserByToken(String token) {
         ResultInfo<UserVO> result = adminFeignService.getUserByToken(token);

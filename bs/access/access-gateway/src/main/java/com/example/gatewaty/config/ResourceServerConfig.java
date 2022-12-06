@@ -6,7 +6,6 @@ import com.example.gatewaty.component.RestfulAuthenticationEntryPoint;
 import com.example.gatewaty.constant.AuthConstant;
 import com.example.gatewaty.filter.IgnoreUrlsRemoveJwtFilter;
 import com.example.gatewaty.properties.IgnoreUrlsProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -21,9 +20,6 @@ import org.springframework.security.oauth2.server.resource.authentication.Reacti
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * @author wzklhk
@@ -32,16 +28,19 @@ import java.util.List;
 @Configuration
 public class ResourceServerConfig {
 
-    @Autowired
-    private RestfulAccessDeniedHandler restfulAccessDeniedHandler;
+    private final RestfulAccessDeniedHandler restfulAccessDeniedHandler;
 
-    @Autowired
-    private RestfulAuthenticationEntryPoint restfulAuthenticationEntryPoint;
+    private final RestfulAuthenticationEntryPoint restfulAuthenticationEntryPoint;
 
-    @Autowired
-    private IgnoreUrlsProperties ignoreUrlsProperties;
-    @Autowired
-    private IgnoreUrlsRemoveJwtFilter ignoreUrlsRemoveJwtFilter;
+    private final IgnoreUrlsProperties ignoreUrlsProperties;
+    private final IgnoreUrlsRemoveJwtFilter ignoreUrlsRemoveJwtFilter;
+
+    public ResourceServerConfig(RestfulAccessDeniedHandler restfulAccessDeniedHandler, RestfulAuthenticationEntryPoint restfulAuthenticationEntryPoint, IgnoreUrlsProperties ignoreUrlsProperties, IgnoreUrlsRemoveJwtFilter ignoreUrlsRemoveJwtFilter) {
+        this.restfulAccessDeniedHandler = restfulAccessDeniedHandler;
+        this.restfulAuthenticationEntryPoint = restfulAuthenticationEntryPoint;
+        this.ignoreUrlsProperties = ignoreUrlsProperties;
+        this.ignoreUrlsRemoveJwtFilter = ignoreUrlsRemoveJwtFilter;
+    }
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChan(ServerHttpSecurity http) {
@@ -52,19 +51,15 @@ public class ResourceServerConfig {
         // 对白名单路径，直接移除JWT请求头
         http.addFilterBefore(ignoreUrlsRemoveJwtFilter, SecurityWebFiltersOrder.AUTHENTICATION);
 
-        List<String> list = new ArrayList<>();
-        for (String ignoreRe : ignoreUrlsProperties.getRes()) {
-            list.add("/*/*." + ignoreRe);
-        }
-        List<String> ignoreUrls = ignoreUrlsProperties.getUrls();
-        ignoreUrls.addAll(list);
-
         http.authorizeExchange()
-                .pathMatchers(ArrayUtil.toArray(ignoreUrls, String.class)).permitAll()  // 白名单配置
+                // 白名单配置
+                .pathMatchers(ArrayUtil.toArray(ignoreUrlsProperties.getUrls(), String.class)).permitAll()
                 .anyExchange().authenticated()
                 .and().exceptionHandling()
-                .accessDeniedHandler(restfulAccessDeniedHandler)  //处理未授权
-                .authenticationEntryPoint(restfulAuthenticationEntryPoint)  //处理未认证
+                //处理未授权
+                .accessDeniedHandler(restfulAccessDeniedHandler)
+                //处理未认证
+                .authenticationEntryPoint(restfulAuthenticationEntryPoint)
                 .and().csrf().disable()
         ;
         return http.build();
