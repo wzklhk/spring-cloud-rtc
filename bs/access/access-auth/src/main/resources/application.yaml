@@ -23,8 +23,8 @@ server:
 # 自定义auth配置
 auth:
   oauth2:
-    client-id: client-id
-    client-secret: client-secret
+    client-id: client_id
+    client-secret: client_secret
     scopes:
       - all
     authorized-grant-types:
@@ -36,6 +36,7 @@ auth:
     access-token-validity-seconds: 3600
     refresh-token-validity-seconds: 86400
   jwt:
+    # keytool -genkey -alias key -keyalg RSA -keystore key.jks
     key-path: key.jks
     key-alias: key
     key-password: 123456

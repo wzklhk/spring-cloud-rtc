@@ -22,23 +22,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/rsa/publicKey").permitAll()
-//                .antMatchers("/doc.html").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().permitAll()  // 使用表单登录
+                // 使用表单登录
+                .formLogin().permitAll()
         ;
     }
 
-    /*@Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()  // 直接创建一个用户
-                .passwordEncoder(passwordEncoder)
-                .withUser("admin").password(passwordEncoder.encode("123456")).roles("ADMIN")
-                .and()
-                .withUser("user").password(passwordEncoder.encode("123456")).roles("USER");
-    }*/
-
-    @Bean  // 将AuthenticationManager注册为Bean，在OAuth配置中使用
+    /**
+     * 将AuthenticationManager注册为Bean，在OAuth配置中使用
+     */
+    @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();

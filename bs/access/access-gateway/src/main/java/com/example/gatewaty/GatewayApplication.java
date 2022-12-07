@@ -11,9 +11,9 @@ import org.springframework.context.annotation.ComponentScan;
  *
  * @author wzklhk
  */
+@EnableDiscoveryClient
 @ComponentScan(basePackages = "com.example")
 @EntityScan(basePackages = "com.example")
-@EnableDiscoveryClient
 @SpringBootApplication
 public class GatewayApplication {
     public static void main(String[] args) {

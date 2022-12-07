@@ -52,18 +52,18 @@ public class ResultInfo<T> {
     }
 
     public static <T> ResultInfo<T> error() {
-        return new ResultInfo<>(ErrorCodeEnum.FAILURE, null);
+        return new ResultInfo<>(ErrorCodeEnum.ERROR, null);
     }
 
     public static <T> ResultInfo<T> error(T data) {
-        return new ResultInfo<>(ErrorCodeEnum.FAILURE, data);
+        return new ResultInfo<>(ErrorCodeEnum.ERROR, data);
     }
 
     public static <T> ResultInfo<T> ok() {
-        return new ResultInfo<>(ErrorCodeEnum.SUCCESS, null);
+        return new ResultInfo<>(ErrorCodeEnum.OK, null);
     }
 
     public static <T> ResultInfo<T> ok(T data) {
-        return new ResultInfo<>(ErrorCodeEnum.SUCCESS, data);
+        return new ResultInfo<>(ErrorCodeEnum.OK, data);
     }
 }

@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         JSONObject response = userFeignService.getUserByUsername(username);
-        if (!(response.containsKey(ResultInfo.CODE) && response.getInteger(ResultInfo.CODE) == ErrorCodeEnum.SUCCESS.getErrorCode())) {
+        if (!(response.containsKey(ResultInfo.CODE) && response.getInteger(ResultInfo.CODE) == ErrorCodeEnum.OK.getErrorCode())) {
             if (response.containsKey(ResultInfo.MSG)) {
                 String info = response.getString(ResultInfo.MSG);
                 log.error(info);

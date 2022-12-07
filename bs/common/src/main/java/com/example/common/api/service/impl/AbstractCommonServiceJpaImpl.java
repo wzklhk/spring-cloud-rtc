@@ -138,6 +138,6 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
     @Override
     public ErrorCodeEnum deleteById(ID id) {
         commonRepository.deleteById(id);
-        return ErrorCodeEnum.SUCCESS;
+        return ErrorCodeEnum.OK;
     }
 }

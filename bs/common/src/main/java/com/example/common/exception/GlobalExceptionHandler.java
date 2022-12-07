@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public ResultInfo<String> handlerException(Exception e) {
+    public ResultInfo<Object> handlerException(Exception e) {
         log.error("未知异常: {}", e.getMessage());
-        return ResultInfo.error(e.getMessage());
+        return ResultInfo.error("未知异常: " + e.getMessage());
     }
 
 }

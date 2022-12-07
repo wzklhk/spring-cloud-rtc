@@ -10,12 +10,12 @@ public enum ErrorCodeEnum {
     /**
      * 操作成功
      */
-    SUCCESS(0, "操作成功"),
+    OK(0, "操作成功"),
 
     /**
      * 操作失败
      */
-    FAILURE(1, "操作失败");
+    ERROR(1, "操作失败");
 
     private final int errorCode;
     private final String errorMsg;

@@ -3,9 +3,10 @@ package com.example.access.auth.controller;
 import com.example.access.auth.pojo.token.OAuth2AccessTokenDTO;
 import com.example.common.api.ResultInfo;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.endpoint.CheckTokenEndpoint;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,26 +27,43 @@ public class AuthController {
 
     private final TokenEndpoint tokenEndpoint;
 
-    public AuthController(TokenEndpoint tokenEndpoint) {
+    private final CheckTokenEndpoint checkTokenEndpoint;
+
+    public AuthController(TokenEndpoint tokenEndpoint, CheckTokenEndpoint checkTokenEndpoint) {
         this.tokenEndpoint = tokenEndpoint;
+        this.checkTokenEndpoint = checkTokenEndpoint;
     }
 
     /**
      * Oauth2登录认证
      */
-    @PostMapping("/token")
-    public ResultInfo<OAuth2AccessTokenDTO> postAccessToken(Principal principal, @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
-        OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
-        OAuth2AccessTokenDTO token = OAuth2AccessTokenDTO.builder()
-                .tokenType(oAuth2AccessToken.getTokenType())
-                .accessToken(oAuth2AccessToken.getValue())
-                .refreshToken(oAuth2AccessToken.getRefreshToken().getValue())
-                .isExpired(oAuth2AccessToken.isExpired())
-                .expiresIn(oAuth2AccessToken.getExpiresIn())
-                .expiration(oAuth2AccessToken.getExpiration())
-                .scope(oAuth2AccessToken.getScope())
-                .additionalInformation(oAuth2AccessToken.getAdditionalInformation())
-                .build();
-        return ResultInfo.ok(token);
+    @GetMapping("/token")
+    public ResultInfo<Object> getAccessToken(Principal principal, @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
+        try {
+            OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
+            OAuth2AccessTokenDTO token = OAuth2AccessTokenDTO.builder()
+                    .tokenType(oAuth2AccessToken.getTokenType())
+                    .accessToken(oAuth2AccessToken.getValue())
+                    .refreshToken(oAuth2AccessToken.getRefreshToken().getValue())
+                    .isExpired(oAuth2AccessToken.isExpired())
+                    .expiresIn(oAuth2AccessToken.getExpiresIn())
+                    .expiration(oAuth2AccessToken.getExpiration())
+                    .scope(oAuth2AccessToken.getScope())
+                    .additionalInformation(oAuth2AccessToken.getAdditionalInformation())
+                    .build();
+            return ResultInfo.ok(token);
+        } catch (Exception e) {
+            return ResultInfo.error(e.getMessage());
+        }
+    }
+
+    @GetMapping("/check_token")
+    public ResultInfo<Object> checkToken(@RequestParam String token) {
+        try {
+            Map<String, ?> map = checkTokenEndpoint.checkToken(token);
+            return ResultInfo.ok(map);
+        } catch (Exception e) {
+            return ResultInfo.error(e.getMessage());
+        }
     }
 }

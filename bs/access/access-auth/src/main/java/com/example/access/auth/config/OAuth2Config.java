@@ -62,16 +62,20 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
                 .authorizedGrantTypes(oAuth2Properties.getAuthorizedGrantTypes())
                 .accessTokenValiditySeconds(oAuth2Properties.getAccessTokenValiditySeconds())
                 .refreshTokenValiditySeconds(oAuth2Properties.getRefreshTokenValiditySeconds())
-//                .autoApprove(false)  // 关闭自动审批
+        // 关闭自动审批
+//                .autoApprove(false)
         ;
     }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) {
         security
-                .passwordEncoder(passwordEncoder)  // 编码器设定为BCryptPasswordEncoder
-                .allowFormAuthenticationForClients()  // 允许客户端使用表单验证
-                .checkTokenAccess("permitAll()")  // 允许所有的Token查询请求
+                // 编码器设定为BCryptPasswordEncoder
+                .passwordEncoder(passwordEncoder)
+                // 允许客户端使用表单验证
+                .allowFormAuthenticationForClients()
+                // 允许所有的Token查询请求
+                .checkTokenAccess("permitAll()")
                 .tokenKeyAccess("permitAll()")
         ;
     }
@@ -79,11 +83,11 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints
-//                .tokenServices(serverTokenServices())  //设定为刚刚配置好的AuthorizationServerTokenServices
                 .tokenEnhancer(jwtAccessTokenConverter())
                 .accessTokenConverter(jwtAccessTokenConverter())
                 .authenticationManager(authenticationManager)
-                .userDetailsService(userService)  // 配置加载用户信息的服务
+                // 配置加载用户信息的服务
+                .userDetailsService(userService)
         ;
     }
 
@@ -93,19 +97,6 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
         converter.setKeyPair(keyPair());
         return converter;
     }
-
-    /*@Bean
-    public TokenStore tokenStore(JwtAccessTokenConverter converter) {  //Token存储方式现在改为JWT存储
-        return new JwtTokenStore(converter);  //传入刚刚定义好的转换器
-    }
-
-    private AuthorizationServerTokenServices serverTokenServices() {  //这里对AuthorizationServerTokenServices进行一下配置
-        DefaultTokenServices services = new DefaultTokenServices();
-        services.setSupportRefreshToken(true);   //允许Token刷新
-        services.setTokenStore(tokenStore(jwtAccessTokenConverter()));   //添加刚刚的TokenStore
-        services.setTokenEnhancer(jwtAccessTokenConverter());   //添加Token增强，其实就是JwtAccessTokenConverter，增强是添加一些自定义的数据到JWT中
-        return services;
-    }*/
 
     @Bean
     public KeyPair keyPair() {

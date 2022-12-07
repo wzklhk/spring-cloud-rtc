@@ -15,11 +15,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
  *
  * @author wzklhk
  */
+@EnableDiscoveryClient
+@EnableFeignClients
 @EnableJpaAuditing
 @ComponentScan(basePackages = "com.example")
 @EntityScan(basePackages = "com.example")
-@EnableDiscoveryClient
-@EnableFeignClients
 @SpringBootApplication
 public class AdminApplication {
     public static void main(String[] args) {
