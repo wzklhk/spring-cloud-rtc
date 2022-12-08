@@ -5,8 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.access.auth.feign.UserFeignService;
 import com.example.access.auth.pojo.user.UserDetailsImpl;
 import com.example.common.api.ErrorCodeEnum;
-import com.example.common.api.PageCommon;
 import com.example.common.api.ResultInfo;
+import com.example.common.pojo.CommonPage;
 import com.example.common.utils.CopyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserDetailsService {
                 throw new UsernameNotFoundException(info);
             }
         }
-        JSONArray list = response.getJSONObject(ResultInfo.DATA).getJSONArray(PageCommon.LIST);
+        JSONArray list = response.getJSONObject(ResultInfo.DATA).getJSONArray(CommonPage.LIST);
 
         if (null == list || 0 == list.size()) {
             throw new UsernameNotFoundException("账户不存在");

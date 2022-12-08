@@ -1,13 +1,13 @@
 package com.example.common.api.controller;
 
-import com.example.common.api.PageCommon;
-import com.example.common.api.PageQuery;
 import com.example.common.api.ResultInfo;
 import com.example.common.api.service.CommonService;
+import com.example.common.pojo.CommonPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 通用 Controller
@@ -36,49 +36,48 @@ public class CommonController<VO, DO, ID> {
     /**
      * 查询匹配的VO
      *
-     * @param entityVO 要匹配的VO属性
+     * @param queryMap 要匹配的query属性
      * @return 通用返回：VO列表
      */
     @GetMapping("/all")
-    public ResultInfo<List<VO>> getAll(VO entityVO) {
-        return ResultInfo.ok(commonService.getAll(entityVO));
+    public ResultInfo<List<VO>> getAll(Map<String, Object> queryMap) {
+        return ResultInfo.ok(commonService.getAll(queryMap));
     }
 
     /**
      * 查询匹配的VO，按页返回
      * 默认GET方法接口
      *
-     * @param entityVO 要匹配的VO属性
-     * @param query    要匹配的页面属性
+     * @param queryMap 要匹配的页面属性
      * @return 通用返回：页对象包含VO列表
      */
     @GetMapping
-    public ResultInfo<PageCommon<VO>> getByPage(VO entityVO, PageQuery query) {
-        return ResultInfo.ok(commonService.getByPage(entityVO, query));
+    public ResultInfo<CommonPage<VO>> getByPage(@RequestParam Map<String, Object> queryMap) {
+        return ResultInfo.ok(commonService.getByPage(queryMap));
     }
 
     /**
      * 新增对象
      * POST方法接口进行新增对象
      *
-     * @param entityVO 新增VO对象
+     * @param queryMap 新增VO对象
      * @return 通用返回：新增的VO对象
      */
     @PostMapping
-    public ResultInfo<VO> save(@RequestBody VO entityVO) {
-        return ResultInfo.ok(commonService.saveOrUpdate(entityVO));
+    public ResultInfo<VO> save(@RequestBody Map<String, Object> queryMap) {
+        return ResultInfo.ok(commonService.saveOrUpdate(queryMap));
     }
 
     /**
      * 修改对象
      * PUT方法接口进行修改对象
      *
-     * @param entityVO 修改VO对象
+     * @param queryMap 修改VO对象
      * @return 通用返回：修改的VO对象
      */
     @PutMapping
-    public ResultInfo<VO> update(@RequestBody VO entityVO) {
-        return ResultInfo.ok(commonService.saveOrUpdate(entityVO));
+    public ResultInfo<VO> update(@RequestBody Map<String, Object> queryMap) {
+        return ResultInfo.ok(commonService.saveOrUpdate(queryMap));
     }
 
     /**
@@ -88,7 +87,7 @@ public class CommonController<VO, DO, ID> {
      * @return 通用返回：status
      */
     @DeleteMapping
-    public ResultInfo deleteById(@RequestParam ID id) {
+    public ResultInfo<Object> deleteById(@RequestParam ID id) {
         return ResultInfo.status(commonService.deleteById(id), null);
     }
 

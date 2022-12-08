@@ -1,11 +1,12 @@
 package com.example.common.api.service.impl;
 
 import com.example.common.api.ErrorCodeEnum;
-import com.example.common.api.PageCommon;
-import com.example.common.api.PageQuery;
 import com.example.common.api.repository.CommonRepository;
 import com.example.common.api.service.CommonService;
 import com.example.common.pojo.AbstractCommonDO;
+import com.example.common.pojo.CommonPage;
+import com.example.common.pojo.PageQuery;
+import com.example.common.utils.CopyUtil;
 import org.hibernate.annotations.NotFound;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 /**
@@ -42,6 +40,8 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
 
     public abstract DO toDO(VO entity);
 
+    public abstract DO toDO(Map<String, Object> queryMap);
+
     @Override
     public VO getById(ID id) {
         Optional<DO> optional = commonRepository.findById(id);
@@ -53,10 +53,10 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
     }
 
     @Override
-    public List<VO> getAll(VO entityVO) {
-        List<DO> entityDOList = commonRepository.findAll(Example.of(toDO(entityVO)));
+    public List<VO> getAll(Map<String, Object> query) {
+        List<DO> entityDOList = commonRepository.findAll(Example.of(toDO(query)));
 
-        List<VO> entityVOList = new ArrayList<VO>();
+        List<VO> entityVOList = new ArrayList<>();
         for (DO i : entityDOList) {
             entityVOList.add(toVO(i));
         }
@@ -65,23 +65,31 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
     }
 
     @Override
-    public PageCommon<VO> getByPage(VO entityVO, PageQuery query) {
-        if (!StringUtils.hasText(query.getSortBy())) {
-            query.setSortBy("id");
+    public CommonPage<VO> getByPage(Map<String, Object> queryMap) {
+        PageQuery pageQuery = CopyUtil.copy(queryMap, PageQuery.class);
+        if (pageQuery.getPageNum() == null) {
+            pageQuery.setPageNum(1);
         }
-        if (!StringUtils.hasText(query.getSortOrder())) {
-            query.setSortOrder("asc");
+        if (pageQuery.getPageSize() == null) {
+            pageQuery.setPageSize(10);
         }
+        if (!StringUtils.hasText(pageQuery.getSortBy())) {
+            pageQuery.setSortBy("id");
+        }
+        if (!StringUtils.hasText(pageQuery.getSortOrder())) {
+            pageQuery.setSortOrder("asc");
+        }
+
         Page<DO> page = commonRepository.findAll(
-                Example.of(toDO(entityVO)),
+                Example.of(toDO(queryMap)),
                 PageRequest.of(
-                        query.getPageNum() - 1,
-                        query.getPageSize(),
-                        Sort.by("asc".equals(query.getSortOrder()) ? Sort.Direction.ASC : Sort.Direction.DESC, query.getSortBy())
+                        pageQuery.getPageNum() - 1,
+                        pageQuery.getPageSize(),
+                        Sort.by("asc".equals(pageQuery.getSortOrder()) ? Sort.Direction.ASC : Sort.Direction.DESC, pageQuery.getSortBy())
                 )
         );
 
-        PageCommon<VO> result = new PageCommon<>();
+        CommonPage<VO> result = new CommonPage<>();
         result.setPageNum(page.getNumber() + 1);
         result.setPageSize(page.getSize());
         result.setTotalPage(page.getTotalPages());
@@ -98,8 +106,8 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
     }
 
     @Override
-    public VO saveOrUpdate(VO entityVO) {
-        DO entity = toDO(entityVO);
+    public VO saveOrUpdate(Map<String, Object> queryMap) {
+        DO entity = toDO(queryMap);
         DO entityFull = entity;
         List<String> ignoreProperties = new ArrayList<>();
         try {

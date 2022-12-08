@@ -10,6 +10,8 @@ import com.example.common.api.service.impl.AbstractCommonLogicDeleteServiceJpaIm
 import com.example.common.utils.CopyUtil;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 /**
  * @author wzklhk
  */
@@ -34,6 +36,26 @@ public class UserServiceImpl extends AbstractCommonLogicDeleteServiceJpaImpl<Use
     @Override
     public UserDO toDO(UserVO entity) {
         UserDO result = CopyUtil.copy(entity, UserDO.class);
+        if (result.getId() == null) {
+            if (result.getPassword() == null) {
+                result.setPassword("12345678");
+            }
+            if (result.getIsEnabled() == null) {
+                result.setIsEnabled(true);
+            }
+            if (result.getIsLocked() == null) {
+                result.setIsLocked(false);
+            }
+            if (result.getIsDeleted() == null) {
+                result.setIsDeleted(false);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public UserDO toDO(Map<String, Object> queryMap) {
+        UserDO result = CopyUtil.copy(queryMap, UserDO.class);
         if (result.getId() == null) {
             if (result.getPassword() == null) {
                 result.setPassword("12345678");

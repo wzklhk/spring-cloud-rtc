@@ -1,10 +1,10 @@
 package com.example.common.api.service;
 
 import com.example.common.api.ErrorCodeEnum;
-import com.example.common.api.PageCommon;
-import com.example.common.api.PageQuery;
+import com.example.common.pojo.CommonPage;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 通用 Service
@@ -16,17 +16,13 @@ import java.util.List;
  */
 public interface CommonService<VO, DO, ID> {
 
-    VO toVO(DO entity);
-
-    DO toDO(VO entity);
-
     VO getById(ID id);
 
-    List<VO> getAll(VO entityVo);
+    List<VO> getAll(Map<String, Object> query);
 
-    PageCommon<VO> getByPage(VO entityVO, PageQuery query);
+    CommonPage<VO> getByPage(Map<String, Object> query);
 
-    VO saveOrUpdate(VO entityVo);
+    VO saveOrUpdate(Map<String, Object> entityVo);
 
     ErrorCodeEnum deleteById(ID id);
 

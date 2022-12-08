@@ -1,4 +1,4 @@
-package com.example.common.api;
+package com.example.common.pojo;
 
 import com.example.common.utils.CopyUtil;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PageCommon<T> {
+public class CommonPage<T> {
 
     @ApiModelProperty(value = "页码")
     private Integer pageNum;
@@ -45,8 +45,8 @@ public class PageCommon<T> {
     private List<T> list;
     public static final String LIST = "list";
 
-    public static <T> PageCommon<T> of(Page<T> page) {
-        PageCommon<T> result = new PageCommon<T>();
+    public static <T> CommonPage<T> of(Page<T> page) {
+        CommonPage<T> result = new CommonPage<T>();
         result.setPageNum(page.getNumber() + 1);
         result.setPageSize(page.getSize());
         result.setTotalPage(page.getTotalPages());
@@ -57,8 +57,8 @@ public class PageCommon<T> {
         return result;
     }
 
-    public static <T> PageCommon<T> of(Page page, Class<T> entityModelClass) {
-        PageCommon<T> result = new PageCommon<>();
+    public static <T> CommonPage<T> of(Page page, Class<T> entityModelClass) {
+        CommonPage<T> result = new CommonPage<>();
         // 设置页面基本信息
         result.setPageNum(page.getNumber() + 1);
         result.setPageSize(page.getSize());
