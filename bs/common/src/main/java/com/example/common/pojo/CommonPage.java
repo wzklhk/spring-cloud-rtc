@@ -57,15 +57,8 @@ public class CommonPage<T> {
         return result;
     }
 
-    public static <T> CommonPage<T> of(Page page, Class<T> entityModelClass) {
-        CommonPage<T> result = new CommonPage<>();
-        // 设置页面基本信息
-        result.setPageNum(page.getNumber() + 1);
-        result.setPageSize(page.getSize());
-        result.setTotalPage(page.getTotalPages());
-        result.setTotal(page.getTotalElements());
-        result.setSortBy(page.getSort().stream().iterator().next().getProperty());
-        result.setSortOrder(page.getSort().stream().iterator().next().getDirection().toString());
+    public static <E, T> CommonPage<T> of(Page<E> page, Class<T> entityModelClass) {
+        CommonPage result = CommonPage.of(page);
         // 设置页面数据
         result.setList(CopyUtil.copyList(page.getContent(), entityModelClass));
         return result;

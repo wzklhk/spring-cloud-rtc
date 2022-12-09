@@ -1,14 +1,16 @@
 package com.example.access.admin.pojo.user;
 
 import com.example.common.pojo.AbstractCommonLogicDeleteDO;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Objects;
 
 /**
  * 注解@SQLDelete(sql = "update access_user set is_deleted = 1 where id = ?")
@@ -19,10 +21,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "access_user")
-@SQLDelete(sql = "update access_user set is_deleted = 1 where id = ?")
-@Where(clause = "is_deleted = 0")
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class UserDO extends AbstractCommonLogicDeleteDO {
 
     /**
@@ -52,4 +54,21 @@ public class UserDO extends AbstractCommonLogicDeleteDO {
     @Column(name = "is_locked", nullable = false,
             columnDefinition = "tinyint(1) DEFAULT 0 COMMENT '是否锁定，1为true，0为false'")
     private Boolean isLocked;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
+        UserDO userDO = (UserDO) o;
+        return getId() != null && Objects.equals(getId(), userDO.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

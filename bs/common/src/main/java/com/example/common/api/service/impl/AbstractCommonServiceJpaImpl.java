@@ -19,6 +19,8 @@ import org.springframework.util.StringUtils;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.*;
 
 
@@ -33,14 +35,18 @@ import java.util.*;
 public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommonDO, ID extends Serializable>
         implements CommonService<VO, DO, ID> {
 
+    private Class<VO> voClazz;
+
+    private Class<DO> doClazz;
+
     @Autowired
     private CommonRepository<DO, ID> commonRepository;
 
-    public abstract VO toVO(DO entity);
-
-    public abstract DO toDO(VO entity);
-
-    public abstract DO toDO(Map<String, Object> queryMap);
+    public AbstractCommonServiceJpaImpl() {
+        Type[] types = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments();
+        this.voClazz = (Class<VO>) types[0];
+        this.doClazz = (Class<DO>) types[1];
+    }
 
     @Override
     public VO getById(ID id) {
@@ -89,20 +95,7 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
                 )
         );
 
-        CommonPage<VO> result = new CommonPage<>();
-        result.setPageNum(page.getNumber() + 1);
-        result.setPageSize(page.getSize());
-        result.setTotalPage(page.getTotalPages());
-        result.setTotal(page.getTotalElements());
-        result.setSortBy(page.getSort().stream().iterator().next().getProperty());
-        result.setSortOrder(page.getSort().stream().iterator().next().getDirection().toString());
-        List<VO> list = new ArrayList<>();
-        for (DO i : page.getContent()) {
-            list.add(toVO(i));
-        }
-        result.setList(list);
-
-        return result;
+        return CommonPage.of(page, voClazz);
     }
 
     @Override
@@ -147,5 +140,17 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
     public ErrorCodeEnum deleteById(ID id) {
         commonRepository.deleteById(id);
         return ErrorCodeEnum.OK;
+    }
+
+    private VO toVO(DO entity) {
+        return CopyUtil.copy(entity, voClazz);
+    }
+
+    private DO toDO(VO entity) {
+        return CopyUtil.copy(entity, doClazz);
+    }
+
+    private DO toDO(Map<String, Object> entity) {
+        return CopyUtil.copy(entity, doClazz);
     }
 }

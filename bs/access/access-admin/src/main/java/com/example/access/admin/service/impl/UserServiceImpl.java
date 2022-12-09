@@ -28,49 +28,18 @@ public class UserServiceImpl extends AbstractCommonLogicDeleteServiceJpaImpl<Use
         this.userRepository = userRepository;
     }
 
-    @Override
-    public UserVO toVO(UserDO entity) {
-        return CopyUtil.copy(entity, UserVO.class);
-    }
 
     @Override
-    public UserDO toDO(UserVO entity) {
-        UserDO result = CopyUtil.copy(entity, UserDO.class);
-        if (result.getId() == null) {
-            if (result.getPassword() == null) {
-                result.setPassword("12345678");
+    public UserVO saveOrUpdate(Map<String, Object> queryMap) {
+        if (!queryMap.containsKey("id")) {
+            if (!queryMap.containsKey("isEnabled")) {
+                queryMap.put("isEnabled", true);
             }
-            if (result.getIsEnabled() == null) {
-                result.setIsEnabled(true);
-            }
-            if (result.getIsLocked() == null) {
-                result.setIsLocked(false);
-            }
-            if (result.getIsDeleted() == null) {
-                result.setIsDeleted(false);
+            if (!queryMap.containsKey("isLocked")) {
+                queryMap.put("isLocked", true);
             }
         }
-        return result;
-    }
-
-    @Override
-    public UserDO toDO(Map<String, Object> queryMap) {
-        UserDO result = CopyUtil.copy(queryMap, UserDO.class);
-        if (result.getId() == null) {
-            if (result.getPassword() == null) {
-                result.setPassword("12345678");
-            }
-            if (result.getIsEnabled() == null) {
-                result.setIsEnabled(true);
-            }
-            if (result.getIsLocked() == null) {
-                result.setIsLocked(false);
-            }
-            if (result.getIsDeleted() == null) {
-                result.setIsDeleted(false);
-            }
-        }
-        return result;
+        return super.saveOrUpdate(queryMap);
     }
 
     @Override
@@ -78,6 +47,6 @@ public class UserServiceImpl extends AbstractCommonLogicDeleteServiceJpaImpl<Use
         JSONObject jsonObject = authFeignService.checkToken(token);
         String username = jsonObject.getString("user_name");
         UserDO userDO = userRepository.getByUsername(username);
-        return toVO(userDO);
+        return CopyUtil.copy(userDO, UserVO.class);
     }
 }
