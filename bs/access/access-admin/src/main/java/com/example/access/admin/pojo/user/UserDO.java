@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +23,8 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "access_user")
+@SQLDelete(sql = "update access_user set is_deleted = 1 where id = ?")
+@Where(clause = "is_deleted = 0")
 @Getter
 @Setter
 @ToString
