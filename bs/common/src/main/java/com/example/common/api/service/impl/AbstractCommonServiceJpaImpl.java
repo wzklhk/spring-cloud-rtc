@@ -142,6 +142,12 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
         return ErrorCodeEnum.OK;
     }
 
+    @Override
+    public ErrorCodeEnum deleteAllByIdInBatch(Iterable<ID> ids) {
+        commonRepository.deleteAllByIdInBatch(ids);
+        return ErrorCodeEnum.OK;
+    }
+
     private VO toVO(DO entity) {
         return CopyUtil.copy(entity, voClazz);
     }

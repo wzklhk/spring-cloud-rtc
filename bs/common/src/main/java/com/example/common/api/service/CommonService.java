@@ -26,5 +26,5 @@ public interface CommonService<VO, DO, ID> {
 
     ErrorCodeEnum deleteById(ID id);
 
-
+    ErrorCodeEnum deleteAllByIdInBatch(Iterable<ID> ids);
 }

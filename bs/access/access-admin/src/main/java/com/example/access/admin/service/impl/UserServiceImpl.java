@@ -32,11 +32,14 @@ public class UserServiceImpl extends AbstractCommonLogicDeleteServiceJpaImpl<Use
     @Override
     public UserVO saveOrUpdate(Map<String, Object> queryMap) {
         if (!queryMap.containsKey("id")) {
+            if (!queryMap.containsKey("password")) {
+                queryMap.put("password", "12345678");
+            }
             if (!queryMap.containsKey("isEnabled")) {
                 queryMap.put("isEnabled", true);
             }
             if (!queryMap.containsKey("isLocked")) {
-                queryMap.put("isLocked", true);
+                queryMap.put("isLocked", false);
             }
         }
         return super.saveOrUpdate(queryMap);

@@ -91,5 +91,8 @@ public class CommonController<VO, DO, ID> {
         return ResultInfo.status(commonService.deleteById(id), null);
     }
 
-
+    @DeleteMapping("/batch")
+    public ResultInfo<Object> deleteAllByIdInBatch(@RequestParam List<ID> ids) {
+        return ResultInfo.status(commonService.deleteAllByIdInBatch(ids), null);
+    }
 }
