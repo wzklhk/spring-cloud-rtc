@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Spring项目本地配置 ###
+**/src/main/resources/config/
