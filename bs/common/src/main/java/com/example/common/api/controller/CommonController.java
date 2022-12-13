@@ -1,6 +1,5 @@
 package com.example.common.api.controller;
 
-import com.example.common.api.ErrorCodeEnum;
 import com.example.common.api.ResultInfo;
 import com.example.common.api.service.CommonService;
 import com.example.common.pojo.CommonPage;
@@ -92,14 +91,8 @@ public class CommonController<VO, DO, ID> {
         return ResultInfo.status(commonService.deleteById(id), null);
     }
 
-    @DeleteMapping("/ids")
+    @DeleteMapping("/batch")
     public ResultInfo<Object> deleteBatchesByIds(@RequestParam List<ID> ids) {
-        ErrorCodeEnum error = null;
-        for (ID id : ids) {
-            error = commonService.deleteById(id);
-        }
-        return ResultInfo.status(error, null);
+        return ResultInfo.status(commonService.deleteAllByIdInBatch(ids), null);
     }
-
-
 }
