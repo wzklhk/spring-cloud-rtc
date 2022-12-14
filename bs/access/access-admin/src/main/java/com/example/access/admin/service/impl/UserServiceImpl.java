@@ -6,6 +6,8 @@ import com.example.access.admin.pojo.user.UserDO;
 import com.example.access.admin.pojo.user.UserVO;
 import com.example.access.admin.repository.UserRepository;
 import com.example.access.admin.service.UserService;
+import com.example.common.api.ErrorCodeEnum;
+import com.example.common.api.ResultInfo;
 import com.example.common.api.service.impl.AbstractCommonLogicDeleteServiceJpaImpl;
 import com.example.common.utils.CopyUtil;
 import org.springframework.stereotype.Service;
@@ -47,8 +49,11 @@ public class UserServiceImpl extends AbstractCommonLogicDeleteServiceJpaImpl<Use
 
     @Override
     public UserVO getByToken(String token) {
-        JSONObject jsonObject = authFeignService.checkToken(token);
-        String username = jsonObject.getString("user_name");
+        ResultInfo<JSONObject> res = authFeignService.checkToken(token);
+        if (!res.getCode().equals(ErrorCodeEnum.OK.getErrorCode())) {
+            return null;
+        }
+        String username = res.getData().getString("user_name");
         UserDO userDO = userRepository.getByUsername(username);
         return CopyUtil.copy(userDO, UserVO.class);
     }

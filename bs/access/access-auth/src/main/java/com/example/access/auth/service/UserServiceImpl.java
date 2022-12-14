@@ -33,19 +33,19 @@ public class UserServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        JSONObject response = userFeignService.getUserByUsername(username);
-        if (!(response.containsKey(ResultInfo.CODE) && response.getInteger(ResultInfo.CODE) == ErrorCodeEnum.OK.getErrorCode())) {
-            if (response.containsKey(ResultInfo.MSG)) {
-                String info = response.getString(ResultInfo.MSG);
-                log.error(info);
-                throw new UsernameNotFoundException(info);
-            }
+        ResultInfo<JSONObject> res = userFeignService.getUserByUsername(username);
+        if (!res.getCode().equals(ErrorCodeEnum.OK.getErrorCode())) {
+            String errorInfo = res.getMsg();
+            log.error(errorInfo);
+            throw new UsernameNotFoundException(errorInfo);
         }
-        JSONArray list = response.getJSONObject(ResultInfo.DATA).getJSONArray(CommonPage.LIST);
+
+        JSONArray list = res.getData().getJSONArray(CommonPage.LIST);
 
         if (null == list || 0 == list.size()) {
             throw new UsernameNotFoundException("账户不存在");
         }
+
         Object user = list.get(0);
 
         UserDetailsImpl userDetails = CopyUtil.copy(user, UserDetailsImpl.class);
