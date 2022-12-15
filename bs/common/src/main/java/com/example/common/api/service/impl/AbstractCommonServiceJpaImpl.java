@@ -7,6 +7,7 @@ import com.example.common.pojo.AbstractCommonDO;
 import com.example.common.pojo.CommonPage;
 import com.example.common.pojo.PageQuery;
 import com.example.common.utils.CopyUtil;
+import com.example.common.utils.GenericSuperClassUtil;
 import org.hibernate.annotations.NotFound;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ import org.springframework.util.StringUtils;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 
@@ -43,7 +43,7 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
     private CommonRepository<DO, ID> commonRepository;
 
     public AbstractCommonServiceJpaImpl() {
-        Type[] types = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments();
+        Type[] types = GenericSuperClassUtil.getActualTypeArguments(this.getClass());
         this.voClazz = (Class<VO>) types[0];
         this.doClazz = (Class<DO>) types[1];
     }
@@ -96,6 +96,11 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
         );
 
         return CommonPage.of(page, voClazz);
+    }
+
+    @Override
+    public Long count(Map<String, Object> queryMap) {
+        return commonRepository.count(Example.of(toDO(queryMap)));
     }
 
     @Override

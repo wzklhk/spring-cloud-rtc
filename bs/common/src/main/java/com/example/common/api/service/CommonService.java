@@ -22,6 +22,8 @@ public interface CommonService<VO, DO, ID> {
 
     CommonPage<VO> getByPage(Map<String, Object> query);
 
+    Long count(Map<String, Object> query);
+
     VO saveOrUpdate(Map<String, Object> entityVo);
 
     ErrorCodeEnum deleteById(ID id);

@@ -56,6 +56,11 @@ public class CommonController<VO, DO, ID> {
         return ResultInfo.ok(commonService.getByPage(queryMap));
     }
 
+    @GetMapping("/count")
+    public ResultInfo<Long> count(@RequestParam Map<String, Object> query) {
+        return ResultInfo.ok(commonService.count(query));
+    }
+
     /**
      * 新增对象
      * POST方法接口进行新增对象
