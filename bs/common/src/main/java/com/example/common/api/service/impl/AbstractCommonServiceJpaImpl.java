@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManager;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -35,9 +36,12 @@ import java.util.*;
 public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommonDO, ID extends Serializable>
         implements CommonService<VO, DO, ID> {
 
-    private Class<VO> voClazz;
+    private final Class<VO> voClazz;
 
-    private Class<DO> doClazz;
+    private final Class<DO> doClazz;
+
+    @Autowired
+    private EntityManager em;
 
     @Autowired
     private CommonRepository<DO, ID> commonRepository;
@@ -99,13 +103,13 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
     }
 
     @Override
-    public Long count(Map<String, Object> queryMap) {
-        return commonRepository.count(Example.of(toDO(queryMap)));
+    public Long count(Map<String, Object> query) {
+        return commonRepository.count(Example.of(toDO(query)));
     }
 
     @Override
-    public VO saveOrUpdate(Map<String, Object> queryMap) {
-        DO entity = toDO(queryMap);
+    public VO saveOrUpdate(Map<String, Object> query) {
+        DO entity = toDO(query);
         DO entityFull = entity;
         List<String> ignoreProperties = new ArrayList<>();
         try {

@@ -96,6 +96,12 @@ public class CommonController<VO, DO, ID> {
         return ResultInfo.status(commonService.deleteById(id), null);
     }
 
+    /**
+     * 删除多个对象
+     *
+     * @param ids 要删除对象的ids
+     * @return 通用返回：status
+     */
     @DeleteMapping("/batch")
     public ResultInfo<Object> deleteBatchesByIds(@RequestParam List<ID> ids) {
         return ResultInfo.status(commonService.deleteAllByIdInBatch(ids), null);

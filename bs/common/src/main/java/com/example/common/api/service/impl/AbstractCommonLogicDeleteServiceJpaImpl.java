@@ -13,10 +13,10 @@ public abstract class AbstractCommonLogicDeleteServiceJpaImpl<VO, DO extends Abs
         extends AbstractCommonServiceJpaImpl<VO, DO, ID>
         implements CommonService<VO, DO, ID> {
     @Override
-    public VO saveOrUpdate(Map<String, Object> queryMap) {
-        if (!queryMap.containsKey("id") && !queryMap.containsKey("isDeleted")) {
-            queryMap.put("isDeleted", false);
+    public VO saveOrUpdate(Map<String, Object> query) {
+        if (!query.containsKey("id") && !query.containsKey("isDeleted")) {
+            query.put("isDeleted", false);
         }
-        return super.saveOrUpdate(queryMap);
+        return super.saveOrUpdate(query);
     }
 }
