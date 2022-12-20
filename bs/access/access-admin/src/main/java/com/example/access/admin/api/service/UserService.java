@@ -10,4 +10,6 @@ import com.example.common.api.service.CommonService;
 public interface UserService extends CommonService<UserVO, UserDO, Long> {
 
     UserVO getByToken(String token);
+
+    UserVO getByUsername(String username);
 }

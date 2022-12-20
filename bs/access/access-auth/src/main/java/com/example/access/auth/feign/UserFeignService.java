@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(value = "${feign.name.access-admin-service}")
 public interface UserFeignService {
 
-    @GetMapping("/user")
+    @GetMapping("/user/getByUsername")
     CommonResultInfo<JSONObject> getUserByUsername(@RequestParam("username") String username);
 
 }

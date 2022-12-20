@@ -10,6 +10,7 @@ import com.example.common.api.service.impl.AbstractCommonLogicDeleteServiceJpaIm
 import com.example.common.pojo.CommonResultInfo;
 import com.example.common.pojo.ErrorCodeEnum;
 import com.example.common.utils.CopyUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -17,6 +18,7 @@ import java.util.Map;
 /**
  * @author wzklhk
  */
+@Slf4j
 @Service
 public class UserServiceImpl extends AbstractCommonLogicDeleteServiceJpaImpl<UserVO, UserDO, Long>
         implements UserService {
@@ -51,9 +53,16 @@ public class UserServiceImpl extends AbstractCommonLogicDeleteServiceJpaImpl<Use
     public UserVO getByToken(String token) {
         CommonResultInfo<JSONObject> res = authFeignService.checkToken(token);
         if (!res.getCode().equals(ErrorCodeEnum.OK.getErrorCode())) {
+            log.error(res.getMsg());
+            log.error(res.getData().toString());
             return null;
         }
         String username = res.getData().getString("user_name");
+        return getByUsername(username);
+    }
+
+    @Override
+    public UserVO getByUsername(String username) {
         UserDO userDO = userRepository.getByUsername(username);
         return CopyUtil.copy(userDO, UserVO.class);
     }

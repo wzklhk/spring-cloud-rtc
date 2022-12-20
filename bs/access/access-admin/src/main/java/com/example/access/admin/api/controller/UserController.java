@@ -28,4 +28,14 @@ public class UserController extends CommonController<UserVO, UserDO, Long> {
     public CommonResultInfo<UserVO> getByToken(@RequestParam String token) {
         return CommonResultInfo.ok(userService.getByToken(token));
     }
+
+    @GetMapping("/getByUsername")
+    public CommonResultInfo<UserVO> getByUsername(@RequestParam String username) {
+        UserVO userVO = userService.getByUsername(username);
+        if (userVO != null) {
+            return CommonResultInfo.ok(userVO);
+        } else {
+            return CommonResultInfo.error();
+        }
+    }
 }

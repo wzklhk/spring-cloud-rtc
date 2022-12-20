@@ -1,10 +1,8 @@
 package com.example.access.auth.api.service;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.access.auth.feign.UserFeignService;
 import com.example.access.auth.pojo.user.UserDetailsImpl;
-import com.example.common.pojo.CommonPageInfo;
 import com.example.common.pojo.CommonResultInfo;
 import com.example.common.pojo.ErrorCodeEnum;
 import com.example.common.utils.CopyUtil;
@@ -40,13 +38,11 @@ public class UserServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException(errorInfo);
         }
 
-        JSONArray list = res.getData().getJSONArray(CommonPageInfo.LIST);
+        JSONObject user = res.getData();
 
-        if (null == list || 0 == list.size()) {
+        if (null == user) {
             throw new UsernameNotFoundException("账户不存在");
         }
-
-        Object user = list.get(0);
 
         UserDetailsImpl userDetails = CopyUtil.copy(user, UserDetailsImpl.class);
         userDetails.setPassword(passwordEncoder.encode(userDetails.getPassword()));
