@@ -1,7 +1,7 @@
 package com.example.common.api.service;
 
-import com.example.common.api.ErrorCodeEnum;
-import com.example.common.pojo.CommonPage;
+import com.example.common.pojo.CommonPageInfo;
+import com.example.common.pojo.ErrorCodeEnum;
 
 import java.util.List;
 import java.util.Map;
@@ -20,7 +20,7 @@ public interface CommonService<VO, DO, ID> {
 
     List<VO> getAll(Map<String, Object> query);
 
-    CommonPage<VO> getByPage(Map<String, Object> query);
+    CommonPageInfo<VO> getByPage(Map<String, Object> query);
 
     Long count(Map<String, Object> query);
 

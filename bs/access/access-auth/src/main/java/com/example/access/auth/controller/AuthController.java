@@ -1,7 +1,7 @@
 package com.example.access.auth.controller;
 
 import com.example.access.auth.pojo.token.OAuth2AccessTokenDTO;
-import com.example.common.api.ResultInfo;
+import com.example.common.pojo.CommonResultInfo;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.endpoint.CheckTokenEndpoint;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
@@ -38,7 +38,7 @@ public class AuthController {
      * Oauth2登录认证
      */
     @GetMapping("/token")
-    public ResultInfo<Object> getAccessToken(Principal principal, @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
+    public CommonResultInfo<Object> getAccessToken(Principal principal, @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
         try {
             OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
             OAuth2AccessTokenDTO token = OAuth2AccessTokenDTO.builder()
@@ -51,19 +51,19 @@ public class AuthController {
                     .scope(oAuth2AccessToken.getScope())
                     .additionalInformation(oAuth2AccessToken.getAdditionalInformation())
                     .build();
-            return ResultInfo.ok(token);
+            return CommonResultInfo.ok(token);
         } catch (Exception e) {
-            return ResultInfo.error(e.getMessage());
+            return CommonResultInfo.error(e.getMessage());
         }
     }
 
     @GetMapping("/check_token")
-    public ResultInfo<Object> checkToken(@RequestParam String token) {
+    public CommonResultInfo<Object> checkToken(@RequestParam String token) {
         try {
             Map<String, ?> map = checkTokenEndpoint.checkToken(token);
-            return ResultInfo.ok(map);
+            return CommonResultInfo.ok(map);
         } catch (Exception e) {
-            return ResultInfo.error(e.getMessage());
+            return CommonResultInfo.error(e.getMessage());
         }
     }
 }

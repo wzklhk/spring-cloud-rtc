@@ -7,7 +7,7 @@ import lombok.Data;
  * @author wzklhk
  */
 @Data
-public class PageQuery {
+public class CommonPageQuery {
 
     @ApiModelProperty(value = "页码，从1开始")
     private Integer pageNum = 1;

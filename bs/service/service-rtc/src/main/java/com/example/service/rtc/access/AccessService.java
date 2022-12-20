@@ -1,8 +1,8 @@
 package com.example.service.rtc.access;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.common.api.ErrorCodeEnum;
-import com.example.common.api.ResultInfo;
+import com.example.common.pojo.CommonResultInfo;
+import com.example.common.pojo.ErrorCodeEnum;
 import com.example.common.utils.CopyUtil;
 import com.example.service.common.pojo.user.UserVO;
 import com.example.service.rtc.access.feign.AdminFeignService;
@@ -22,7 +22,7 @@ public class AccessService {
     }
 
     public UserVO getUserByToken(String token) {
-        ResultInfo<JSONObject> res = adminFeignService.getUserByToken(token);
+        CommonResultInfo<JSONObject> res = adminFeignService.getUserByToken(token);
         if (!res.getCode().equals(ErrorCodeEnum.OK.getErrorCode())) {
             log.info(res.getMsg());
             log.info(res.getData().toString());

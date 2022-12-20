@@ -1,11 +1,11 @@
 package com.example.common.api.service.impl;
 
-import com.example.common.api.ErrorCodeEnum;
 import com.example.common.api.repository.CommonRepository;
 import com.example.common.api.service.CommonService;
 import com.example.common.pojo.AbstractCommonDO;
-import com.example.common.pojo.CommonPage;
-import com.example.common.pojo.PageQuery;
+import com.example.common.pojo.CommonPageInfo;
+import com.example.common.pojo.CommonPageQuery;
+import com.example.common.pojo.ErrorCodeEnum;
 import com.example.common.utils.CopyUtil;
 import com.example.common.utils.GenericSuperClassUtil;
 import org.hibernate.annotations.NotFound;
@@ -75,8 +75,8 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
     }
 
     @Override
-    public CommonPage<VO> getByPage(Map<String, Object> queryMap) {
-        PageQuery pageQuery = CopyUtil.copy(queryMap, PageQuery.class);
+    public CommonPageInfo<VO> getByPage(Map<String, Object> queryMap) {
+        CommonPageQuery pageQuery = CopyUtil.copy(queryMap, CommonPageQuery.class);
         if (pageQuery.getPageNum() == null) {
             pageQuery.setPageNum(1);
         }
@@ -99,7 +99,7 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
                 )
         );
 
-        return CommonPage.of(page, voClazz);
+        return CommonPageInfo.of(page, voClazz);
     }
 
     @Override

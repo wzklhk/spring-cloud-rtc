@@ -1,8 +1,8 @@
 package com.example.common.api.controller;
 
-import com.example.common.api.ResultInfo;
 import com.example.common.api.service.CommonService;
-import com.example.common.pojo.CommonPage;
+import com.example.common.pojo.CommonPageInfo;
+import com.example.common.pojo.CommonResultInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +29,8 @@ public class CommonController<VO, DO, ID> {
      * @return 通用返回VO对象
      */
     @GetMapping("/id")
-    public ResultInfo<VO> getById(@RequestParam ID id) {
-        return ResultInfo.ok(commonService.getById(id));
+    public CommonResultInfo<VO> getById(@RequestParam ID id) {
+        return CommonResultInfo.ok(commonService.getById(id));
     }
 
     /**
@@ -40,8 +40,8 @@ public class CommonController<VO, DO, ID> {
      * @return 通用返回：VO列表
      */
     @GetMapping("/all")
-    public ResultInfo<List<VO>> getAll(Map<String, Object> queryMap) {
-        return ResultInfo.ok(commonService.getAll(queryMap));
+    public CommonResultInfo<List<VO>> getAll(Map<String, Object> queryMap) {
+        return CommonResultInfo.ok(commonService.getAll(queryMap));
     }
 
     /**
@@ -52,13 +52,13 @@ public class CommonController<VO, DO, ID> {
      * @return 通用返回：页对象包含VO列表
      */
     @GetMapping
-    public ResultInfo<CommonPage<VO>> getByPage(@RequestParam Map<String, Object> queryMap) {
-        return ResultInfo.ok(commonService.getByPage(queryMap));
+    public CommonResultInfo<CommonPageInfo<VO>> getByPage(@RequestParam Map<String, Object> queryMap) {
+        return CommonResultInfo.ok(commonService.getByPage(queryMap));
     }
 
     @GetMapping("/count")
-    public ResultInfo<Long> count(@RequestParam Map<String, Object> query) {
-        return ResultInfo.ok(commonService.count(query));
+    public CommonResultInfo<Long> count(@RequestParam Map<String, Object> query) {
+        return CommonResultInfo.ok(commonService.count(query));
     }
 
     /**
@@ -69,8 +69,8 @@ public class CommonController<VO, DO, ID> {
      * @return 通用返回：新增的VO对象
      */
     @PostMapping
-    public ResultInfo<VO> save(@RequestBody Map<String, Object> queryMap) {
-        return ResultInfo.ok(commonService.saveOrUpdate(queryMap));
+    public CommonResultInfo<VO> save(@RequestBody Map<String, Object> queryMap) {
+        return CommonResultInfo.ok(commonService.saveOrUpdate(queryMap));
     }
 
     /**
@@ -81,8 +81,8 @@ public class CommonController<VO, DO, ID> {
      * @return 通用返回：修改的VO对象
      */
     @PutMapping
-    public ResultInfo<VO> update(@RequestBody Map<String, Object> queryMap) {
-        return ResultInfo.ok(commonService.saveOrUpdate(queryMap));
+    public CommonResultInfo<VO> update(@RequestBody Map<String, Object> queryMap) {
+        return CommonResultInfo.ok(commonService.saveOrUpdate(queryMap));
     }
 
     /**
@@ -92,8 +92,8 @@ public class CommonController<VO, DO, ID> {
      * @return 通用返回：status
      */
     @DeleteMapping
-    public ResultInfo<Object> deleteById(@RequestParam ID id) {
-        return ResultInfo.status(commonService.deleteById(id), null);
+    public CommonResultInfo<Object> deleteById(@RequestParam ID id) {
+        return CommonResultInfo.status(commonService.deleteById(id), null);
     }
 
     /**
@@ -103,7 +103,7 @@ public class CommonController<VO, DO, ID> {
      * @return 通用返回：status
      */
     @DeleteMapping("/batch")
-    public ResultInfo<Object> deleteBatchesByIds(@RequestParam List<ID> ids) {
-        return ResultInfo.status(commonService.deleteAllByIdInBatch(ids), null);
+    public CommonResultInfo<Object> deleteBatchesByIds(@RequestParam List<ID> ids) {
+        return CommonResultInfo.status(commonService.deleteAllByIdInBatch(ids), null);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.common.api;
+package com.example.common.pojo;
 
 /**
  * 返回码枚举类

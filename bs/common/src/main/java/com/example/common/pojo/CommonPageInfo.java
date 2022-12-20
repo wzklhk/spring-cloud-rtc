@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommonPage<T> {
+public class CommonPageInfo<T> {
 
     @ApiModelProperty(value = "页码")
     private Integer pageNum;
@@ -45,8 +45,8 @@ public class CommonPage<T> {
     private List<T> list;
     public static final String LIST = "list";
 
-    public static <T> CommonPage<T> of(Page<T> page) {
-        CommonPage<T> result = new CommonPage<T>();
+    public static <T> CommonPageInfo<T> of(Page<T> page) {
+        CommonPageInfo<T> result = new CommonPageInfo<T>();
         result.setPageNum(page.getNumber() + 1);
         result.setPageSize(page.getSize());
         result.setTotalPage(page.getTotalPages());
@@ -57,8 +57,8 @@ public class CommonPage<T> {
         return result;
     }
 
-    public static <E, T> CommonPage<T> of(Page<E> page, Class<T> entityModelClass) {
-        CommonPage result = CommonPage.of(page);
+    public static <E, T> CommonPageInfo<T> of(Page<E> page, Class<T> entityModelClass) {
+        CommonPageInfo result = CommonPageInfo.of(page);
         // 设置页面数据
         result.setList(CopyUtil.copyList(page.getContent(), entityModelClass));
         return result;

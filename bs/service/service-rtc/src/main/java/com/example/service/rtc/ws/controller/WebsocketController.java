@@ -1,6 +1,6 @@
 package com.example.service.rtc.ws.controller;
 
-import com.example.common.api.ResultInfo;
+import com.example.common.pojo.CommonResultInfo;
 import com.example.service.common.pojo.message.Message;
 import com.example.service.common.pojo.user.UserVO;
 import com.example.service.rtc.ws.service.WebsocketService;
@@ -31,36 +31,36 @@ public class WebsocketController {
     }
 
     @GetMapping("/getUrl")
-    public ResultInfo getUrl() {
+    public CommonResultInfo getUrl() {
         String url = "ws://" + ip + ":" + port + "/ws";
-        return ResultInfo.ok(url);
+        return CommonResultInfo.ok(url);
     }
 
     @GetMapping("/getConnectedUserList")
-    public ResultInfo getConnectedUserList() {
+    public CommonResultInfo getConnectedUserList() {
         Set<WebsocketService> wsSet = WebsocketService.getWebSocketSet();
         List<UserVO> users = new ArrayList<>();
         for (WebsocketService ws : wsSet) {
             users.add(ws.getCurrentUser());
         }
-        return ResultInfo.ok(users);
+        return CommonResultInfo.ok(users);
     }
 
     @PostMapping("/unicast")
-    public <T> ResultInfo unicast(@RequestBody Message<T> message) {
+    public <T> CommonResultInfo unicast(@RequestBody Message<T> message) {
         websocketService.unicastMessage(message.getReceivers().get(0), message.getData());
-        return ResultInfo.ok();
+        return CommonResultInfo.ok();
     }
 
     @PostMapping("/multicast")
-    public <T> ResultInfo multicast(@RequestBody Message<T> message) {
+    public <T> CommonResultInfo multicast(@RequestBody Message<T> message) {
         websocketService.multicastMessage(message.getReceivers(), message.getData());
-        return ResultInfo.ok();
+        return CommonResultInfo.ok();
     }
 
     @PostMapping("/broadcast")
-    public <T> ResultInfo broadcast(@RequestBody Message<T> message) {
+    public <T> CommonResultInfo broadcast(@RequestBody Message<T> message) {
         websocketService.broadcastMessage(message.getData());
-        return ResultInfo.ok();
+        return CommonResultInfo.ok();
     }
 }
