@@ -1,6 +1,5 @@
-package com.example.service.rtc.room.service;
+package com.example.service.rtc.api.service;
 
-import com.example.service.rtc.ws.service.WebsocketService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package com.example.access.auth.controller;
+package com.example.access.auth.api.controller;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;

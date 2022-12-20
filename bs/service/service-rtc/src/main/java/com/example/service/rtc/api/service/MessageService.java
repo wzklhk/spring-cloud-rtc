@@ -1,4 +1,4 @@
-package com.example.service.rtc.message.service;
+package com.example.service.rtc.api.service;
 
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.example.access.admin.service;
+package com.example.access.admin.api.service;
 
 import com.example.access.admin.pojo.user.UserDO;
 import com.example.access.admin.pojo.user.UserVO;

@@ -1,4 +1,4 @@
-package com.example.access.auth.service;
+package com.example.access.auth.api.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;

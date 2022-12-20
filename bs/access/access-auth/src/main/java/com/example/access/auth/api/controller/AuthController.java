@@ -1,4 +1,4 @@
-package com.example.access.auth.controller;
+package com.example.access.auth.api.controller;
 
 import com.example.access.auth.pojo.token.OAuth2AccessTokenDTO;
 import com.example.common.pojo.CommonResultInfo;

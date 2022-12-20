@@ -1,11 +1,11 @@
-package com.example.access.admin.service.impl;
+package com.example.access.admin.api.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.access.admin.api.repository.UserRepository;
+import com.example.access.admin.api.service.UserService;
 import com.example.access.admin.feign.AuthFeignService;
 import com.example.access.admin.pojo.user.UserDO;
 import com.example.access.admin.pojo.user.UserVO;
-import com.example.access.admin.repository.UserRepository;
-import com.example.access.admin.service.UserService;
 import com.example.common.api.service.impl.AbstractCommonLogicDeleteServiceJpaImpl;
 import com.example.common.pojo.CommonResultInfo;
 import com.example.common.pojo.ErrorCodeEnum;

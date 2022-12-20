@@ -1,4 +1,4 @@
-package com.example.service.rtc.log.aspect;
+package com.example.service.rtc.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.*;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class LogAspect {
 
-    @Pointcut("execution(* com.example.service.rtc.ws.controller.WebsocketController.*(..))")
+    @Pointcut("execution(* com.example.service.rtc.api.controller.WebsocketController.*(..))")
     public void wsControllerPointcut() {
     }
 

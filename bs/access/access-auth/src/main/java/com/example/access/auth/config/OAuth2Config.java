@@ -1,8 +1,8 @@
 package com.example.access.auth.config;
 
+import com.example.access.auth.api.service.UserServiceImpl;
 import com.example.access.auth.properties.JWTProperties;
 import com.example.access.auth.properties.OAuth2Properties;
-import com.example.access.auth.service.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.PathResource;
