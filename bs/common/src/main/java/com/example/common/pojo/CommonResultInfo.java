@@ -43,6 +43,10 @@ public class CommonResultInfo<T> {
         this.data = data;
     }
 
+    public static <T> CommonResultInfo<T> status(int code, String msg, T data) {
+        return new CommonResultInfo<>(code, msg, data);
+    }
+
     public static <T> CommonResultInfo<T> status(ErrorCodeEnum code, T data) {
         return new CommonResultInfo<>(code, data);
     }
