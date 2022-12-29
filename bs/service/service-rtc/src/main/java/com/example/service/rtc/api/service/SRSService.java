@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +44,20 @@ public class SRSService {
         params.put("api", url);
         params.put("streamurl", streamurl);
         params.put("sdp", sdp);
+        params.put("tid", new Date().getTime());
+
+        return restTemplate.postForObject(url, params, JSONObject.class);
+    }
+
+    public JSONObject publishByChannelName(String channelName, String sdp) {
+        String url = "http://" + srsServer + "/rtc/v1/publish/";
+        String streamurl = "webrtc://" + srsServer + "/live/" + channelName;
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("api", url);
+        params.put("streamurl", streamurl);
+        params.put("sdp", sdp);
+        params.put("tid", new Date().getTime());
 
         return restTemplate.postForObject(url, params, JSONObject.class);
     }
@@ -54,6 +69,20 @@ public class SRSService {
         params.put("api", url);
         params.put("streamurl", streamurl);
         params.put("sdp", sdp);
+        params.put("tid", new Date().getTime());
+
+        return restTemplate.postForObject(url, params, JSONObject.class);
+    }
+
+    public JSONObject playByChannelName(String channelName, String sdp) {
+        String url = "http://" + srsServer + "/rtc/v1/play/";
+        String streamurl = "webrtc://" + srsServer + "/live/" + channelName;
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("api", url);
+        params.put("streamurl", streamurl);
+        params.put("sdp", sdp);
+        params.put("tid", new Date().getTime());
 
         return restTemplate.postForObject(url, params, JSONObject.class);
     }

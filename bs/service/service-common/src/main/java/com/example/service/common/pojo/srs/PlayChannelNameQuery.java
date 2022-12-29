@@ -2,9 +2,12 @@ package com.example.service.common.pojo.srs;
 
 import lombok.Data;
 
+/**
+ * @author wzklhk
+ */
 @Data
-public class PublishQuery {
-    private String streamurl;
+public class PlayChannelNameQuery {
+    private String channelName;
 
     private String sdp;
 }

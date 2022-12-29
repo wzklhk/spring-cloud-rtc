@@ -19,7 +19,7 @@ spring:
 
   # 数据库配置从配置中心获取
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/access-auth
+    url: jdbc:mysql://127.0.0.1:3306/spring-cloud-rtc
     username: username
     password: password
 
