@@ -31,4 +31,6 @@ feign:
     access-admin-service: access-admin
 
 srs:
-  server-addr: 127.0.0.1:1985
+  schema: http://
+  host: 127.0.0.1
+  port: 1985

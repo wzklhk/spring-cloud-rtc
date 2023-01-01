@@ -1,7 +1,7 @@
 package com.example.service.rtc.api.service;
 
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
+import com.example.service.rtc.properties.SRSServerProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -9,81 +9,83 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author wzklhk
+ */
 @Service
 public class SRSService {
 
     private final RestTemplate restTemplate;
 
-    @Value("${srs.server-addr}")
-    private String srsServer;
+    private final SRSServerProperties srsServerProperties;
 
-    public SRSService(RestTemplate restTemplate) {
+    public SRSService(RestTemplate restTemplate, SRSServerProperties srsServerProperties) {
         this.restTemplate = restTemplate;
+        this.srsServerProperties = srsServerProperties;
     }
 
-
     public JSONObject getVersion() {
-        String url = "http://" + srsServer + "/api/v1/versions";
+        String url = srsServerProperties.getSchema() + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/api/v1/versions";
         return restTemplate.getForObject(url, JSONObject.class);
     }
 
     public JSONObject getStreams() {
-        String url = "http://" + srsServer + "/api/v1/streams";
+        String url = srsServerProperties.getSchema() + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/api/v1/streams";
         return restTemplate.getForObject(url, JSONObject.class);
     }
 
     public JSONObject getClients() {
-        String url = "http://" + srsServer + "/api/v1/clients";
+        String url = srsServerProperties.getSchema() + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/api/v1/clients";
         return restTemplate.getForObject(url, JSONObject.class);
     }
 
     public JSONObject publish(String streamurl, String sdp) {
-        String url = "http://" + srsServer + "/rtc/v1/publish/";
+        String api = srsServerProperties.getSchema() + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/rtc/v1/publish/";
 
         Map<String, Object> params = new HashMap<>();
-        params.put("api", url);
+        params.put("api", api);
         params.put("streamurl", streamurl);
         params.put("sdp", sdp);
         params.put("tid", new Date().getTime());
 
-        return restTemplate.postForObject(url, params, JSONObject.class);
+        return restTemplate.postForObject(api, params, JSONObject.class);
     }
 
-    public JSONObject publishByChannelName(String channelName, String sdp) {
-        String url = "http://" + srsServer + "/rtc/v1/publish/";
-        String streamurl = "webrtc://" + srsServer + "/live/" + channelName;
+    public JSONObject publish(String room, String display, String sdp) {
+        String api = srsServerProperties.getSchema() + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/rtc/v1/publish/";
+        String streamurl = "webrtc://" + srsServerProperties.getHost() + "/" + room + "/" + display;
 
         Map<String, Object> params = new HashMap<>();
-        params.put("api", url);
+        params.put("api", api);
         params.put("streamurl", streamurl);
         params.put("sdp", sdp);
         params.put("tid", new Date().getTime());
 
-        return restTemplate.postForObject(url, params, JSONObject.class);
+        return restTemplate.postForObject(api, params, JSONObject.class);
     }
 
     public JSONObject play(String streamurl, String sdp) {
-        String url = "http://" + srsServer + "/rtc/v1/play/";
+        String api = srsServerProperties.getSchema() + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/rtc/v1/play/";
 
         Map<String, Object> params = new HashMap<>();
-        params.put("api", url);
+        params.put("api", api);
         params.put("streamurl", streamurl);
         params.put("sdp", sdp);
         params.put("tid", new Date().getTime());
 
-        return restTemplate.postForObject(url, params, JSONObject.class);
+        return restTemplate.postForObject(api, params, JSONObject.class);
     }
 
-    public JSONObject playByChannelName(String channelName, String sdp) {
-        String url = "http://" + srsServer + "/rtc/v1/play/";
-        String streamurl = "webrtc://" + srsServer + "/live/" + channelName;
+    public JSONObject play(String room, String display, String sdp) {
+        String api = srsServerProperties.getSchema() + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/rtc/v1/play/";
+        String streamurl = "webrtc://" + srsServerProperties.getHost() + "/" + room + "/" + display;
 
         Map<String, Object> params = new HashMap<>();
-        params.put("api", url);
+        params.put("api", api);
         params.put("streamurl", streamurl);
         params.put("sdp", sdp);
         params.put("tid", new Date().getTime());
 
-        return restTemplate.postForObject(url, params, JSONObject.class);
+        return restTemplate.postForObject(api, params, JSONObject.class);
     }
 }
