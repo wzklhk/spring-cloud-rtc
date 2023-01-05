@@ -25,22 +25,22 @@ public class SRSService {
     }
 
     public JSONObject getVersion() {
-        String url = srsServerProperties.getSchema() + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/api/v1/versions";
+        String url = srsServerProperties.getSchema() + "://" + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/api/v1/versions";
         return restTemplate.getForObject(url, JSONObject.class);
     }
 
     public JSONObject getStreams() {
-        String url = srsServerProperties.getSchema() + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/api/v1/streams";
+        String url = srsServerProperties.getSchema() + "://" + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/api/v1/streams";
         return restTemplate.getForObject(url, JSONObject.class);
     }
 
     public JSONObject getClients() {
-        String url = srsServerProperties.getSchema() + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/api/v1/clients";
+        String url = srsServerProperties.getSchema() + "://" + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/api/v1/clients";
         return restTemplate.getForObject(url, JSONObject.class);
     }
 
     public JSONObject publish(String streamurl, String sdp) {
-        String api = srsServerProperties.getSchema() + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/rtc/v1/publish/";
+        String api = srsServerProperties.getSchema() + "://" + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/rtc/v1/publish/";
 
         Map<String, Object> params = new HashMap<>();
         params.put("api", api);
@@ -52,7 +52,7 @@ public class SRSService {
     }
 
     public JSONObject publish(String room, String display, String sdp) {
-        String api = srsServerProperties.getSchema() + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/rtc/v1/publish/";
+        String api = srsServerProperties.getSchema() + "://" + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/rtc/v1/publish/";
         String streamurl = "webrtc://" + srsServerProperties.getHost() + "/" + room + "/" + display;
 
         Map<String, Object> params = new HashMap<>();
@@ -65,7 +65,7 @@ public class SRSService {
     }
 
     public JSONObject play(String streamurl, String sdp) {
-        String api = srsServerProperties.getSchema() + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/rtc/v1/play/";
+        String api = srsServerProperties.getSchema() + "://" + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/rtc/v1/play/";
 
         Map<String, Object> params = new HashMap<>();
         params.put("api", api);
@@ -77,7 +77,7 @@ public class SRSService {
     }
 
     public JSONObject play(String room, String display, String sdp) {
-        String api = srsServerProperties.getSchema() + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/rtc/v1/play/";
+        String api = srsServerProperties.getSchema() + "://" + srsServerProperties.getHost() + ":" + srsServerProperties.getPort() + "/rtc/v1/play/";
         String streamurl = "webrtc://" + srsServerProperties.getHost() + "/" + room + "/" + display;
 
         Map<String, Object> params = new HashMap<>();
