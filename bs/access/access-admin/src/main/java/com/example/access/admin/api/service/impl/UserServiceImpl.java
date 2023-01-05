@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.access.admin.api.repository.UserRepository;
 import com.example.access.admin.api.service.UserService;
 import com.example.access.admin.feign.AuthFeignService;
-import com.example.access.admin.pojo.user.UserDO;
-import com.example.access.admin.pojo.user.UserVO;
+import com.example.access.admin.pojo.entity.User;
+import com.example.access.admin.pojo.vo.UserVO;
 import com.example.common.api.service.impl.AbstractCommonLogicDeleteServiceJpaImpl;
 import com.example.common.pojo.CommonResultInfo;
 import com.example.common.pojo.ErrorCodeEnum;
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @Slf4j
 @Service
-public class UserServiceImpl extends AbstractCommonLogicDeleteServiceJpaImpl<UserVO, UserDO, Long>
+public class UserServiceImpl extends AbstractCommonLogicDeleteServiceJpaImpl<UserVO, User, Long>
         implements UserService {
 
     private final AuthFeignService authFeignService;
@@ -63,7 +63,7 @@ public class UserServiceImpl extends AbstractCommonLogicDeleteServiceJpaImpl<Use
 
     @Override
     public UserVO getByUsername(String username) {
-        UserDO userDO = userRepository.getByUsername(username);
-        return CopyUtil.copy(userDO, UserVO.class);
+        User user = userRepository.getByUsername(username);
+        return CopyUtil.copy(user, UserVO.class);
     }
 }

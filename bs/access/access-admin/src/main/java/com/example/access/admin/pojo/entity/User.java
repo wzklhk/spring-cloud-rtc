@@ -1,4 +1,4 @@
-package com.example.access.admin.pojo.user;
+package com.example.access.admin.pojo.entity;
 
 import com.example.common.pojo.AbstractCommonLogicDeleteDO;
 import lombok.Getter;
@@ -29,7 +29,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class UserDO extends AbstractCommonLogicDeleteDO {
+public class User extends AbstractCommonLogicDeleteDO {
 
     /**
      * 用户名
@@ -67,8 +67,8 @@ public class UserDO extends AbstractCommonLogicDeleteDO {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
             return false;
         }
-        UserDO userDO = (UserDO) o;
-        return getId() != null && Objects.equals(getId(), userDO.getId());
+        User user = (User) o;
+        return getId() != null && Objects.equals(getId(), user.getId());
     }
 
     @Override

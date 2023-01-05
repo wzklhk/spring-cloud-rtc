@@ -53,9 +53,9 @@ public class SRSController {
     @PostMapping("/publish")
     public CommonResultInfo publish(@RequestBody PublishQuery query) {
         JSONObject res;
-        if (query.getStreamurl() != null)
+        if (query.getStreamurl() != null) {
             res = srsService.publish(query.getStreamurl(), query.getSdp());
-        else {
+        } else {
             res = srsService.publish(query.getRoom(), query.getDisplay(), query.getSdp());
         }
 
@@ -69,9 +69,9 @@ public class SRSController {
     @PostMapping("/play")
     public CommonResultInfo play(@RequestBody PlayQuery query) {
         JSONObject res;
-        if (query.getStreamurl() != null)
+        if (query.getStreamurl() != null) {
             res = srsService.play(query.getStreamurl(), query.getSdp());
-        else {
+        } else {
             res = srsService.play(query.getRoom(), query.getDisplay(), query.getSdp());
         }
 

@@ -1,4 +1,4 @@
-package com.example.access.admin.pojo.user;
+package com.example.access.admin.pojo.vo;
 
 import lombok.Data;
 
@@ -8,8 +8,12 @@ import lombok.Data;
 @Data
 public class UserVO {
     private Long id;
+
     private String username;
+
     private String password;
+
     private Boolean isEnabled;
+
     private Boolean isLocked;
 }
