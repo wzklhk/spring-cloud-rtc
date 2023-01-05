@@ -23,9 +23,9 @@ import javax.persistence.Table;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class ChannelDO extends AbstractCommonLogicDeleteDO {
+public class Channel extends AbstractCommonLogicDeleteDO {
 
     @Column(nullable = false, unique = true,
             columnDefinition = "varchar(255) COMMENT '通道名'")
-    private String channelName;
+    private String name;
 }
