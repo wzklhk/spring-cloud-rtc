@@ -1,4 +1,4 @@
-package com.example.access.admin.api.service;
+package com.example.access.admin.api.user.service;
 
 import com.example.access.admin.pojo.entity.User;
 import com.example.access.admin.pojo.vo.UserVO;

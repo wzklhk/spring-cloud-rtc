@@ -1,8 +1,8 @@
 package com.example.access.admin;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.access.admin.api.repository.UserRepository;
-import com.example.access.admin.api.service.UserService;
+import com.example.access.admin.api.user.repository.UserRepository;
+import com.example.access.admin.api.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

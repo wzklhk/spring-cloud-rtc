@@ -1,11 +1,11 @@
-package com.example.service.rtc.api.service;
+package com.example.service.rtc.api.ws.service;
 
 import com.alibaba.fastjson.JSON;
 import com.example.common.pojo.CommonResultInfo;
 import com.example.service.common.pojo.message.Message;
 import com.example.service.common.pojo.user.UserVO;
 import com.example.service.rtc.access.AccessService;
-import com.example.service.rtc.api.service.impl.RoomServiceImpl;
+import com.example.service.rtc.api.room.service.impl.RoomServiceImpl;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

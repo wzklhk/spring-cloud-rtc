@@ -1,4 +1,4 @@
-package com.example.service.rtc.api.controller;
+package com.example.service.rtc.api.room.controller;
 
 import com.example.common.api.controller.CommonController;
 import com.example.service.common.pojo.room.Room;

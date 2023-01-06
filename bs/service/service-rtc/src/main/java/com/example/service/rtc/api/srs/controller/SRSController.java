@@ -1,10 +1,10 @@
-package com.example.service.rtc.api.controller;
+package com.example.service.rtc.api.srs.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.common.pojo.CommonResultInfo;
 import com.example.service.common.pojo.srs.PlayQuery;
 import com.example.service.common.pojo.srs.PublishQuery;
-import com.example.service.rtc.api.service.SRSService;
+import com.example.service.rtc.api.srs.service.SRSService;
 import org.springframework.web.bind.annotation.*;
 
 /**

@@ -1,4 +1,4 @@
-package com.example.service.rtc.api.service;
+package com.example.service.rtc.api.srs.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.service.rtc.properties.SRSServerProperties;

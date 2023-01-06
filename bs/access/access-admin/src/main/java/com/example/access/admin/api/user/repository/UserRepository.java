@@ -1,4 +1,4 @@
-package com.example.access.admin.api.repository;
+package com.example.access.admin.api.user.repository;
 
 import com.example.access.admin.pojo.entity.User;
 import com.example.common.api.repository.CommonRepository;

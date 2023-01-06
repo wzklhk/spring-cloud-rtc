@@ -1,9 +1,9 @@
-package com.example.service.rtc.api.controller;
+package com.example.service.rtc.api.ws.controller;
 
 import com.example.common.pojo.CommonResultInfo;
 import com.example.service.common.pojo.message.Message;
 import com.example.service.common.pojo.user.UserVO;
-import com.example.service.rtc.api.service.WebsocketService;
+import com.example.service.rtc.api.ws.service.WebsocketService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 

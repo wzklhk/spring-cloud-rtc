@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class LogAspect {
 
-    @Pointcut("execution(* com.example.service.rtc.api.controller.WebsocketController.*(..))")
+    @Pointcut("execution(* com.example.service.rtc.api.ws.controller.WebsocketController.*(..))")
     public void wsControllerPointcut() {
     }
 

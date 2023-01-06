@@ -1,7 +1,7 @@
-package com.example.access.admin.api.controller;
+package com.example.access.admin.api.user.controller;
 
 
-import com.example.access.admin.api.service.UserService;
+import com.example.access.admin.api.user.service.UserService;
 import com.example.access.admin.pojo.entity.User;
 import com.example.access.admin.pojo.vo.UserVO;
 import com.example.common.api.controller.CommonController;

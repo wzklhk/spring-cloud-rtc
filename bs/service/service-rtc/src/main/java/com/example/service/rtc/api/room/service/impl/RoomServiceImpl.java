@@ -1,10 +1,10 @@
-package com.example.service.rtc.api.service.impl;
+package com.example.service.rtc.api.room.service.impl;
 
 import com.example.common.api.service.impl.AbstractCommonLogicDeleteServiceJpaImpl;
 import com.example.service.common.pojo.room.Room;
 import com.example.service.common.pojo.room.RoomVO;
-import com.example.service.rtc.api.service.RoomService;
-import com.example.service.rtc.api.service.WebsocketService;
+import com.example.service.rtc.api.room.service.RoomService;
+import com.example.service.rtc.api.ws.service.WebsocketService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
