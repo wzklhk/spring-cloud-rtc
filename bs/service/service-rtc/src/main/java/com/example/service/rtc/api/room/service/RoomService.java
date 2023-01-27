@@ -5,7 +5,7 @@ import com.example.service.common.pojo.room.Room;
 import com.example.service.common.pojo.room.RoomVO;
 
 /**
- * @author : wzklhk
+ * @author wzklhk
  */
 public interface RoomService extends CommonService<RoomVO, Room, Long> {
 }
