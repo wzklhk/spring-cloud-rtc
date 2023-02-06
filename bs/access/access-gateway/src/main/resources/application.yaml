@@ -84,3 +84,4 @@ auth:
       - /*/v2/api-docs
       - /auth/oauth/token
       - /auth/oauth/check_token
+      - /service-rtc/ws

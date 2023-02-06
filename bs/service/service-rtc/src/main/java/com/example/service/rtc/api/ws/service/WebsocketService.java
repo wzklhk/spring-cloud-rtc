@@ -63,10 +63,10 @@ public class WebsocketService {
     /**
      * 所有ws连接集合
      */
-    private static Map<UserVO, WebsocketService> webSocketSessionMap = new ConcurrentHashMap<>();
+    private static Map<UserVO, WebsocketService> webSocketServiceMap = new ConcurrentHashMap<>();
 
-    public static Map<UserVO, WebsocketService> getWebSocketSessionMap() {
-        return webSocketSessionMap;
+    public static Map<UserVO, WebsocketService> getWebSocketServiceMap() {
+        return webSocketServiceMap;
     }
 
     /**
@@ -86,12 +86,17 @@ public class WebsocketService {
     public void onOpen(Session session) {
         Map<String, List<String>> requestParameterMap = session.getRequestParameterMap();
         if (!requestParameterMap.containsKey("token") || requestParameterMap.get("token").size() == 0) {
-            throw new RuntimeException("websocket error: no param token");
+            throw new RuntimeException("No param token. ");
         }
-        this.currentUser = accessService.getUserByToken(requestParameterMap.get("token").get(0));
+        String token = requestParameterMap.get("token").get(0);
+        this.currentUser = accessService.getUserByToken(token);
+        if (this.currentUser == null || this.currentUser.getId() == null) {
+            throw new RuntimeException("Cannot get user by given token. ");
+        }
         this.currentSession = session;
-        webSocketSessionMap.put(this.currentUser, this);
-        log.info("有一连接打开，用户{}, 当前在线人数为：{}", this.currentUser, webSocketSessionMap.size());
+        webSocketServiceMap.put(this.currentUser, this);
+        log.info("有一连接打开，用户{}, 当前在线人数为：{}", this.currentUser, webSocketServiceMap.size());
+
         notifyMessage(null, this.currentUser + "已加入");
     }
 
@@ -100,8 +105,9 @@ public class WebsocketService {
      */
     @OnClose
     public void onClose(Session session) {
-        webSocketSessionMap.remove(this.currentUser);
-        log.info("有一连接关闭，移除{}的用户session, 当前在线人数为：{}", this.currentUser, webSocketSessionMap.size());
+        webSocketServiceMap.remove(this.currentUser);
+        log.info("有一连接关闭，移除{}的户, 当前在线人数为：{}", this.currentUser, webSocketServiceMap.size());
+
         notifyMessage(null, this.currentUser + "已断开");
     }
 
@@ -113,6 +119,8 @@ public class WebsocketService {
      *
      * @param messageJson 客户端发送过来的消息
      *                    {"data": {"command": "offer"},"receivers": [{"username": "user2"},{"username": "user3"},{"username": "user4"}]}
+     *                    sender: 发送方用户
+     *                    receivers: 接收方用户列表，null表示广播
      */
     @OnMessage
     public void onMessage(String messageJson, Session session) {
@@ -138,7 +146,7 @@ public class WebsocketService {
 
     @OnError
     public void onError(Session session, Throwable error) {
-        log.error("发生错误");
+        log.error("Websocket发生错误: {}", error.getMessage());
         error.printStackTrace();
     }
 
@@ -170,8 +178,8 @@ public class WebsocketService {
      */
     public <T> void unicastMessage(UserVO receiver, T data) {
         log.info("单播消息：{}", data);
-        if (webSocketSessionMap.containsKey(receiver)) {
-            WebsocketService websocketService = webSocketSessionMap.get(receiver);
+        if (webSocketServiceMap.containsKey(receiver)) {
+            WebsocketService websocketService = webSocketServiceMap.get(receiver);
             try {
                 MessageVO<T> message = MessageVO.unicast(currentUser, receiver, data);
                 websocketService.sendMessage(message);
@@ -187,8 +195,8 @@ public class WebsocketService {
     public <T> void multicastMessage(List<UserVO> receivers, T data) {
         log.info("多播消息：{}", data);
         for (UserVO receiver : receivers) {
-            if (webSocketSessionMap.containsKey(receiver)) {
-                WebsocketService websocketService = webSocketSessionMap.get(receiver);
+            if (webSocketServiceMap.containsKey(receiver)) {
+                WebsocketService websocketService = webSocketServiceMap.get(receiver);
                 try {
                     websocketService.sendMessage(MessageVO.multicast(currentUser, receivers, data));
                 } catch (Exception e) {
@@ -203,7 +211,7 @@ public class WebsocketService {
      */
     public <T> void broadcastMessage(T data) {
         log.info("广播消息：{}", data);
-        for (Map.Entry<UserVO, WebsocketService> entry : webSocketSessionMap.entrySet()) {
+        for (Map.Entry<UserVO, WebsocketService> entry : webSocketServiceMap.entrySet()) {
             try {
                 entry.getValue().sendMessage(MessageVO.broadcast(currentUser, data));
             } catch (IOException e) {
@@ -218,7 +226,7 @@ public class WebsocketService {
     public <T> void notifyMessage(List<UserVO> receivers, T data) {
         log.info("通知消息：{}", data);
         if (receivers != null) {
-            for (Map.Entry<UserVO, WebsocketService> entry : webSocketSessionMap.entrySet()) {
+            for (Map.Entry<UserVO, WebsocketService> entry : webSocketServiceMap.entrySet()) {
                 try {
                     entry.getValue().sendMessage(MessageVO.notification(receivers, data));
                 } catch (IOException e) {
@@ -226,7 +234,7 @@ public class WebsocketService {
                 }
             }
         } else {
-            for (Map.Entry<UserVO, WebsocketService> entry : webSocketSessionMap.entrySet()) {
+            for (Map.Entry<UserVO, WebsocketService> entry : webSocketServiceMap.entrySet()) {
                 try {
                     entry.getValue().sendMessage(MessageVO.notification(null, data));
                 } catch (IOException e) {

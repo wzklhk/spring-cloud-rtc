@@ -38,7 +38,7 @@ public class WebsocketController {
 
     @GetMapping("/getConnectedUserList")
     public CommonResultInfo getConnectedUserList() {
-        Map<UserVO, WebsocketService> webSocketSessionMap = WebsocketService.getWebSocketSessionMap();
+        Map<UserVO, WebsocketService> webSocketSessionMap = WebsocketService.getWebSocketServiceMap();
         List<UserVO> users = new ArrayList<>();
         for (Map.Entry<UserVO, WebsocketService> entry : webSocketSessionMap.entrySet()) {
             users.add(entry.getKey());
