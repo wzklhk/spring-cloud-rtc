@@ -13,7 +13,7 @@ public class CopyUtil {
     }
 
     public static <E, T> List<T> copyList(List<E> srcList, Class<T> targetType) {
-        List<T> targetList = null;
+        List<T> targetList = new ArrayList<>();
         if (srcList != null && srcList.size() > 0) {
             targetList = new ArrayList<>();
             for (E entity : srcList) {

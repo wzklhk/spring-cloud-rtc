@@ -5,14 +5,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Objects;
 
 /**
  * 注解@SQLDelete(sql = "update access_user set is_deleted = 1 where id = ?")
@@ -59,20 +57,4 @@ public class User extends AbstractCommonLogicDeleteDO {
             columnDefinition = "tinyint(1) DEFAULT 0 COMMENT '是否锁定，1为true，0为false'")
     private Boolean isLocked;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
-            return false;
-        }
-        User user = (User) o;
-        return getId() != null && Objects.equals(getId(), user.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

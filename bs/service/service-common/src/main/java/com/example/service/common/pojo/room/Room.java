@@ -5,13 +5,11 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Objects;
 
 /**
  * @author wzklhk
@@ -29,16 +27,7 @@ public class Room extends AbstractCommonLogicDeleteDO {
             columnDefinition = "varchar(255) COMMENT '房间名'")
     private String name;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Room room = (Room) o;
-        return getId() != null && Objects.equals(getId(), room.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
+    @Column(nullable = false, unique = true,
+            columnDefinition = "bigint(20) COMMENT '房间管理员id'")
+    private Long adminUserId;
 }

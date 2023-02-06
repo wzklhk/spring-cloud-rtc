@@ -40,7 +40,7 @@ public class CommonController<VO, DO, ID> {
      * @return 通用返回：VO列表
      */
     @GetMapping("/all")
-    public CommonResultInfo<List<VO>> getAll(Map<String, Object> queryMap) {
+    public CommonResultInfo<List<VO>> getAll(@RequestParam Map<String, Object> queryMap) {
         return CommonResultInfo.ok(commonService.getAll(queryMap));
     }
 
