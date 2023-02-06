@@ -100,7 +100,7 @@ public class WebsocketService {
      */
     @OnClose
     public void onClose(Session session) {
-        webSocketSessionMap.remove(this);
+        webSocketSessionMap.remove(this.currentUser);
         log.info("有一连接关闭，移除{}的用户session, 当前在线人数为：{}", this.currentUser, webSocketSessionMap.size());
         notifyBroadcastMessage(null, this.currentUser + "已断开");
     }
@@ -120,8 +120,13 @@ public class WebsocketService {
         try {
             MessageVO messageVO = JSON.parseObject(messageJson, MessageVO.class);
 
-            if (messageVO.getReceivers() != null) {
-                multicastMessage(messageVO.getReceivers(), messageVO.getData());
+            List<UserVO> receivers = messageVO.getReceivers();
+            if (receivers != null && receivers.size() != 0) {
+                if (receivers.size() == 1) {
+                    unicastMessage(receivers.get(0), messageVO.getData());
+                } else {
+                    multicastMessage(receivers, messageVO.getData());
+                }
             } else {
                 broadcastMessage(messageVO.getData());
             }
