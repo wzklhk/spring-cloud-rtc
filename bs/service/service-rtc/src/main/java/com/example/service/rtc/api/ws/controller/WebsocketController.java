@@ -63,4 +63,10 @@ public class WebsocketController {
         websocketService.broadcastMessage(messageVO.getData());
         return CommonResultInfo.ok();
     }
+
+    @PostMapping("/notification")
+    public <T> CommonResultInfo notification(@RequestBody MessageVO<T> messageVO) {
+        websocketService.notifyMessage(messageVO.getReceivers(), messageVO.getData());
+        return CommonResultInfo.ok();
+    }
 }

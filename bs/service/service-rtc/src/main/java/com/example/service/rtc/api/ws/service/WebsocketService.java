@@ -92,7 +92,7 @@ public class WebsocketService {
         this.currentSession = session;
         webSocketSessionMap.put(this.currentUser, this);
         log.info("有一连接打开，用户{}, 当前在线人数为：{}", this.currentUser, webSocketSessionMap.size());
-        notifyBroadcastMessage(null, this.currentUser + "已加入");
+        notifyMessage(null, this.currentUser + "已加入");
     }
 
     /**
@@ -102,7 +102,7 @@ public class WebsocketService {
     public void onClose(Session session) {
         webSocketSessionMap.remove(this.currentUser);
         log.info("有一连接关闭，移除{}的用户session, 当前在线人数为：{}", this.currentUser, webSocketSessionMap.size());
-        notifyBroadcastMessage(null, this.currentUser + "已断开");
+        notifyMessage(null, this.currentUser + "已断开");
     }
 
     /**
@@ -145,15 +145,20 @@ public class WebsocketService {
     /**
      * 服务端发送消息给客户端
      */
-    private void sendMessage(String message) throws IOException {
+    private void sendMessage(String message) throws Exception {
         this.currentSession.getBasicRemote().sendText(message);
     }
 
     private void sendMessage(MessageVO message) throws IOException {
         Map<String, Object> messageMap = new HashMap<>();
         messageMap.put("data", JSON.toJSONString(message));
-        messageMap.put("senderId", message.getSender().getId());
-        messageMap.put("receiverId", currentUser.getId());
+        UserVO sender = message.getSender();
+        if (sender != null) {
+            messageMap.put("senderId", sender.getId());
+        }
+        if (currentUser != null) {
+            messageMap.put("receiverId", currentUser.getId());
+        }
         messageService.saveOrUpdate(messageMap);
 
         String s = JSON.toJSONString(message);
@@ -186,7 +191,7 @@ public class WebsocketService {
                 WebsocketService websocketService = webSocketSessionMap.get(receiver);
                 try {
                     websocketService.sendMessage(MessageVO.multicast(currentUser, receivers, data));
-                } catch (IOException e) {
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -208,9 +213,9 @@ public class WebsocketService {
     }
 
     /**
-     * 服务端发送通知消息给所有客户端
+     * 服务端发送通知消息给客户端
      */
-    public <T> void notifyBroadcastMessage(List<UserVO> receivers, T data) {
+    public <T> void notifyMessage(List<UserVO> receivers, T data) {
         log.info("通知消息：{}", data);
         if (receivers != null) {
             for (Map.Entry<UserVO, WebsocketService> entry : webSocketSessionMap.entrySet()) {
@@ -223,7 +228,7 @@ public class WebsocketService {
         } else {
             for (Map.Entry<UserVO, WebsocketService> entry : webSocketSessionMap.entrySet()) {
                 try {
-                    entry.getValue().sendMessage(MessageVO.broadcast(currentUser, data));
+                    entry.getValue().sendMessage(MessageVO.notification(null, data));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
