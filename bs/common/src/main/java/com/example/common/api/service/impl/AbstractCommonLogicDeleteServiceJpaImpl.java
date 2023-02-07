@@ -4,7 +4,6 @@ import com.example.common.api.service.CommonService;
 import com.example.common.pojo.AbstractCommonLogicDeleteDO;
 
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * @author wzklhk
@@ -12,11 +11,13 @@ import java.util.Map;
 public abstract class AbstractCommonLogicDeleteServiceJpaImpl<VO, DO extends AbstractCommonLogicDeleteDO, ID extends Serializable>
         extends AbstractCommonServiceJpaImpl<VO, DO, ID>
         implements CommonService<VO, DO, ID> {
+
     @Override
-    public VO saveOrUpdate(Map<String, Object> query) {
-        if (!query.containsKey("id") && !query.containsKey("isDeleted")) {
-            query.put("isDeleted", false);
+    public VO saveOrUpdateByQueryDO(DO queryDO) {
+        if (queryDO.getIsDeleted() == null) {
+            queryDO.setIsDeleted(false);
         }
-        return super.saveOrUpdate(query);
+
+        return super.saveOrUpdateByQueryDO(queryDO);
     }
 }

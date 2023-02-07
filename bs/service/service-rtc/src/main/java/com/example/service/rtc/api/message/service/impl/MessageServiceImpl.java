@@ -7,6 +7,8 @@ import com.example.service.common.pojo.message.MessageVO;
 import com.example.service.rtc.api.message.service.MessageService;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 /**
  * @author wzklhk
  */
@@ -24,6 +26,13 @@ public class MessageServiceImpl extends AbstractCommonLogicDeleteServiceJpaImpl<
     protected Message toDO(MessageVO entity) {
         Message message = super.toDO(entity);
         message.setData(JSON.toJSONString(entity.getData()));
+        return message;
+    }
+
+    @Override
+    protected Message toDO(Map<String, Object> entity) {
+        Message message = super.toDO(entity);
+        message.setData(JSON.toJSONString(entity.getOrDefault("data", null)));
         return message;
     }
 }

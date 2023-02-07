@@ -44,4 +44,10 @@ public interface CommonService<VO, DO, ID> {
     ErrorCodeEnum deleteById(ID id);
 
     ErrorCodeEnum deleteAllByIdInBatch(Iterable<ID> ids);
+
+    ErrorCodeEnum delete(VO query);
+
+    ErrorCodeEnum delete(Map<String, Object> query);
+
+    ErrorCodeEnum deleteByQueryDO(DO query);
 }

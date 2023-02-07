@@ -198,6 +198,24 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
         return ErrorCodeEnum.OK;
     }
 
+    @Override
+    public ErrorCodeEnum delete(VO query) {
+        deleteByQueryDO(toDO(query));
+        return ErrorCodeEnum.OK;
+    }
+
+    @Override
+    public ErrorCodeEnum delete(Map<String, Object> query) {
+        deleteByQueryDO(toDO(query));
+        return ErrorCodeEnum.OK;
+    }
+
+    @Override
+    public ErrorCodeEnum deleteByQueryDO(DO query) {
+        commonRepository.delete(query);
+        return ErrorCodeEnum.OK;
+    }
+
     protected VO toVO(DO entity) {
         return CopyUtil.copy(entity, voClazz);
     }
