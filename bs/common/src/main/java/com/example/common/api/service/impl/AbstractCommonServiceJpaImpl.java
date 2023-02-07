@@ -63,8 +63,18 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
     }
 
     @Override
+    public List<VO> getAll(VO query) {
+        return getAllByQueryDO(toDO(query));
+    }
+
+    @Override
     public List<VO> getAll(Map<String, Object> query) {
-        List<DO> entityDOList = commonRepository.findAll(Example.of(toDO(query)));
+        return getAllByQueryDO(toDO(query));
+    }
+
+    @Override
+    public List<VO> getAllByQueryDO(DO queryDO) {
+        List<DO> entityDOList = commonRepository.findAll(Example.of(queryDO));
 
         List<VO> entityVOList = new ArrayList<>();
         for (DO i : entityDOList) {
@@ -75,8 +85,20 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
     }
 
     @Override
-    public CommonPageInfo<VO> getByPage(Map<String, Object> queryMap) {
+    public <Q extends CommonPageQuery> CommonPageInfo<VO> getPage(Q query) {
+        DO queryDO = toDO(query);
+        return getPageByQueryDO(queryDO, query);
+    }
+
+    @Override
+    public CommonPageInfo<VO> getPage(Map<String, Object> queryMap) {
         CommonPageQuery pageQuery = CopyUtil.copy(queryMap, CommonPageQuery.class);
+        DO queryDO = toDO(queryMap);
+        return getPageByQueryDO(queryDO, pageQuery);
+    }
+
+    @Override
+    public CommonPageInfo<VO> getPageByQueryDO(DO queryDO, CommonPageQuery pageQuery) {
         if (pageQuery.getPageNum() == null) {
             pageQuery.setPageNum(1);
         }
@@ -91,7 +113,7 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
         }
 
         Page<DO> page = commonRepository.findAll(
-                Example.of(toDO(queryMap)),
+                Example.of(queryDO),
                 PageRequest.of(
                         pageQuery.getPageNum() - 1,
                         pageQuery.getPageSize(),
@@ -103,18 +125,36 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
     }
 
     @Override
+    public Long count(VO query) {
+        return countByQueryDO(toDO(query));
+    }
+
+    @Override
     public Long count(Map<String, Object> query) {
-        return commonRepository.count(Example.of(toDO(query)));
+        return countByQueryDO(toDO(query));
+    }
+
+    public Long countByQueryDO(DO queryDO) {
+        return commonRepository.count(Example.of(queryDO));
+    }
+
+    @Override
+    public VO saveOrUpdate(VO query) {
+        return saveOrUpdateByQueryDO(toDO(query));
     }
 
     @Override
     public VO saveOrUpdate(Map<String, Object> query) {
-        DO entity = toDO(query);
-        DO entityFull = entity;
+        return saveOrUpdateByQueryDO(toDO(query));
+    }
+
+    @Override
+    public VO saveOrUpdateByQueryDO(DO queryDO) {
+        DO queryDOFull = queryDO;
         List<String> ignoreProperties = new ArrayList<>();
         try {
             List<Field> fields = new ArrayList<>();
-            Class<?> clazz = entity.getClass();
+            Class<?> clazz = queryDO.getClass();
             while (!clazz.equals(Object.class)) {
                 fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
                 clazz = clazz.getSuperclass();
@@ -123,12 +163,12 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
             for (Field field : fields) {
                 field.setAccessible(true);
                 String fieldName = field.getName();
-                Object fieldValue = field.get(entity);
+                Object fieldValue = field.get(queryDO);
 
                 if (field.isAnnotationPresent(Id.class) && fieldValue != null) {
                     Optional<DO> one = commonRepository.findById((ID) fieldValue);
                     if (one.isPresent()) {
-                        entityFull = one.get();
+                        queryDOFull = one.get();
                     }
                 }
 
@@ -136,14 +176,15 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
                     ignoreProperties.add(fieldName);
                 }
             }
-            BeanUtils.copyProperties(entity, entityFull, ignoreProperties.toArray(new String[0]));
+            BeanUtils.copyProperties(queryDO, queryDOFull, ignoreProperties.toArray(new String[0]));
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
 
-        DO save = commonRepository.save(entityFull);
+        DO save = commonRepository.save(queryDOFull);
         return toVO(save);
     }
+
 
     @Override
     public ErrorCodeEnum deleteById(ID id) {
@@ -157,15 +198,19 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
         return ErrorCodeEnum.OK;
     }
 
-    private VO toVO(DO entity) {
+    protected VO toVO(DO entity) {
         return CopyUtil.copy(entity, voClazz);
     }
 
-    private DO toDO(VO entity) {
+    protected DO toDO(VO entity) {
         return CopyUtil.copy(entity, doClazz);
     }
 
-    private DO toDO(Map<String, Object> entity) {
+    protected DO toDO(Map<String, Object> entity) {
+        return CopyUtil.copy(entity, doClazz);
+    }
+
+    protected <Q extends CommonPageQuery> DO toDO(Q entity) {
         return CopyUtil.copy(entity, doClazz);
     }
 }

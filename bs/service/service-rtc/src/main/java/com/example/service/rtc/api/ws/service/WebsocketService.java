@@ -1,7 +1,7 @@
 package com.example.service.rtc.api.ws.service;
 
 import com.alibaba.fastjson.JSON;
-import com.example.common.pojo.CommonResultInfo;
+import com.example.service.common.pojo.message.MessageType;
 import com.example.service.common.pojo.message.MessageVO;
 import com.example.service.common.pojo.user.UserVO;
 import com.example.service.rtc.access.AccessService;
@@ -15,10 +15,11 @@ import org.springframework.stereotype.Service;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.example.service.common.pojo.message.MessageType.ROOM_MESSAGE;
 
 /**
  * 由于 spring 默认管理的是单例，所以只会注入一次 service
@@ -63,9 +64,9 @@ public class WebsocketService {
     /**
      * 所有ws连接集合
      */
-    private static Map<UserVO, WebsocketService> webSocketServiceMap = new ConcurrentHashMap<>();
+    private static Map<Long, WebsocketService> webSocketServiceMap = new ConcurrentHashMap<>();
 
-    public static Map<UserVO, WebsocketService> getWebSocketServiceMap() {
+    public static Map<Long, WebsocketService> getWebSocketServiceMap() {
         return webSocketServiceMap;
     }
 
@@ -94,10 +95,8 @@ public class WebsocketService {
             throw new RuntimeException("Cannot get user by given token. ");
         }
         this.currentSession = session;
-        webSocketServiceMap.put(this.currentUser, this);
+        webSocketServiceMap.put(this.currentUser.getId(), this);
         log.info("有一连接打开，用户{}, 当前在线人数为：{}", this.currentUser, webSocketServiceMap.size());
-
-        notifyMessage(null, this.currentUser + "已加入");
     }
 
     /**
@@ -107,8 +106,6 @@ public class WebsocketService {
     public void onClose(Session session) {
         webSocketServiceMap.remove(this.currentUser);
         log.info("有一连接关闭，移除{}的户, 当前在线人数为：{}", this.currentUser, webSocketServiceMap.size());
-
-        notifyMessage(null, this.currentUser + "已断开");
     }
 
     /**
@@ -118,29 +115,19 @@ public class WebsocketService {
      * 接受 浏览器端 socket.send 发送过来的 json数据
      *
      * @param messageJson 客户端发送过来的消息
-     *                    {"data": {"command": "offer"},"receivers": [{"username": "user2"},{"username": "user3"},{"username": "user4"}]}
+     *                    {"data": {"command": "offer"},"messageType": 1,"receiverId": 1}
      *                    sender: 发送方用户
-     *                    receivers: 接收方用户列表，null表示广播
+     *                    receiverId: 接收方用户ID/房间ID
      */
     @OnMessage
     public void onMessage(String messageJson, Session session) {
         log.info("收到{}的消息：{}", session, messageJson);
-        try {
-            MessageVO messageVO = JSON.parseObject(messageJson, MessageVO.class);
+        MessageVO message = JSON.parseObject(messageJson, MessageVO.class);
 
-            List<UserVO> receivers = messageVO.getReceivers();
-            if (receivers != null && receivers.size() != 0) {
-                if (receivers.size() == 1) {
-                    unicastMessage(receivers.get(0), messageVO.getData());
-                } else {
-                    multicastMessage(receivers, messageVO.getData());
-                }
-            } else {
-                broadcastMessage(messageVO.getData());
-            }
-        } catch (Exception e) {
-            unicastMessage(this.currentUser, CommonResultInfo.error(e.toString()));
-            e.printStackTrace();
+        if (message.getMessageTypeValue().equals(MessageType.USER_MESSAGE.getValue())) {
+            sendUserMessage(message.getReceiverId(), message.getData());
+        } else if (message.getMessageTypeValue().equals(ROOM_MESSAGE.getValue())) {
+            sendRoomMessage(message.getReceiverId(), message.getData());
         }
     }
 
@@ -153,22 +140,22 @@ public class WebsocketService {
     /**
      * 服务端发送消息给客户端
      */
-    private void sendMessage(String message) throws Exception {
+    private void sendMessage(String message) throws IOException {
         this.currentSession.getBasicRemote().sendText(message);
     }
 
     private void sendMessage(MessageVO message) throws IOException {
-        Map<String, Object> messageMap = new HashMap<>();
+        /*Map<String, Object> messageMap = new HashMap<>();
         messageMap.put("data", JSON.toJSONString(message));
-        UserVO sender = message.getSender();
-        if (sender != null) {
-            messageMap.put("senderId", sender.getId());
+        Long senderId = message.getSenderId();
+        if (senderId != null) {
+            messageMap.put("senderId", senderId);
         }
+        messageMap.put("isRoomMsg", false);
         if (currentUser != null) {
             messageMap.put("receiverId", currentUser.getId());
         }
-        messageService.saveOrUpdate(messageMap);
-
+        messageService.saveOrUpdate(messageMap);*/
         String s = JSON.toJSONString(message);
         this.currentSession.getBasicRemote().sendText(s);
     }
@@ -176,12 +163,12 @@ public class WebsocketService {
     /**
      * 服务端单播发送消息给所有客户端
      */
-    public <T> void unicastMessage(UserVO receiver, T data) {
+    public <T> void unicastMessage(Long receiverId, T data) {
         log.info("单播消息：{}", data);
-        if (webSocketServiceMap.containsKey(receiver)) {
-            WebsocketService websocketService = webSocketServiceMap.get(receiver);
+        if (webSocketServiceMap.containsKey(receiverId)) {
+            WebsocketService websocketService = webSocketServiceMap.get(receiverId);
             try {
-                MessageVO<T> message = MessageVO.unicast(currentUser, receiver, data);
+                MessageVO<T> message = MessageVO.userMessage(currentUser.getId(), receiverId, data);
                 websocketService.sendMessage(message);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -192,13 +179,13 @@ public class WebsocketService {
     /**
      * 服务端多播发送消息给所有客户端
      */
-    public <T> void multicastMessage(List<UserVO> receivers, T data) {
+    public <T> void multicastMessage(List<Long> receiverIds, T data) {
         log.info("多播消息：{}", data);
-        for (UserVO receiver : receivers) {
-            if (webSocketServiceMap.containsKey(receiver)) {
-                WebsocketService websocketService = webSocketServiceMap.get(receiver);
+        for (Long receiverId : receiverIds) {
+            if (webSocketServiceMap.containsKey(receiverId)) {
+                WebsocketService websocketService = webSocketServiceMap.get(receiverId);
                 try {
-                    websocketService.sendMessage(MessageVO.multicast(currentUser, receivers, data));
+                    websocketService.sendMessage(MessageVO.userMessage(this.currentUser.getId(), receiverId, data));
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -211,32 +198,36 @@ public class WebsocketService {
      */
     public <T> void broadcastMessage(T data) {
         log.info("广播消息：{}", data);
-        for (Map.Entry<UserVO, WebsocketService> entry : webSocketServiceMap.entrySet()) {
+        for (Map.Entry<Long, WebsocketService> entry : webSocketServiceMap.entrySet()) {
             try {
-                entry.getValue().sendMessage(MessageVO.broadcast(currentUser, data));
+                entry.getValue().sendMessage(MessageVO.broadcast(this.currentUser.getId(), data));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-    /**
-     * 服务端发送通知消息给客户端
-     */
-    public <T> void notifyMessage(List<UserVO> receivers, T data) {
-        log.info("通知消息：{}", data);
-        if (receivers != null) {
-            for (Map.Entry<UserVO, WebsocketService> entry : webSocketServiceMap.entrySet()) {
-                try {
-                    entry.getValue().sendMessage(MessageVO.notification(receivers, data));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    public <T> void sendUserMessage(Long receiveUserId, T data) {
+        MessageVO<T> message = MessageVO.userMessage(this.currentUser.getId(), receiveUserId, data);
+        if (webSocketServiceMap.containsKey(receiveUserId)) {
+            WebsocketService websocketService = webSocketServiceMap.get(receiveUserId);
+            try {
+                websocketService.sendMessage(message);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        } else {
-            for (Map.Entry<UserVO, WebsocketService> entry : webSocketServiceMap.entrySet()) {
+        }
+    }
+
+    public <T> void sendRoomMessage(Long receiveRoomId, T data) {
+        MessageVO<T> message = MessageVO.roomMessage(this.currentUser.getId(), receiveRoomId, data);
+        List<Long> userIds = roomService.getUserIdsByRoomId(receiveRoomId);
+        for (Long userId : userIds) {
+            if (webSocketServiceMap.containsKey(userId)) {
+                WebsocketService websocketService = webSocketServiceMap.get(userId);
                 try {
-                    entry.getValue().sendMessage(MessageVO.notification(null, data));
+
+                    websocketService.sendMessage(message);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

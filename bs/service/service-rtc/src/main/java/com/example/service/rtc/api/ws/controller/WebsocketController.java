@@ -1,11 +1,11 @@
 package com.example.service.rtc.api.ws.controller;
 
 import com.example.common.pojo.CommonResultInfo;
-import com.example.service.common.pojo.message.MessageVO;
-import com.example.service.common.pojo.user.UserVO;
 import com.example.service.rtc.api.ws.service.WebsocketService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,35 +38,35 @@ public class WebsocketController {
 
     @GetMapping("/getConnectedUserList")
     public CommonResultInfo getConnectedUserList() {
-        Map<UserVO, WebsocketService> webSocketSessionMap = WebsocketService.getWebSocketServiceMap();
-        List<UserVO> users = new ArrayList<>();
-        for (Map.Entry<UserVO, WebsocketService> entry : webSocketSessionMap.entrySet()) {
-            users.add(entry.getKey());
+        Map<Long, WebsocketService> webSocketSessionMap = WebsocketService.getWebSocketServiceMap();
+        List<Long> userIds = new ArrayList<>();
+        for (Map.Entry<Long, WebsocketService> entry : webSocketSessionMap.entrySet()) {
+            userIds.add(entry.getKey());
         }
-        return CommonResultInfo.ok(users);
+        return CommonResultInfo.ok(userIds);
     }
 
-    @PostMapping("/unicast")
-    public <T> CommonResultInfo unicast(@RequestBody MessageVO<T> messageVO) {
-        websocketService.unicastMessage(messageVO.getReceivers().get(0), messageVO.getData());
+    /*@PostMapping("/unicast")
+    public <T> CommonResultInfo unicast(@RequestBody MessageWsVO<T> messageWsVO) {
+        websocketService.unicastMessage(messageWsVO.getReceiverIds().get(0), messageWsVO.getData());
         return CommonResultInfo.ok();
     }
 
     @PostMapping("/multicast")
-    public <T> CommonResultInfo multicast(@RequestBody MessageVO<T> messageVO) {
-        websocketService.multicastMessage(messageVO.getReceivers(), messageVO.getData());
+    public <T> CommonResultInfo multicast(@RequestBody MessageWsVO<T> messageWsVO) {
+        websocketService.multicastMessage(messageWsVO.getReceiverId(), messageWsVO.getData());
         return CommonResultInfo.ok();
     }
 
     @PostMapping("/broadcast")
-    public <T> CommonResultInfo broadcast(@RequestBody MessageVO<T> messageVO) {
-        websocketService.broadcastMessage(messageVO.getData());
+    public <T> CommonResultInfo broadcast(@RequestBody MessageWsVO<T> messageWsVO) {
+        websocketService.broadcastMessage(messageWsVO.getData());
         return CommonResultInfo.ok();
     }
 
     @PostMapping("/notification")
-    public <T> CommonResultInfo notification(@RequestBody MessageVO<T> messageVO) {
-        websocketService.notifyMessage(messageVO.getReceivers(), messageVO.getData());
+    public <T> CommonResultInfo notification(@RequestBody MessageWsVO<T> messageWsVO) {
+        websocketService.notifyMessage(messageWsVO.getReceiverIds(), messageWsVO.getData());
         return CommonResultInfo.ok();
-    }
+    }*/
 }

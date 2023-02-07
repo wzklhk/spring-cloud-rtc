@@ -1,46 +1,37 @@
 package com.example.service.common.pojo.message;
 
-import com.example.service.common.pojo.user.UserVO;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author wzklhk
  */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class MessageVO<T> {
 
-    @ApiModelProperty(value = "发送方")
-    private UserVO sender;
+    private Long senderId;
 
-    @ApiModelProperty(value = "接收方列表")
-    private List<UserVO> receivers;
+    private Integer messageTypeValue;
 
-    @ApiModelProperty(value = "要发送的数据")
+    private Long receiverId;
+
     private T data;
 
-    public static <T> MessageVO<T> unicast(UserVO sender, UserVO receiver, T data) {
-        List<UserVO> receivers = new ArrayList<>();
-        receivers.add(receiver);
-        return new MessageVO<>(sender, receivers, data);
+
+    public static <T> MessageVO<T> userMessage(Long sendUserId, Long receiveUserId, T data) {
+        return new MessageVO<>(sendUserId, MessageType.USER_MESSAGE.getValue(), receiveUserId, data);
     }
 
-    public static <T> MessageVO<T> multicast(UserVO sender, List<UserVO> receivers, T data) {
-        return new MessageVO<>(sender, receivers, data);
+    public static <T> MessageVO<T> roomMessage(Long senderId, Long roomId, T data) {
+        return new MessageVO<>(senderId, MessageType.ROOM_MESSAGE.getValue(), roomId, data);
     }
 
-    public static <T> MessageVO<T> broadcast(UserVO sender, T data) {
-        return new MessageVO<>(sender, null, data);
+    public static <T> MessageVO<T> broadcast(Long senderId, T data) {
+        return new MessageVO<>(senderId, MessageType.BROADCAST.getValue(), null, data);
     }
 
-    public static <T> MessageVO<T> notification(List<UserVO> receivers, T data) {
-        return new MessageVO<>(null, receivers, data);
+    public static <T> MessageVO<T> notification(Long receiverId, T data) {
+        return new MessageVO<>(null, MessageType.NOTIFICATION.getValue(), receiverId, data);
     }
 }

@@ -52,8 +52,8 @@ public class CommonController<VO, DO, ID> {
      * @return 通用返回：页对象包含VO列表
      */
     @GetMapping
-    public CommonResultInfo<CommonPageInfo<VO>> getByPage(@RequestParam Map<String, Object> queryMap) {
-        return CommonResultInfo.ok(commonService.getByPage(queryMap));
+    public CommonResultInfo<CommonPageInfo<VO>> getPage(@RequestParam Map<String, Object> queryMap) {
+        return CommonResultInfo.ok(commonService.getPage(queryMap));
     }
 
     @GetMapping("/count")

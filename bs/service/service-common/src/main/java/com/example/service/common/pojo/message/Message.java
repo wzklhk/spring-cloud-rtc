@@ -27,12 +27,20 @@ public class Message extends AbstractCommonLogicDeleteDO {
             columnDefinition = "varchar(255) COMMENT '消息数据JSON保存'")
     private String data;
 
+    @Column(nullable = false, unique = false,
+            columnDefinition = "int(11) COMMENT '消息类型'")
+    private Integer messageTypeValue;
+
     @Column(nullable = true, unique = false,
-            columnDefinition = "bigint(20) COMMENT '发送者id'")
+            columnDefinition = "bigint(20) COMMENT '发送者用户id'")
     private Long senderId;
 
     @Column(nullable = true, unique = false,
-            columnDefinition = "bigint(20) COMMENT '接收者id'")
+            columnDefinition = "bigint(20) COMMENT '接收方id'")
     private Long receiverId;
+
+    @Column(nullable = false, unique = false,
+            columnDefinition = "bigint(20) COMMENT '接收方id'")
+    private Boolean isSent;
 
 }
