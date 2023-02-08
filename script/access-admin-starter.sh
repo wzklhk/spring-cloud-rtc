@@ -31,7 +31,7 @@ start(){
   if [ $? -eq 0 ]; then
     echo "${APP_NAME} is already running. pid=${pid}"
   else
-    nohup java -jar -Xms512M -Xmx512M -Xss512K -XX:+PrintGCDetails ${APP_NAME} > server.log 2>&1 &
+    nohup java -jar -Xms512M -Xmx512M -Xss512K  -XX:+PrintGCDetails -Dfile.encoding=UTF-8 ${APP_NAME} > server.log 2>&1 &
   fi
 }
 
