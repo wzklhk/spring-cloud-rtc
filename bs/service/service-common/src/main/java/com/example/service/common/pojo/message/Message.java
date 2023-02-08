@@ -41,7 +41,7 @@ public class Message extends AbstractCommonLogicDeleteDO {
 
     @Column(nullable = true, unique = false,
             columnDefinition = "bigint(20) COMMENT '房间id'")
-    private Long roomId;
+    private Long receiveRoomId;
 
     @Column(nullable = false, unique = false,
             columnDefinition = "bigint(20) COMMENT '接收方id'")

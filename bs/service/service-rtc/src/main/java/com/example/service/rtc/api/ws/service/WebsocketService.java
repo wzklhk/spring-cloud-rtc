@@ -1,6 +1,7 @@
 package com.example.service.rtc.api.ws.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONException;
 import com.example.service.common.pojo.message.MessageType;
 import com.example.service.common.pojo.message.MessageVO;
 import com.example.service.common.pojo.user.UserVO;
@@ -97,9 +98,11 @@ public class WebsocketService {
         this.currentSession = session;
         webSocketServiceMap.put(this.currentUser.getId(), this);
         log.info("有一连接打开，用户{}, 当前在线人数为：{}", this.currentUser, webSocketServiceMap.size());
+        notifyUserMessage(this.currentUser.getId(), "欢迎加入");
 
         MessageVO messageQueryVO = new MessageVO();
         messageQueryVO.setIsSent(false);
+        messageQueryVO.setReceiveUserId(this.currentUser.getId());
         for (MessageVO message : messageService.getAll(messageQueryVO)) {
             try {
                 sendAndUpdateMessage(message);
@@ -115,7 +118,7 @@ public class WebsocketService {
      */
     @OnClose
     public void onClose(Session session) {
-        webSocketServiceMap.remove(this.currentUser);
+        webSocketServiceMap.remove(this.currentUser.getId());
         log.info("有一连接关闭，移除{}的户, 当前在线人数为：{}", this.currentUser, webSocketServiceMap.size());
     }
 
@@ -133,22 +136,39 @@ public class WebsocketService {
     @OnMessage
     public void onMessage(String messageJson, Session session) {
         log.info("收到{}的消息：{}", session, messageJson);
-        MessageVO message = JSON.parseObject(messageJson, MessageVO.class);
-        if (message.getMessageTypeValue() == null) {
-            notifyAndSaveUserMessage(this.currentUser.getId(), "Error: no messageTypeValue");
-            return;
+        try {
+            MessageVO message = JSON.parseObject(messageJson, MessageVO.class);
+            if (message.getMessageTypeValue() == null) {
+                notifyUserMessage(this.currentUser.getId(), "Error: No messageTypeValue");
+                return;
+            }
+            if (message.getMessageTypeValue().equals(MessageType.USER_MESSAGE.getValue())) {
+                Long receiveUserId = message.getReceiveUserId();
+                if (receiveUserId != null) {
+                    sendAndSaveUserMessage(receiveUserId, message.getData());
+                } else {
+                    notifyUserMessage(this.currentUser.getId(), "Error: No receiveUserId");
+                }
+
+            } else if (message.getMessageTypeValue().equals(ROOM_MESSAGE.getValue())) {
+                Long receiveRoomId = message.getReceiveRoomId();
+                if (receiveRoomId != null) {
+                    sendAndSaveRoomMessage(receiveRoomId, message.getData());
+                } else {
+                    notifyUserMessage(this.currentUser.getId(), "Error: No receiveRoomId");
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            notifyUserMessage(this.currentUser.getId(), e.getMessage());
         }
-        if (message.getMessageTypeValue().equals(MessageType.USER_MESSAGE.getValue())) {
-            sendAndSaveUserMessage(message.getReceiveUserId(), message.getData());
-        } else if (message.getMessageTypeValue().equals(ROOM_MESSAGE.getValue())) {
-            sendAndSaveRoomMessage(message.getRoomId(), message.getData());
-        }
+
     }
 
     @OnError
     public void onError(Session session, Throwable error) {
         log.error("Websocket发生错误: {}", error.getMessage());
-        notifyAndSaveUserMessage(this.currentUser.getId(), error.getMessage());
+        notifyUserMessage(this.currentUser.getId(), error.getMessage());
         error.printStackTrace();
     }
 
@@ -159,14 +179,17 @@ public class WebsocketService {
         this.currentSession.getBasicRemote().sendText(message);
     }
 
-    private void sendAndUpdateMessage(MessageVO message) throws IOException {
+    private <T> void sendMessage(MessageVO<T> message) throws IOException {
+        send(JSON.toJSONString(message));
+    }
+
+    private <T> void sendAndUpdateMessage(MessageVO<T> message) throws IOException {
+        send(JSON.toJSONString(message));
+
         if (message.getId() != null) {
             message.setIsSent(true);
             messageService.saveOrUpdate(message);
         }
-
-        String s = JSON.toJSONString(message);
-        send(s);
     }
 
     /**
@@ -221,9 +244,6 @@ public class WebsocketService {
         }
     }
 
-    public <T> void sendMessage(MessageVO<T> message) {
-    }
-
     public <T> void sendAndSaveUserMessage(Long receiveUserId, T data) {
         MessageVO<T> message = MessageVO.userMessage(this.currentUser.getId(), receiveUserId, data);
 
@@ -240,8 +260,10 @@ public class WebsocketService {
 
     public <T> void sendAndSaveRoomMessage(Long receiveRoomId, T data) {
         MessageVO<T> message = MessageVO.roomMessage(this.currentUser.getId(), receiveRoomId, data);
+
         List<Long> userIds = roomService.getUserIdsByRoomId(receiveRoomId);
         for (Long userId : userIds) {
+            message.setReceiveUserId(userId);
             MessageVO sentMessage = messageService.saveOrUpdate(message);
             if (webSocketServiceMap.containsKey(userId)) {
                 WebsocketService websocketService = webSocketServiceMap.get(userId);
@@ -254,8 +276,20 @@ public class WebsocketService {
         }
     }
 
+    public <T> void notifyUserMessage(Long receiveUserId, T data) {
+        MessageVO<T> message = MessageVO.userNotification(receiveUserId, data);
+        if (webSocketServiceMap.containsKey(receiveUserId)) {
+            WebsocketService websocketService = webSocketServiceMap.get(receiveUserId);
+            try {
+                websocketService.sendMessage(message);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     public <T> void notifyAndSaveUserMessage(Long receiveUserId, T data) {
-        MessageVO<T> message = MessageVO.userMessage(null, receiveUserId, data);
+        MessageVO<T> message = MessageVO.userNotification(receiveUserId, data);
         MessageVO sentMessage = messageService.saveOrUpdate(message);
         if (webSocketServiceMap.containsKey(receiveUserId)) {
             WebsocketService websocketService = webSocketServiceMap.get(receiveUserId);
@@ -267,10 +301,29 @@ public class WebsocketService {
         }
     }
 
+
     public <T> void notifyRoomMessage(Long roomId, T data) {
-        MessageVO<T> message = MessageVO.roomMessage(null, roomId, data);
+        MessageVO<T> message = MessageVO.roomNotification(roomId, data);
+
         List<Long> userIds = roomService.getUserIdsByRoomId(roomId);
         for (Long userId : userIds) {
+            if (webSocketServiceMap.containsKey(userId)) {
+                WebsocketService websocketService = webSocketServiceMap.get(userId);
+                try {
+                    websocketService.sendMessage(message);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
+    public <T> void notifyAndSaveRoomMessage(Long roomId, T data) {
+        MessageVO<T> message = MessageVO.roomNotification(roomId, data);
+        List<Long> userIds = roomService.getUserIdsByRoomId(roomId);
+
+        for (Long userId : userIds) {
+            message.setReceiveUserId(userId);
             MessageVO sentMessage = messageService.saveOrUpdate(message);
             if (webSocketServiceMap.containsKey(userId)) {
                 WebsocketService websocketService = webSocketServiceMap.get(userId);

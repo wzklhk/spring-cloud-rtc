@@ -8,7 +8,8 @@ public enum MessageType {
     USER_MESSAGE(0, "user message"),
     ROOM_MESSAGE(1, "room message"),
     BROADCAST(2, "broadcast"),
-    NOTIFICATION(3, "notification");
+    USER_NOTIFICATION(3, "user notification"),
+    ROOM_NOTIFICATION(4, "room notification");
 
     private final Integer value;
 

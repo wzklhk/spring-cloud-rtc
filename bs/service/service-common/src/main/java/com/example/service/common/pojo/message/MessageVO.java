@@ -21,7 +21,7 @@ public class MessageVO<T> extends AbstractCommonVO {
 
     private Long receiveUserId;
 
-    private Long roomId;
+    private Long receiveRoomId;
 
     private T data;
 
@@ -38,5 +38,13 @@ public class MessageVO<T> extends AbstractCommonVO {
 
     public static <T> MessageVO<T> broadcast(Long sendUserId, T data) {
         return new MessageVO<>(sendUserId, MessageType.BROADCAST.getValue(), null, null, data, false);
+    }
+
+    public static <T> MessageVO<T> userNotification(Long receiveUserId, T data) {
+        return new MessageVO<>(null, MessageType.USER_NOTIFICATION.getValue(), receiveUserId, null, data, false);
+    }
+
+    public static <T> MessageVO<T> roomNotification(Long roomId, T data) {
+        return new MessageVO<>(null, MessageType.ROOM_NOTIFICATION.getValue(), null, roomId, data, false);
     }
 }
