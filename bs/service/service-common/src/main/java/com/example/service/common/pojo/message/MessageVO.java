@@ -19,6 +19,8 @@ public class MessageVO<T> extends AbstractCommonVO {
 
     private Integer messageTypeValue;
 
+    private String messageTypeName;
+
     private Long receiveUserId;
 
     private Long receiveRoomId;
@@ -29,22 +31,27 @@ public class MessageVO<T> extends AbstractCommonVO {
 
 
     public static <T> MessageVO<T> userMessage(Long sendUserId, Long receiveUserId, T data) {
-        return new MessageVO<>(sendUserId, MessageType.USER_MESSAGE.getValue(), receiveUserId, null, data, false);
+        MessageType type = MessageType.USER_MESSAGE;
+        return new MessageVO<>(sendUserId, type.getValue(), type.getName(), receiveUserId, null, data, false);
     }
 
     public static <T> MessageVO<T> roomMessage(Long sendUserId, Long roomId, T data) {
-        return new MessageVO<>(sendUserId, MessageType.ROOM_MESSAGE.getValue(), null, roomId, data, false);
+        MessageType type = MessageType.ROOM_MESSAGE;
+        return new MessageVO<>(sendUserId, type.getValue(), type.getName(), null, roomId, data, false);
     }
 
     public static <T> MessageVO<T> broadcast(Long sendUserId, T data) {
-        return new MessageVO<>(sendUserId, MessageType.BROADCAST.getValue(), null, null, data, false);
+        MessageType type = MessageType.BROADCAST;
+        return new MessageVO<>(sendUserId, type.getValue(), type.getName(), null, null, data, false);
     }
 
     public static <T> MessageVO<T> userNotification(Long receiveUserId, T data) {
-        return new MessageVO<>(null, MessageType.USER_NOTIFICATION.getValue(), receiveUserId, null, data, false);
+        MessageType type = MessageType.USER_NOTIFICATION;
+        return new MessageVO<>(null, type.getValue(), type.getName(), receiveUserId, null, data, false);
     }
 
     public static <T> MessageVO<T> roomNotification(Long roomId, T data) {
-        return new MessageVO<>(null, MessageType.ROOM_NOTIFICATION.getValue(), null, roomId, data, false);
+        MessageType type = MessageType.ROOM_NOTIFICATION;
+        return new MessageVO<>(null, type.getValue(), type.getName(), null, roomId, data, false);
     }
 }

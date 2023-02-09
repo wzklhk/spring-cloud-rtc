@@ -1,6 +1,5 @@
 package com.example.access.auth.feign;
 
-import com.alibaba.fastjson.JSONObject;
 import com.example.common.pojo.CommonResultInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface UserFeignService {
 
     @GetMapping("/user/getByUsername")
-    CommonResultInfo<JSONObject> getUserByUsername(@RequestParam("username") String username);
+    CommonResultInfo<Object> getUserByUsername(@RequestParam("username") String username);
 
 }

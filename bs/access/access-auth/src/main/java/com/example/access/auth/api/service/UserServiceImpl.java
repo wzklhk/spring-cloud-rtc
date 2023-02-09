@@ -1,6 +1,5 @@
 package com.example.access.auth.api.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.example.access.auth.feign.UserFeignService;
 import com.example.access.auth.pojo.user.UserDetailsImpl;
 import com.example.common.pojo.CommonResultInfo;
@@ -31,14 +30,14 @@ public class UserServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        CommonResultInfo<JSONObject> res = userFeignService.getUserByUsername(username);
+        CommonResultInfo<Object> res = userFeignService.getUserByUsername(username);
         if (!res.getCode().equals(ErrorCodeEnum.OK.getErrorCode())) {
             String errorInfo = res.getMsg();
             log.error(errorInfo);
             throw new UsernameNotFoundException(errorInfo);
         }
 
-        JSONObject user = res.getData();
+        Object user = res.getData();
 
         if (null == user) {
             throw new UsernameNotFoundException("账户不存在");

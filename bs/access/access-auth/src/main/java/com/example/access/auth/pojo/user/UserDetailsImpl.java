@@ -18,9 +18,9 @@ public class UserDetailsImpl implements UserDetails {
 
     private String password;
 
-    private boolean enabled;
+    private boolean isEnabled;
 
-    private boolean locked;
+    private boolean isLocked;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -44,7 +44,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !locked;
+        return !isLocked;
     }
 
     @Override
@@ -54,6 +54,6 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return isEnabled;
     }
 }

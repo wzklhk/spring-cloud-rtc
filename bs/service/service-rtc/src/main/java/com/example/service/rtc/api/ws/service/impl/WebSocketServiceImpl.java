@@ -1,4 +1,4 @@
-package com.example.service.rtc.api.ws.service;
+package com.example.service.rtc.api.ws.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
@@ -35,7 +35,7 @@ import static com.example.service.common.pojo.message.MessageType.ROOM_MESSAGE;
 @ServerEndpoint(value = "/ws")
 @Service
 @Data
-public class WebsocketService {
+public class WebSocketServiceImpl {
 
 
     /**
@@ -45,29 +45,29 @@ public class WebsocketService {
 
     @Autowired
     public void setRoomService(RoomServiceImpl roomService) {
-        WebsocketService.roomService = roomService;
+        WebSocketServiceImpl.roomService = roomService;
     }
 
     private static AccessService accessService;
 
     @Autowired
     public void setAccessService(AccessService accessService) {
-        WebsocketService.accessService = accessService;
+        WebSocketServiceImpl.accessService = accessService;
     }
 
     private static MessageService messageService;
 
     @Autowired
     public void setMessageService(MessageService messageService) {
-        WebsocketService.messageService = messageService;
+        WebSocketServiceImpl.messageService = messageService;
     }
 
     /**
      * 所有ws连接集合
      */
-    private static Map<Long, WebsocketService> webSocketServiceMap = new ConcurrentHashMap<>();
+    private static Map<Long, WebSocketServiceImpl> webSocketServiceMap = new ConcurrentHashMap<>();
 
-    public static Map<Long, WebsocketService> getWebSocketServiceMap() {
+    public static Map<Long, WebSocketServiceImpl> getWebSocketServiceMap() {
         return webSocketServiceMap;
     }
 
@@ -158,6 +158,7 @@ public class WebsocketService {
                     notifyUserMessage(this.currentUser.getId(), "Error: No receiveRoomId");
                 }
             }
+            notifyUserMessage(this.currentUser.getId(), "OK");
         } catch (JSONException e) {
             e.printStackTrace();
             notifyUserMessage(this.currentUser.getId(), e.getMessage());
@@ -197,11 +198,12 @@ public class WebsocketService {
      */
     public <T> void unicastMessage(Long receiverId, T data) {
         log.info("单播消息：{}", data);
+
         if (webSocketServiceMap.containsKey(receiverId)) {
-            WebsocketService websocketService = webSocketServiceMap.get(receiverId);
+            WebSocketServiceImpl websocketServiceImpl = webSocketServiceMap.get(receiverId);
             try {
                 MessageVO<T> message = MessageVO.userMessage(this.currentUser.getId(), receiverId, data);
-                websocketService.send(JSON.toJSONString(message));
+                websocketServiceImpl.send(JSON.toJSONString(message));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -213,12 +215,13 @@ public class WebsocketService {
      */
     public <T> void multicastMessage(List<Long> receiverIds, T data) {
         log.info("多播消息：{}", data);
+
         for (Long receiverId : receiverIds) {
             if (webSocketServiceMap.containsKey(receiverId)) {
-                WebsocketService websocketService = webSocketServiceMap.get(receiverId);
+                WebSocketServiceImpl websocketServiceImpl = webSocketServiceMap.get(receiverId);
                 try {
                     MessageVO<T> message = MessageVO.userMessage(this.currentUser.getId(), receiverId, data);
-                    websocketService.send(JSON.toJSONString(message));
+                    websocketServiceImpl.send(JSON.toJSONString(message));
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -232,12 +235,11 @@ public class WebsocketService {
     public <T> void broadcastMessage(T data) {
         log.info("广播消息：{}", data);
 
-
-        for (Map.Entry<Long, WebsocketService> entry : webSocketServiceMap.entrySet()) {
+        for (Map.Entry<Long, WebSocketServiceImpl> entry : webSocketServiceMap.entrySet()) {
             try {
-                WebsocketService websocketService = entry.getValue();
+                WebSocketServiceImpl websocketServiceImpl = entry.getValue();
                 MessageVO<T> message = MessageVO.broadcast(this.currentUser.getId(), data);
-                websocketService.send(JSON.toJSONString(message));
+                websocketServiceImpl.send(JSON.toJSONString(message));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -249,14 +251,15 @@ public class WebsocketService {
 
         MessageVO sentMessage = messageService.saveOrUpdate(message);
         if (webSocketServiceMap.containsKey(receiveUserId)) {
-            WebsocketService websocketService = webSocketServiceMap.get(receiveUserId);
+            WebSocketServiceImpl websocketServiceImpl = webSocketServiceMap.get(receiveUserId);
             try {
-                websocketService.sendAndUpdateMessage(sentMessage);
+                websocketServiceImpl.sendAndUpdateMessage(sentMessage);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
     }
+
 
     public <T> void sendAndSaveRoomMessage(Long receiveRoomId, T data) {
         MessageVO<T> message = MessageVO.roomMessage(this.currentUser.getId(), receiveRoomId, data);
@@ -266,9 +269,9 @@ public class WebsocketService {
             message.setReceiveUserId(userId);
             MessageVO sentMessage = messageService.saveOrUpdate(message);
             if (webSocketServiceMap.containsKey(userId)) {
-                WebsocketService websocketService = webSocketServiceMap.get(userId);
+                WebSocketServiceImpl websocketServiceImpl = webSocketServiceMap.get(userId);
                 try {
-                    websocketService.sendAndUpdateMessage(sentMessage);
+                    websocketServiceImpl.sendAndUpdateMessage(sentMessage);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -279,9 +282,9 @@ public class WebsocketService {
     public <T> void notifyUserMessage(Long receiveUserId, T data) {
         MessageVO<T> message = MessageVO.userNotification(receiveUserId, data);
         if (webSocketServiceMap.containsKey(receiveUserId)) {
-            WebsocketService websocketService = webSocketServiceMap.get(receiveUserId);
+            WebSocketServiceImpl websocketServiceImpl = webSocketServiceMap.get(receiveUserId);
             try {
-                websocketService.sendMessage(message);
+                websocketServiceImpl.sendMessage(message);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -292,15 +295,14 @@ public class WebsocketService {
         MessageVO<T> message = MessageVO.userNotification(receiveUserId, data);
         MessageVO sentMessage = messageService.saveOrUpdate(message);
         if (webSocketServiceMap.containsKey(receiveUserId)) {
-            WebsocketService websocketService = webSocketServiceMap.get(receiveUserId);
+            WebSocketServiceImpl websocketServiceImpl = webSocketServiceMap.get(receiveUserId);
             try {
-                websocketService.sendAndUpdateMessage(sentMessage);
+                websocketServiceImpl.sendAndUpdateMessage(sentMessage);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
     }
-
 
     public <T> void notifyRoomMessage(Long roomId, T data) {
         MessageVO<T> message = MessageVO.roomNotification(roomId, data);
@@ -308,9 +310,9 @@ public class WebsocketService {
         List<Long> userIds = roomService.getUserIdsByRoomId(roomId);
         for (Long userId : userIds) {
             if (webSocketServiceMap.containsKey(userId)) {
-                WebsocketService websocketService = webSocketServiceMap.get(userId);
+                WebSocketServiceImpl websocketServiceImpl = webSocketServiceMap.get(userId);
                 try {
-                    websocketService.sendMessage(message);
+                    websocketServiceImpl.sendMessage(message);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -318,17 +320,17 @@ public class WebsocketService {
         }
     }
 
-    public <T> void notifyAndSaveRoomMessage(Long roomId, T data) {
-        MessageVO<T> message = MessageVO.roomNotification(roomId, data);
-        List<Long> userIds = roomService.getUserIdsByRoomId(roomId);
+    public <T> void notifyAndSaveRoomMessage(Long receiveRoomId, T data) {
+        MessageVO<T> message = MessageVO.roomNotification(receiveRoomId, data);
+        List<Long> userIds = roomService.getUserIdsByRoomId(receiveRoomId);
 
         for (Long userId : userIds) {
             message.setReceiveUserId(userId);
             MessageVO sentMessage = messageService.saveOrUpdate(message);
             if (webSocketServiceMap.containsKey(userId)) {
-                WebsocketService websocketService = webSocketServiceMap.get(userId);
+                WebSocketServiceImpl websocketServiceImpl = webSocketServiceMap.get(userId);
                 try {
-                    websocketService.sendAndUpdateMessage(sentMessage);
+                    websocketServiceImpl.sendAndUpdateMessage(sentMessage);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

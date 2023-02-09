@@ -1,13 +1,16 @@
 package com.example.access.admin.pojo.vo;
 
+import com.example.common.pojo.AbstractCommonVO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author wzklhk
  */
+
 @Data
-public class UserVO {
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class UserVO extends AbstractCommonVO {
 
     private String username;
 

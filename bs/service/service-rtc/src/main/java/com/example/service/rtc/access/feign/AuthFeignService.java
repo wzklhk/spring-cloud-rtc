@@ -1,6 +1,5 @@
 package com.example.service.rtc.access.feign;
 
-import com.alibaba.fastjson.JSONObject;
 import com.example.common.pojo.CommonResultInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,5 +12,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface AuthFeignService {
 
     @GetMapping("/oauth/check_token")
-    CommonResultInfo<JSONObject> checkToken(@RequestParam("token") String token);
+    CommonResultInfo<Object> checkToken(@RequestParam("token") String token);
 }

@@ -1,11 +1,10 @@
 package com.example.service.rtc.api.ws.controller;
 
 import com.example.common.pojo.CommonResultInfo;
-import com.example.service.rtc.api.ws.service.WebsocketService;
+import com.example.service.common.pojo.message.MessageVO;
+import com.example.service.rtc.api.ws.service.impl.WebSocketServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +23,9 @@ public class WebsocketController {
     @Value("${server.port}")
     private Integer port;
 
-    private final WebsocketService websocketService;
+    private final WebSocketServiceImpl websocketService;
 
-    public WebsocketController(WebsocketService websocketService) {
+    public WebsocketController(WebSocketServiceImpl websocketService) {
         this.websocketService = websocketService;
     }
 
@@ -38,35 +37,23 @@ public class WebsocketController {
 
     @GetMapping("/getConnectedUserList")
     public CommonResultInfo getConnectedUserList() {
-        Map<Long, WebsocketService> webSocketSessionMap = WebsocketService.getWebSocketServiceMap();
+        Map<Long, WebSocketServiceImpl> webSocketSessionMap = WebSocketServiceImpl.getWebSocketServiceMap();
         List<Long> userIds = new ArrayList<>();
-        for (Map.Entry<Long, WebsocketService> entry : webSocketSessionMap.entrySet()) {
+        for (Map.Entry<Long, WebSocketServiceImpl> entry : webSocketSessionMap.entrySet()) {
             userIds.add(entry.getKey());
         }
         return CommonResultInfo.ok(userIds);
     }
 
-    /*@PostMapping("/unicast")
-    public <T> CommonResultInfo unicast(@RequestBody MessageWsVO<T> messageWsVO) {
-        websocketService.unicastMessage(messageWsVO.getReceiverIds().get(0), messageWsVO.getData());
+    @PostMapping("/notifyUser")
+    public <T> CommonResultInfo unicast(@RequestBody MessageVO<T> message) {
+        websocketService.notifyAndSaveUserMessage(message.getReceiveUserId(), message.getData());
         return CommonResultInfo.ok();
     }
 
-    @PostMapping("/multicast")
-    public <T> CommonResultInfo multicast(@RequestBody MessageWsVO<T> messageWsVO) {
-        websocketService.multicastMessage(messageWsVO.getReceiverId(), messageWsVO.getData());
+    @PostMapping("/notifyRoom")
+    public <T> CommonResultInfo multicast(@RequestBody MessageVO<T> message) {
+        websocketService.notifyAndSaveRoomMessage(message.getReceiveRoomId(), message.getData());
         return CommonResultInfo.ok();
     }
-
-    @PostMapping("/broadcast")
-    public <T> CommonResultInfo broadcast(@RequestBody MessageWsVO<T> messageWsVO) {
-        websocketService.broadcastMessage(messageWsVO.getData());
-        return CommonResultInfo.ok();
-    }
-
-    @PostMapping("/notification")
-    public <T> CommonResultInfo notification(@RequestBody MessageWsVO<T> messageWsVO) {
-        websocketService.notifyMessage(messageWsVO.getReceiverIds(), messageWsVO.getData());
-        return CommonResultInfo.ok();
-    }*/
 }

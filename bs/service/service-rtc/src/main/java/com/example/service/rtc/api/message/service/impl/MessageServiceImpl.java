@@ -21,11 +21,12 @@ public class MessageServiceImpl extends AbstractCommonLogicDeleteServiceJpaImpl<
     @Override
     protected MessageVO toVO(Message entity) {
         MessageVO messageVO = super.toVO(entity);
+        String data = entity.getData();
         try {
-            messageVO.setData(JSON.parse(entity.getData()));
+            messageVO.setData(JSON.parse(data));
         } catch (JSONException e) {
             log.error(e.getMessage());
-            messageVO.setData(entity.getData());
+            messageVO.setData(data);
         }
 
         return messageVO;
