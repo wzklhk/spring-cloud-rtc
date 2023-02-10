@@ -15,7 +15,7 @@
 
     <modules>
         <module>service-common</module>
-        <module>service-rtc</module>
+        <module>service-signal</module>
     </modules>
 
     <dependencies>
