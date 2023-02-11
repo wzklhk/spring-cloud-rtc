@@ -1,4 +1,4 @@
-package com.example.access.admin.pojo.entity;
+package com.example.access.admin.pojo.user;
 
 import com.example.common.pojo.AbstractCommonLogicDeleteDO;
 import lombok.Getter;

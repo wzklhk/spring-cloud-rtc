@@ -1,9 +1,8 @@
 package com.example.access.admin.api.user.controller;
 
-
 import com.example.access.admin.api.user.service.UserService;
-import com.example.access.admin.pojo.entity.User;
-import com.example.access.admin.pojo.vo.UserVO;
+import com.example.access.admin.pojo.user.User;
+import com.example.access.admin.pojo.user.UserVO;
 import com.example.common.api.controller.CommonController;
 import com.example.common.pojo.CommonResultInfo;
 import org.springframework.web.bind.annotation.GetMapping;

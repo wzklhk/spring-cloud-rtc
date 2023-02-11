@@ -1,7 +1,8 @@
 package com.example.access.admin.api.user.service;
 
-import com.example.access.admin.pojo.entity.User;
-import com.example.access.admin.pojo.vo.UserVO;
+
+import com.example.access.admin.pojo.user.User;
+import com.example.access.admin.pojo.user.UserVO;
 import com.example.common.api.service.CommonService;
 
 /**

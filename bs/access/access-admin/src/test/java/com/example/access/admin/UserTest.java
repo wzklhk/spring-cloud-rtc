@@ -3,6 +3,7 @@ package com.example.access.admin;
 import com.alibaba.fastjson.JSONObject;
 import com.example.access.admin.api.user.repository.UserRepository;
 import com.example.access.admin.api.user.service.UserService;
+import com.example.access.admin.pojo.user.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +13,7 @@ import javax.persistence.Query;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @SpringBootTest
 public class UserTest {
@@ -31,6 +33,18 @@ public class UserTest {
             Map<String, Object> map = new HashMap<>();
             map.put("username", "test" + i);
             userService.saveOrUpdate(map);
+        }
+    }
+
+    @Test
+    public void findUser() {
+        Optional<User> byId = userRepository.findById(1L);
+        if (byId.isPresent()) {
+            System.out.println(byId.isPresent());
+            User user = byId.get();
+            System.out.println(user);
+        } else {
+            System.out.println(byId.isPresent());
         }
     }
 
@@ -60,6 +74,5 @@ public class UserTest {
             String s = JSONObject.toJSONString(o);
             System.out.println(s);
         }
-
     }
 }

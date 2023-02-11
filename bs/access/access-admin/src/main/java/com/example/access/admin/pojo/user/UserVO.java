@@ -1,4 +1,4 @@
-package com.example.access.admin.pojo.vo;
+package com.example.access.admin.pojo.user;
 
 import com.example.common.pojo.AbstractCommonVO;
 import lombok.Data;
