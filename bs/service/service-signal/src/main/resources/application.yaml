@@ -4,7 +4,7 @@ server:
 spring:
   # spring.application.name在bootstrap中定义
   #application:
-  #  name: service-rtc  # 服务名称
+  #  name: service-signal  # 服务名称
 
   jpa:
     show-sql: true
@@ -29,8 +29,3 @@ feign:
     access-gateway-service: access-gateway
     access-auth-service: access-auth
     access-admin-service: access-admin
-
-srs:
-  schema: http
-  host: 127.0.0.1
-  port: 1985

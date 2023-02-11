@@ -1,7 +1,7 @@
-package com.example.service.signal.api.srs.service;
+package com.example.service.rtc.srs.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.service.signal.properties.SRSServerProperties;
+import com.example.service.rtc.properties.SRSServerProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

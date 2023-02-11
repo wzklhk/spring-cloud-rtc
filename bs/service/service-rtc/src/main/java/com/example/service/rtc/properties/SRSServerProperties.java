@@ -1,4 +1,4 @@
-package com.example.service.signal.properties;
+package com.example.service.rtc.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

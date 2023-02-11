@@ -6,7 +6,7 @@ spring:
   # spring.application.name在bootstrap中定义
   application:
     # 服务名称
-    name: service-signal
+    name: service-rtc
 
   profiles:
     # 环境profile后缀

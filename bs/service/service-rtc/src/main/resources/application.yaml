@@ -1,0 +1,19 @@
+server:
+  port: 23100
+
+spring:
+# spring.application.name在bootstrap中定义
+#application:
+#  name: service-srs  # 服务名称
+
+# 自定义feign配置
+feign:
+  name:
+    access-gateway-service: access-gateway
+    access-auth-service: access-auth
+    access-admin-service: access-admin
+
+srs:
+  schema: http
+  host: 127.0.0.1
+  port: 1985

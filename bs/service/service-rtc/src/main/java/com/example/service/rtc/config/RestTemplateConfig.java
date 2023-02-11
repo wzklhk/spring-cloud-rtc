@@ -1,4 +1,4 @@
-package com.example.service.signal.config;
+package com.example.service.rtc.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
