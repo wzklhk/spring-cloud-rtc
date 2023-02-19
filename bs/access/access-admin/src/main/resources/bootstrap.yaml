@@ -21,3 +21,6 @@ spring:
         server-addr: ${nacos.server-addr}
         # 配置文件后缀名
         file-extension: yaml
+
+        shared-configs:
+          - data-id: database.yaml

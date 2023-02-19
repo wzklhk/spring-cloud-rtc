@@ -4,7 +4,7 @@ server:
 spring:
   # spring.application.name在bootstrap中定义
   #application:
-  #  name: service-signal  # 服务名称
+  #  name: service-message  # 服务名称
 
   jpa:
     show-sql: true

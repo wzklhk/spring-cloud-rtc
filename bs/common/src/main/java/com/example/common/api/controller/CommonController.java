@@ -1,11 +1,13 @@
 package com.example.common.api.controller;
 
 import com.example.common.api.service.CommonService;
+import com.example.common.pojo.AbstractCommonLogicDeleteDO;
 import com.example.common.pojo.CommonPageInfo;
 import com.example.common.pojo.CommonResultInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +19,7 @@ import java.util.Map;
  * @param <ID> id主键类型
  * @author wzklhk
  */
-public class CommonController<VO, DO, ID> {
+public class CommonController<VO, DO extends AbstractCommonLogicDeleteDO, ID extends Serializable> {
 
     @Autowired
     private CommonService<VO, DO, ID> commonService;

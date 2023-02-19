@@ -44,7 +44,7 @@ public class Message extends AbstractCommonLogicDeleteDO {
     private Long receiveRoomId;
 
     @Column(nullable = false, unique = false,
-            columnDefinition = "bigint(20) COMMENT '接收方id'")
+            columnDefinition = "bigint(20) COMMENT '是否已发送'")
     private Boolean isSent;
 
 }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @ConfigurationProperties(prefix = "srs")
-public class SRSServerProperties {
+public class SrsServerProperties {
     private String schema;
 
     private String host;

@@ -1,7 +1,7 @@
 package com.example.service.rtc.srs.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.service.rtc.properties.SRSServerProperties;
+import com.example.service.rtc.properties.SrsServerProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,9 +17,9 @@ public class SRSService {
 
     private final RestTemplate restTemplate;
 
-    private final SRSServerProperties srsServerProperties;
+    private final SrsServerProperties srsServerProperties;
 
-    public SRSService(RestTemplate restTemplate, SRSServerProperties srsServerProperties) {
+    public SRSService(RestTemplate restTemplate, SrsServerProperties srsServerProperties) {
         this.restTemplate = restTemplate;
         this.srsServerProperties = srsServerProperties;
     }

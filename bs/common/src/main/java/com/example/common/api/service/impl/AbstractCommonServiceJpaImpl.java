@@ -150,7 +150,7 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
 
     @Override
     public VO saveOrUpdateByQueryDO(DO queryDO) {
-        DO queryDOFull = queryDO;
+        DO queryFullDO = queryDO;
         List<String> ignoreProperties = new ArrayList<>();
         try {
             List<Field> fields = new ArrayList<>();
@@ -168,7 +168,7 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
                 if (field.isAnnotationPresent(Id.class) && fieldValue != null) {
                     Optional<DO> one = commonRepository.findById((ID) fieldValue);
                     if (one.isPresent()) {
-                        queryDOFull = one.get();
+                        queryFullDO = one.get();
                     }
                 }
 
@@ -176,12 +176,12 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
                     ignoreProperties.add(fieldName);
                 }
             }
-            BeanUtils.copyProperties(queryDO, queryDOFull, ignoreProperties.toArray(new String[0]));
+            BeanUtils.copyProperties(queryDO, queryFullDO, ignoreProperties.toArray(new String[0]));
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
 
-        DO save = commonRepository.save(queryDOFull);
+        DO save = commonRepository.save(queryFullDO);
         return toVO(save);
     }
 

@@ -6,7 +6,7 @@ spring:
   # spring.application.name在bootstrap中定义
   application:
     # 服务名称
-    name: service-signal
+    name: service-message
 
   profiles:
     # 环境profile后缀
@@ -21,3 +21,6 @@ spring:
         server-addr: ${nacos.server-addr}
         # 配置文件后缀名
         file-extension: yaml
+
+        shared-configs:
+          - data-id: database.yaml

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @Slf4j
 @RestControllerAdvice
-public class OAuth2ExceptionHandler {
+public class Oauth2ExceptionHandler {
     @ExceptionHandler(OAuth2Exception.class)
     public CommonResultInfo handleOAuth2Exception(OAuth2Exception e) {
         log.error("OAuth2Exception: {}", e.getMessage());

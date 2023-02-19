@@ -19,7 +19,7 @@ public abstract class AbstractCommonLogicDeleteDO extends AbstractCommonDO {
      * 逻辑删除
      */
     @Column(name = "is_deleted", nullable = false,
-            columnDefinition = "tinyint(1) DEFAULT 0 COMMENT '逻辑删除'")
+            columnDefinition = "tinyint(1) unsigned DEFAULT 0 COMMENT '逻辑删除'")
     private Boolean isDeleted;
 
 }

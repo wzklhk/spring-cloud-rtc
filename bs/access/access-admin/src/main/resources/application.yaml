@@ -9,7 +9,7 @@ spring:
 
   jpa:
     database: mysql
-    # 是否开启自动
+    # 自动生成ddl
     generate-ddl: false
     # 是否开启sql日志显示
     show-sql: false
@@ -18,17 +18,17 @@ spring:
         dialect: org.hibernate.dialect.MySQL57Dialect
 
   # 数据库配置从配置中心获取
-  datasource:
-    url: jdbc:mysql://127.0.0.1:3306/spring-cloud-rtc
-    username: username
-    password: password
+  #datasource:
+  #  url: jdbc:mysql://127.0.0.1:3306/spring-cloud-rtc
+  #  username: username
+  #  password: password
 
   # redis配置从配置中心获取
-  redis:
-    host: 127.0.0.1
-    port: 6379
-    database: 0
-    password: password
+  #redis:
+  #  host: 127.0.0.1
+  #  port: 6379
+  #  database: 0
+  #  password: password
 
 # 自定义feign配置
 feign:

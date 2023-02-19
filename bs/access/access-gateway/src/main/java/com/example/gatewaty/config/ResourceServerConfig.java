@@ -33,6 +33,7 @@ public class ResourceServerConfig {
     private final RestfulAuthenticationEntryPoint restfulAuthenticationEntryPoint;
 
     private final IgnoreUrlsProperties ignoreUrlsProperties;
+
     private final IgnoreUrlsRemoveJwtFilter ignoreUrlsRemoveJwtFilter;
 
     public ResourceServerConfig(RestfulAccessDeniedHandler restfulAccessDeniedHandler, RestfulAuthenticationEntryPoint restfulAuthenticationEntryPoint, IgnoreUrlsProperties ignoreUrlsProperties, IgnoreUrlsRemoveJwtFilter ignoreUrlsRemoveJwtFilter) {
