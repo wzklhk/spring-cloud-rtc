@@ -16,4 +16,6 @@ public class SrsServerProperties {
     private String host;
 
     private Integer port;
+
+    private String secret;
 }

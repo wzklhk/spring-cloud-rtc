@@ -1,8 +1,14 @@
+/*
 package com.example.service.rtc.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
+
+*/
+/**
+ * @author wzklhk
+ *//*
 
 @Configuration
 public class RestTemplateConfig {
@@ -11,3 +17,4 @@ public class RestTemplateConfig {
         return new RestTemplate();
     }
 }
+*/

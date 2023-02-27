@@ -1,10 +1,10 @@
-package com.example.service.rtc.srs.controller;
+package com.example.service.rtc.api.srs.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.common.pojo.CommonResultInfo;
 import com.example.service.common.pojo.srs.PlayQuery;
 import com.example.service.common.pojo.srs.PublishQuery;
-import com.example.service.rtc.srs.service.SRSService;
+import com.example.service.rtc.api.srs.service.SrsService;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/srs")
-public class SRSController {
+public class SrsController {
 
-    private final SRSService srsService;
+    private final SrsService srsService;
 
-    public SRSController(SRSService srsService) {
+    public SrsController(SrsService srsService) {
         this.srsService = srsService;
     }
 
@@ -30,9 +30,10 @@ public class SRSController {
         }
     }
 
-    @GetMapping("/streams")
-    public CommonResultInfo getStreams() {
-        JSONObject res = srsService.getStreams();
+
+    @GetMapping("/clients")
+    public CommonResultInfo getClients() {
+        JSONObject res = srsService.getClients();
         if (res.getIntValue("code") == 0) {
             return CommonResultInfo.ok(res);
         } else {
@@ -40,9 +41,9 @@ public class SRSController {
         }
     }
 
-    @GetMapping("/clients")
-    public CommonResultInfo getClients() {
-        JSONObject res = srsService.getClients();
+    @GetMapping("/streams")
+    public CommonResultInfo getStreams() {
+        JSONObject res = srsService.getStreams();
         if (res.getIntValue("code") == 0) {
             return CommonResultInfo.ok(res);
         } else {

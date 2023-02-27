@@ -1,4 +1,4 @@
-package com.example.service.message.api.channel.service;
+package com.example.service.rtc.api.channel.service;
 
 import com.example.common.api.service.CommonService;
 import com.example.service.common.pojo.channel.Channel;

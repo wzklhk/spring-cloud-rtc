@@ -22,8 +22,31 @@ import javax.persistence.Table;
 @Setter
 @RequiredArgsConstructor
 public class Channel extends AbstractCommonLogicDeleteDO {
-
     @Column(nullable = false, unique = true,
             columnDefinition = "varchar(255) COMMENT '通道名'")
     private String name;
+
+    @Column(nullable = true, unique = false,
+            columnDefinition = "varchar(255) COMMENT '通道描述'")
+    private String description;
+
+    @Column(nullable = true, unique = true,
+            columnDefinition = "varchar(255) COMMENT '流的id'")
+    private String streamId;
+
+    @Column(nullable = true, unique = false,
+            columnDefinition = "varchar(255) COMMENT '流的vhost'")
+    private String streamVhost;
+
+    @Column(nullable = true, unique = false,
+            columnDefinition = "varchar(255) COMMENT '流的app'")
+    private String streamApp;
+
+    @Column(nullable = true, unique = true,
+            columnDefinition = "varchar(255) COMMENT '流的name'")
+    private String streamName;
+
+    private Boolean isOnline;
+
+    private Long createUserId;
 }

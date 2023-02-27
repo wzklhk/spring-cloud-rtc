@@ -1,9 +1,9 @@
-package com.example.service.message.api.channel.service.impl;
+package com.example.service.rtc.api.channel.service.impl;
 
 import com.example.common.api.service.impl.AbstractCommonLogicDeleteServiceJpaImpl;
 import com.example.service.common.pojo.channel.Channel;
 import com.example.service.common.pojo.channel.ChannelVO;
-import com.example.service.message.api.channel.service.ChannelService;
+import com.example.service.rtc.api.channel.service.ChannelService;
 import org.springframework.stereotype.Service;
 
 /**
