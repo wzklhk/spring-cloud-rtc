@@ -27,4 +27,7 @@ public class Role extends AbstractCommonLogicDeleteDO {
     @Column(nullable = false, unique = true,
             columnDefinition = "varchar(255) COMMENT '角色名'")
     private String name;
+    @Column(nullable = true, unique = true,
+            columnDefinition = "varchar(255) COMMENT '角色描述'")
+    private String description;
 }

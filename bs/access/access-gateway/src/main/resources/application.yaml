@@ -3,7 +3,7 @@ server:
   ssl:
     # 生成密钥
     # keytool -genkeypair -alias key -keypass 123456 -keyalg RSA -keysize 1024 -validity 365 -keystore ./key.jks -storepass 123456
-    enabled: true
+    enabled: false
     key-store: key.jks
     key-store-password: 123456
     key-password: 123456

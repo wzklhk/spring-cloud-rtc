@@ -1,6 +1,7 @@
 package com.example.access.admin.api.user.controller;
 
 import com.example.access.admin.api.user.service.UserService;
+import com.example.access.admin.pojo.role.RoleVO;
 import com.example.access.admin.pojo.user.User;
 import com.example.access.admin.pojo.user.UserVO;
 import com.example.common.api.controller.CommonController;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author wzklhk
@@ -36,5 +39,10 @@ public class UserController extends CommonController<UserVO, User, Long> {
         } else {
             return CommonResultInfo.error();
         }
+    }
+
+    @GetMapping("/getRolesByUserId")
+    public CommonResultInfo<List<RoleVO>> getRolesByUserId(Long userId) {
+        return CommonResultInfo.ok(userService.getRolesByUserId(userId));
     }
 }

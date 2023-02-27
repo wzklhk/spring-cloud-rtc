@@ -44,7 +44,7 @@ public class ResourceServerConfig {
     }
 
     @Bean
-    public SecurityWebFilterChain springSecurityFilterChan(ServerHttpSecurity http) {
+    public SecurityWebFilterChain springSecurityWebFilterChain(ServerHttpSecurity http) {
         //
         http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter());
         // 自定义处理JWT请求头过期或签名错误的结果

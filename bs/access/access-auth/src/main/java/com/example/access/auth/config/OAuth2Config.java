@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.PathResource;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -31,7 +32,7 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
     private final AuthenticationManager authenticationManager;
 
-    private final UserServiceImpl userService;
+    private final UserDetailsService userService;
 
     private final OAuth2Properties oAuth2Properties;
 

@@ -58,9 +58,9 @@ public class AuthController {
     }
 
     @GetMapping("/check_token")
-    public CommonResultInfo<Object> checkToken(@RequestParam String token) {
+    public CommonResultInfo<Object> checkToken(@RequestParam Map<String, String> parameters) {
         try {
-            Map<String, ?> map = checkTokenEndpoint.checkToken(token);
+            Map<String, ?> map = checkTokenEndpoint.checkToken(parameters.get("token"));
             return CommonResultInfo.ok(map);
         } catch (Exception e) {
             return CommonResultInfo.error(e.getMessage());
