@@ -8,6 +8,7 @@ import com.example.service.common.pojo.user.UserVO;
 import com.example.service.message.access.AccessService;
 import com.example.service.message.api.message.service.MessageService;
 import com.example.service.message.api.room.service.impl.RoomServiceImpl;
+import com.example.service.message.config.WebSocketConfig;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ import static com.example.service.common.pojo.message.MessageType.ROOM_MESSAGE;
  * @author wzklhk
  */
 @Slf4j
-@ServerEndpoint(value = "/ws")
+@ServerEndpoint(value = "/ws", configurator = WebSocketConfig.class)
 @Service
 @Data
 public class WebSocketServiceImpl {

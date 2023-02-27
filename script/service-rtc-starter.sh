@@ -6,7 +6,7 @@
 #export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
 
 #这里可替换为你自己的执行程序，后面的代码无需更改
-APP_NAME=access-auth-0.0.1.jar
+APP_NAME=service-message-0.0.1.jar
 
 #使用说明，用来提示输入参数
 usage(){
