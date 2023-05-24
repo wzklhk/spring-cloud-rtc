@@ -16,6 +16,10 @@ public class UserVO extends AbstractCommonVO {
 
     private String password;
 
+    private String nickname;
+
+    private String description;
+
     private Boolean isEnabled;
 
     private Boolean isLocked;

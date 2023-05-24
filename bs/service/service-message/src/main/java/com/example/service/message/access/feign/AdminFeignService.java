@@ -14,4 +14,7 @@ public interface AdminFeignService {
     @GetMapping("/user/getByToken")
     CommonResultInfo<Object> getUserByToken(@RequestParam("token") String token);
 
+    @GetMapping("/user/id")
+    CommonResultInfo<Object> getUserById(@RequestParam("id") Long id);
+
 }

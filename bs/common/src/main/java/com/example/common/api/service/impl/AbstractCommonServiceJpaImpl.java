@@ -120,8 +120,21 @@ public abstract class AbstractCommonServiceJpaImpl<VO, DO extends AbstractCommon
                         Sort.by("asc".equals(pageQuery.getSortOrder()) ? Sort.Direction.ASC : Sort.Direction.DESC, pageQuery.getSortBy())
                 )
         );
+        List<DO> dos = page.getContent();
+        List<VO> vos = new ArrayList<>();
+        for (DO aDo : dos) {
+            vos.add(toVO(aDo));
+        }
 
-        return CommonPageInfo.of(page, voClazz);
+        CommonPageInfo<VO> result = new CommonPageInfo<>();
+        result.setPageNum(page.getNumber() + 1);
+        result.setPageSize(page.getSize());
+        result.setTotalPage(page.getTotalPages());
+        result.setTotal(page.getTotalElements());
+        result.setSortBy(page.getSort().stream().iterator().next().getProperty());
+        result.setSortOrder(page.getSort().stream().iterator().next().getDirection().toString());
+        result.setList(vos);
+        return result;
     }
 
     @Override

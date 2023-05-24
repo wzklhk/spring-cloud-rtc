@@ -46,6 +46,8 @@ public class Channel extends AbstractCommonLogicDeleteDO {
             columnDefinition = "varchar(255) COMMENT '流的name'")
     private String streamName;
 
+    @Column(nullable = false, unique = false,
+            columnDefinition = "tinyint(1) COMMENT '是否在线'")
     private Boolean isOnline;
 
     private Long createUserId;

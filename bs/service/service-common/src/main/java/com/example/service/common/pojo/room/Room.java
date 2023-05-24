@@ -27,6 +27,10 @@ public class Room extends AbstractCommonLogicDeleteDO {
             columnDefinition = "varchar(255) COMMENT '房间名'")
     private String name;
 
+    @Column(nullable = true, unique = true,
+            columnDefinition = "varchar(255) COMMENT '描述'")
+    private String description;
+
     @Column(nullable = false, unique = false,
             columnDefinition = "bigint(20) COMMENT '房间管理员id'")
     private Long createUserId;

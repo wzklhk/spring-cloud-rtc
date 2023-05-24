@@ -11,4 +11,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class RoleVO extends AbstractCommonVO {
     private String name;
+
+    private String description;
 }

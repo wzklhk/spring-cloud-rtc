@@ -32,4 +32,5 @@ public class Record extends AbstractCommonLogicDeleteDO {
     private Integer recordDuration;
 
     private Long channelId;
+
 }

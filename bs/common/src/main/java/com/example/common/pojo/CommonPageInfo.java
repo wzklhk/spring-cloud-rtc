@@ -1,11 +1,9 @@
 package com.example.common.pojo;
 
-import com.example.common.utils.CopyUtil;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -45,7 +43,7 @@ public class CommonPageInfo<T> {
     private List<T> list;
     public static final String LIST = "list";
 
-    public static <T> CommonPageInfo<T> of(Page<T> page) {
+    /*public static <T> CommonPageInfo<T> of(Page<T> page) {
         CommonPageInfo<T> result = new CommonPageInfo<T>();
         result.setPageNum(page.getNumber() + 1);
         result.setPageSize(page.getSize());
@@ -62,5 +60,5 @@ public class CommonPageInfo<T> {
         // 设置页面数据
         result.setList(CopyUtil.copyList(page.getContent(), entityModelClass));
         return result;
-    }
+    }*/
 }

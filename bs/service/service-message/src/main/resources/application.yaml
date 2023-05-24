@@ -7,11 +7,11 @@ spring:
   #  name: service-message  # 服务名称
 
   jpa:
-    show-sql: true
-    #generate-ddl: false
-    #hibernate:
-    #  ddl-auto: update
     database: mysql
+    # 自动生成ddl
+    generate-ddl: false
+    # 是否开启sql日志显示
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL57Dialect

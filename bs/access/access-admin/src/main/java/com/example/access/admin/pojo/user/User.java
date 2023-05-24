@@ -43,6 +43,15 @@ public class User extends AbstractCommonLogicDeleteDO {
             columnDefinition = "varchar(255) DEFAULT 12345678 COMMENT '密码'")
     private String password;
 
+    @Column(nullable = true,
+            columnDefinition = "varchar(255) COMMENT '昵称'")
+    private String nickname;
+
+
+    @Column(nullable = true,
+            columnDefinition = "varchar(255) COMMENT '描述'")
+    private String description;
+
     /**
      * 是否可用
      */
